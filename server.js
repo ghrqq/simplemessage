@@ -9,8 +9,8 @@ const Confirmation = require("./schemas/Confirmation");
 const { v4: uuid } = require("uuid");
 const { verify } = require("jsonwebtoken");
 const { hash, compare, genSalt } = require("bcryptjs");
-const { createToken, sendToken } = require("./token");
-const { checkToken } = require("./checkToken");
+const { createToken, sendToken } = require("./tools/token");
+const { checkToken, verifyTokenData } = require("./tools/checkToken");
 const nodemailer = require("nodemailer");
 
 const mongoose = require("mongoose");
@@ -29,8 +29,8 @@ var transport = nodemailer.createTransport({
   host: "smtp.mailtrap.io",
   port: 2525,
   auth: {
-    user: "e07449b098fa69",
-    pass: "15e35b3162203f",
+    user: process.env.mailUser,
+    pass: process.env.mailPass,
   },
 });
 const message = {
@@ -63,7 +63,7 @@ app.use(
 );
 
 app.get("/", (_req, res) => {
-  res.send(`Hello again motherfucker! ${uuid()}`);
+  res.send(`Hello again motherfucker! `);
 });
 
 // User creation with jwt
@@ -226,6 +226,17 @@ app.post("/confirmmail", async (req, res) => {
   });
 
   res.send(user);
+});
+
+app.post("/confirmation/:code", async (req, res) => {
+  const code = req.params.code;
+
+  const { hashtags, message, creatorName, creatorMail, userIp } = req.body;
+
+  const user = await verifyTokenData(req);
+  console.log("Code: ", code, "user: ", user);
+
+  res.send(`user: ${JSON.stringify(user)}`);
 });
 
 const PORT = process.env.PORT || 4000;
