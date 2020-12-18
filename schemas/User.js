@@ -50,12 +50,6 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  mailConfirmationCode: {
-    type: String,
-    index: {
-      expires: "15s",
-    },
-  },
 });
 
 module.exports = User = mongoose.model("user", UserSchema);

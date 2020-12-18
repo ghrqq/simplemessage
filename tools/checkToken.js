@@ -16,26 +16,23 @@ const verifyTokenData = async (req, res) => {
   const { hashtags, message, creatorName, creatorMail, userIp } = req.body;
 
   if (!reqToken) {
-    return `Something went terribly wrong. Please refresh the page and try again. Do not forget to copy your message to somewhere safe. If problem continues clear cookies, refresh the page and pray for it to work. `;
+    return "No Token";
   }
   try {
     const solvedToken = await checkToken(reqToken);
 
-    console.log("it comes from verifyTokenData: ", solvedToken);
-
     const user = await User.findOne({ userId: solvedToken.id });
-    console.log("user from token data: ", user);
 
     const isValid =
       user.userIp === solvedToken.ip && user.userIp === userIp ? true : false;
 
     if (!isValid) {
-      return `Something went terribly wrong. We are unable to verify. Please refresh the page ant try again.`;
+      return "Ip's don't match.";
     }
 
     return user;
   } catch (error) {
-    return "from CheckToken Data: ", error.message;
+    return error.message;
   }
 };
 

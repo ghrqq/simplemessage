@@ -131,9 +131,85 @@ const confirmation = async (req, res) => {
   const { hashtags, message, creatorName, creatorMail, userIp } = req.body;
 
   const user = await verifyTokenData(req);
-  console.log("Code: ", code, "user: ", user);
+  //   console.log("User: ", user);
+  if (!user) {
+    res.send({
+      message:
+        "An error occured. It looks like you are not registered. This may because you cleared your browser cookies.",
+    });
+  }
 
-  res.send(`user: ${JSON.stringify(user)}`);
+  const userConfirmation = await Confirmation.findOne({ userId: user.userId });
+  if (!userConfirmation) {
+    res.send({
+      message: "Your confirmation code is expired. Please get a new one.",
+    });
+  }
+  const checkCode = userConfirmation.confirmationCode === code ? true : false;
+
+  if (!checkCode) {
+    res.send({ message: "You are a little impostor, aren't you?" });
+  }
+
+  user.isMailConfirmed = true;
+  user.save();
+
+  res.send({
+    message:
+      "Thank you for confirming your mail. Now you can get your account back whenever you want.",
+  });
+};
+
+const addUserDetails = async (req, res) => {
+  const { creatorName, creatorMail, userIp } = req.body;
+  const user = await verifyTokenData(req);
+  const userConfirmation = await Confirmation.findOne({ userId: user.userId });
+  if (!userConfirmation) {
+    res.send({
+      message: "Your confirmation code is expired. Please get a new one.",
+    });
+  }
+  const checkCode = userConfirmation.confirmationCode === code ? true : false;
+
+  if (!checkCode) {
+    res.send({ message: "You are a little impostor, aren't you?" });
+  }
+
+  user.userName = creatorName;
+  if (creatorMail) {
+    user.userMail = creatorMail;
+    user.save();
+    const code = uuid().slice(0, 6);
+
+    const newConfirmation = new Confirmation({
+      userId: user.userId,
+      userMail,
+      confirmationCode: code,
+    });
+
+    newConfirmation.save();
+
+    const mail = {
+      from: "no-reply-confirm-mail@simplemsg.com", // Sender address
+      to: "to@email.com", // List of recipients
+      subject: "Mail confirmation", // Subject line
+      text: `Click the link below to comfirm your mail. Your code is: ${code}`, // Plain text body
+    };
+    transport.sendMail(mail, function (err, info) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(info);
+      }
+    });
+    res.send({
+      message: `Dear ${user.userName}, your details have been updated. Please check your inbox (and spam folder) to verify your mail. We promise that we won't sell your data to anyone or use it by anymeans.`,
+    });
+  }
+  user.save();
+  res.send({
+    message: `Dear ${user.userName}, how nice of you to share your name with us! We promise we won't use it by anymeans.`,
+  });
 };
 
 module.exports = {
@@ -141,4 +217,5 @@ module.exports = {
   getUserId,
   confirmMail,
   confirmation,
+  addUserDetails,
 };

@@ -17,9 +17,12 @@ const ConfirmationSchema = new Schema({
     type: Date,
     default: Date.now,
     index: {
-      expires: "30s",
+      expires: 86400,
     },
   },
 });
 
-module.exports = User = mongoose.model("confirmation", ConfirmationSchema);
+module.exports = Confirmation = mongoose.model(
+  "confirmation",
+  ConfirmationSchema
+);

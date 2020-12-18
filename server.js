@@ -17,6 +17,7 @@ const {
   getUserId,
   confirmMail,
   confirmation,
+  addUserDetails,
 } = require("./routes/userRoutes");
 const { sendMessage } = require("./routes/contentRoutes");
 
@@ -31,13 +32,6 @@ db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", () => {
   console.log("Mongo DB is connected.");
 });
-
-const message = {
-  from: "elonmusk@tesla.com", // Sender address
-  to: "to@email.com", // List of recipients
-  subject: "Design Your Model S | Tesla", // Subject line
-  text: "Have the most fun you can in a car. Get your Tesla today!", // Plain text body
-};
 
 const app = express();
 
@@ -67,6 +61,7 @@ app.post("/clearuser", (_req, res) => clearUser(_req, res));
 app.post("/getuserid", async (req, res) => getUserId(req, res));
 app.post("/confirmmail", async (req, res) => confirmMail(req, res));
 app.post("/confirmation/:code", async (req, res) => confirmation(req, res));
+app.post("/adduserdetails", async (req, res) => addUserDetails(req, res));
 app.post("/getbackyouraccount", async (req, res) => {});
 
 // Content Routes
