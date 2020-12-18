@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const Post = require("../schemas/Post");
 const User = require("../schemas/User");
 const Confirmation = require("../schemas/Confirmation");
+const Rate = require("../schemas/Rate");
 const { v4: uuid } = require("uuid");
 const { verify } = require("jsonwebtoken");
 const { hash, compare, genSalt } = require("bcryptjs");
@@ -156,7 +157,7 @@ const confirmation = async (req, res) => {
 
   res.send({
     message:
-      "Thank you for confirming your mail. Now you can get your account back whenever you want.",
+      "Thank you for confirming your mail. Now you can reach your account back in any device.",
   });
 };
 
@@ -212,10 +213,82 @@ const addUserDetails = async (req, res) => {
   });
 };
 
+const getBackYourAccount = async (req, res) => {
+  const { creatorMail, userIp } = req.body;
+  const user = await User.findOne({ creatorMail: userMail });
+  console.log(user);
+  if (!user) {
+    res.send({ message: "Your mail is not registered." });
+  }
+  if (!user.isMailConfirmed) {
+    res.send({
+      message:
+        "You did not confirmed your mail. So you cannot reach your account. Sorry. You may try the first device you have used this page or just forget about your old account and start over.",
+    });
+  }
+
+  const code = uuid().slice(0, 6);
+
+  const newConfirmation = new Confirmation({
+    userId: user.userId,
+    userMail: user.userMail,
+    confirmationCode: code,
+  });
+
+  newConfirmation.save();
+  transport.sendMail(confirmationMailBody(code), function (err, info) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(info);
+    }
+  });
+
+  res.send({
+    message: `Dear ${user.userName}, your details have been updated. Please check your inbox (and spam folder) to verify your mail. We promise that we won't sell your data to anyone or use it by anymeans.`,
+  });
+};
+
+const confirmGetBack = async () => {
+  const code = req.params.code;
+
+  const { hashtags, message, creatorName, creatorMail, userIp } = req.body;
+
+  const user = await verifyTokenData(req);
+  if (!user) {
+    res.send({
+      message:
+        "An error occured. It looks like you are not registered. This may because you cleared your browser cookies.",
+    });
+  }
+
+  const userConfirmation = await Confirmation.findOne({ userId: user.userId });
+  if (!userConfirmation) {
+    res.send({
+      message: "Your confirmation code is expired. Please get a new one.",
+    });
+  }
+  const checkCode = userConfirmation.confirmationCode === code ? true : false;
+
+  if (!checkCode) {
+    res.send({ message: "You are a little impostor, aren't you?" });
+  }
+
+  const token = await createToken(user.userId, userIp);
+  sendToken(res, token);
+  user.userIp = userIp;
+  user.token = token;
+
+  user.save();
+  res.send({ message: "New configurations are successfuly set." });
+};
+
 module.exports = {
   clearUser,
   getUserId,
   confirmMail,
   confirmation,
   addUserDetails,
+  getBackYourAccount,
+  confirmGetBack,
 };

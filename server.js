@@ -18,8 +18,15 @@ const {
   confirmMail,
   confirmation,
   addUserDetails,
+  confirmGetBack,
+  getBackYourAccount,
 } = require("./routes/userRoutes");
-const { sendMessage } = require("./routes/contentRoutes");
+const {
+  sendMessage,
+  getRandom,
+  getByHashTag,
+} = require("./routes/contentRoutes");
+const { rateMessage } = require("./routes/rateRoutes");
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.mongoURI, {
@@ -62,11 +69,19 @@ app.post("/getuserid", async (req, res) => getUserId(req, res));
 app.post("/confirmmail", async (req, res) => confirmMail(req, res));
 app.post("/confirmation/:code", async (req, res) => confirmation(req, res));
 app.post("/adduserdetails", async (req, res) => addUserDetails(req, res));
-app.post("/getbackyouraccount", async (req, res) => {});
+app.post("/getbackyouraccount", async (req, res) =>
+  getBackYourAccount(req, res)
+);
+app.post("/confirmgetback/:code", async (req, res) => confirmGetBack(req, res));
 
 // Content Routes
 
 app.post("/sendmessage", async (req, res) => sendMessage(req, res));
+app.get("/getrandom", async (req, res) => getRandom(req, res));
+// app.get("/getbyhashtag/:hashtag", async (req, res) => getByHashTag(req, res));
+
+// Rate Routes
+app.post("/ratemessage", async (req, res) => rateMessage(req, res));
 
 app.get("/", (_req, res) => {
   res.send(`Hello again `);

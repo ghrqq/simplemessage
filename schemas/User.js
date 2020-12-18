@@ -20,6 +20,7 @@ const UserSchema = new Schema({
   },
   userMail: {
     type: String,
+    unique: true,
   },
   isMailsAllowed: {
     type: Boolean,

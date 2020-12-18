@@ -10,6 +10,7 @@ const { hash, compare, genSalt } = require("bcryptjs");
 const { createToken, sendToken } = require("../tools/token");
 const { checkToken, verifyTokenData } = require("../tools/checkToken");
 const { confirmationMailBody, transport } = require("../tools/nodemailer");
+const { getRates } = require("../tools/ratefunctions");
 
 const sendMessage = async (req, res) => {
   const reqToken = req.cookies.usertoken;
@@ -63,6 +64,27 @@ const sendMessage = async (req, res) => {
   }
 };
 
+const getRandom = async (_req, res) => {
+  const posts = await Post.find({}).limit(10).sort({ date: -1 });
+  // if (posts.length < 0) {
+  //   res.send({ message: "No rates yet." });
+  // }
+  // posts.map((post) => {
+  //   console.log("post.rate: ", post.rate, "post._id: ", post._id);
+  //   post.rate = getRates(post._id, "message");
+  //   console.log("post.rate after change: ", post.rate);
+  //   post.save();
+  // });
+  // posts.map((post) => {
+  //   post.creatorrate = getRates(post.creatorId, "user");
+  //   post.save();
+  // });
+
+  console.log("posts: ", posts);
+  res.send(posts);
+};
+
 module.exports = {
   sendMessage,
+  getRandom,
 };
