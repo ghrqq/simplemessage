@@ -18,6 +18,17 @@ function App() {
   const [userLoc, setuserLoc] = useState({});
   const [isAgreed, setisAgreed] = useState(true);
 
+  const logOutCallback = async () => {
+    await fetch("http://localhost:4000/clearuser", {
+      method: "POST",
+      credentials: "include",
+    });
+    // Clear user from context
+    setuser({});
+    // Navigate back to homepage
+    navigate("/");
+  };
+
   useEffect(() => {
     async function getUserGeolocationDetails() {
       const result = await (
@@ -43,6 +54,7 @@ function App() {
       if (ip === "") {
         return;
       }
+      let userData = {};
       const result = await (
         await fetch("http://localhost:4000/getuserid", {
           method: "POST",
@@ -56,7 +68,16 @@ function App() {
           }),
         })
       ).json();
-      setuser(result);
+
+      setuser({
+        id: result.id,
+        userIp: ip,
+      });
+      // if (result.id !== "") {
+      //   window.alert(
+      //     "Welcome back! Would you like to share your name with us?"
+      //   );
+      // }
     }
     getUserId();
   }, [ip]);
@@ -84,7 +105,7 @@ function App() {
     <UserContext.Provider value={[user, setuser]}>
       <PostContext.Provider value={[posts, setposts]}>
         <div className="App">
-          <Navigation />
+          <Navigation logOutCallback={logOutCallback} />
           <Router id="router">
             <Home path="/" />
             <Discover path="/discover" />

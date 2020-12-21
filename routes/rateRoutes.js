@@ -9,7 +9,7 @@ const { checkToken, verifyTokenData } = require("../tools/checkToken");
 
 const rateMessage = async (req, res) => {
   try {
-    const { messageId, rate, creatorId, userIp } = req.body;
+    const { postid, rate, postCreatorId, userIp } = req.body;
     const user = await verifyTokenData(req);
 
     if (typeof user === "string") {
@@ -18,21 +18,21 @@ const rateMessage = async (req, res) => {
       });
     }
 
-    const check = await Rate.find({ postid: messageId, raterIp: userIp });
+    const check = await Rate.find({ postid: postid, userIp });
 
     if (check.length === 0) {
       const newRate = new Rate({
-        postid: messageId,
+        postid,
         rate,
-        postCreatorId: creatorId,
-        raterIp: userIp,
+        postCreatorId,
+        userIp,
       });
 
       newRate.save();
 
-      const postToChange = await Post.findOne({ _id: messageId });
+      const postToChange = await Post.findOne({ _id: postid });
 
-      const allRates = await Rate.find({ postid: messageId });
+      const allRates = await Rate.find({ postid: postid });
 
       const avgRate =
         allRates.map((item) => item.rate).reduce((a, b) => a + b, 0) /
@@ -42,9 +42,9 @@ const rateMessage = async (req, res) => {
 
       const savePostRate = await postToChange.save();
 
-      const userToChange = await User.findOne({ userId: creatorId });
+      const userToChange = await User.findOne({ userId: postCreatorId });
 
-      const allUserRates = await Rate.find({ postCreatorId: creatorId });
+      const allUserRates = await Rate.find({ postCreatorId: postCreatorId });
 
       const avgUserRate =
         allUserRates.map((item) => item.rate).reduce((a, b) => a + b, 0) /
@@ -53,6 +53,12 @@ const rateMessage = async (req, res) => {
       userToChange.rate = avgUserRate;
 
       const saveUserRate = await userToChange.save();
+      console.log(
+        "usertochange: ",
+        userToChange,
+        "postToChange: ",
+        postToChange
+      );
 
       res.send({
         message: `Your vote is saved. user: ${userToChange} post: ${postToChange}`,

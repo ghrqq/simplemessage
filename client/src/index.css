@@ -3,7 +3,7 @@
   --textwhite: #f7f7f6;
   --color1: #c19160;
   --color2: #9e584c;
-  --bglight: #99a09c;
+  --bglight: rgba(153 160 156 27%);
 }
 body {
   margin: 0;
@@ -51,7 +51,7 @@ code {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 90%;
+  /* width: 90%; */
   height: auto;
   margin: 0 auto;
   /* padding: 0.5em 0.5em; */
@@ -73,9 +73,10 @@ code {
 
   min-width: 200px;
   box-shadow: 0.3em 0.3em 1.3em 0.3em var(--color1);
+  align-items: center;
 
   /* flex-grow: 1; */
-  flex: 1 0 40%;
+  flex: 0 0 23%;
   border-radius: 1em 1em 1em 1em;
 }
 .single-post-container:hover {

@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import PostFooter from "./PostFooter";
+import Voter from "./Voter";
 
 const Posts = (props) => {
-  const { _id, creatorName, message, date } = props.post;
+  const { _id, creatorName, message, date, creatorId } = props.post;
 
   return (
-    <div className="post-container" key={_id}>
-      <div className="single-post-container">
-        <div className="post-bar">
-          {date}
+    <div className="single-post-container" key={_id}>
+      <div className="post-bar">
+        {date}
 
-          {creatorName !== "" ? creatorName : "Anonym"}
-        </div>
-        <div className="post">{message}</div>
-        <div className="post-footer">
-          <PostFooter />
-        </div>
+        {creatorName !== "" ? creatorName : "Anonym"}
+        <br />
+        <Voter postId={_id} creatorId={creatorId} />
+        <button>&times;</button>
+      </div>
+      <div className="post">{message}</div>
+      <div className="post-footer">
+        <PostFooter />
       </div>
     </div>
   );

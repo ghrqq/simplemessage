@@ -29,7 +29,7 @@ const verifyTokenData = async (req, res) => {
     if (!isValid) {
       return "Ip's don't match.";
     }
-
+    console.log("User from check token: ", user);
     return user;
   } catch (error) {
     return error.message;

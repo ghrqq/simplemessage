@@ -4,15 +4,19 @@ const Schema = mongoose.Schema;
 const RateSchema = new Schema({
   postid: {
     type: String,
+    required: true,
   },
   rate: {
     type: Number,
     max: 5,
+    min: -5,
+    required: true,
   },
   postCreatorId: {
     type: String,
+    required: true,
   },
-  raterIp: {
+  userIp: {
     type: String,
     required: true,
   },

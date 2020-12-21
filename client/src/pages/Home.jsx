@@ -7,11 +7,13 @@ const Home = () => {
   const [post] = useContext(PostContext);
   return (
     <div className="component-container">
-      {post === {} ? (
-        <div>Loading...</div>
-      ) : (
-        post.map((item) => <Posts post={item} />)
-      )}
+      <div className="post-container">
+        {post === {} ? (
+          <div>Loading...</div>
+        ) : (
+          post.map((item) => <Posts post={item} />)
+        )}
+      </div>
     </div>
   );
 };

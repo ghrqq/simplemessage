@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@reach/router";
 
-const Navigation = () => {
+const Navigation = (props) => {
   return (
     <nav>
       <ul>
@@ -11,6 +11,7 @@ const Navigation = () => {
         <li>
           <Link to="/discover">Discover</Link>
         </li>
+        <button onClick={() => props.logOutCallback()}>Clear User</button>
       </ul>
     </nav>
   );
