@@ -1,0 +1,117 @@
+:root {
+  --bgdark: #202025;
+  --textwhite: #f7f7f6;
+  --color1: #c19160;
+  --color2: #9e584c;
+  --bglight: #99a09c;
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--bglight);
+}
+nav {
+  margin: 0;
+  background-color: var(--bgdark);
+  color: var(--textwhite);
+  text-decoration: none;
+  text-align: left;
+}
+nav ul {
+  list-style: none;
+  margin: 0 0 2em 0;
+  display: block;
+}
+nav ul li {
+  display: inline-block;
+  margin: 0;
+  padding: 0.5em;
+  font-size: 1.5em;
+}
+nav ul li a {
+  text-decoration: none;
+  color: var(--textwhite);
+}
+
+nav ul li a:hover {
+  text-shadow: var(--bgdark);
+  color: var(--color1);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.post-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 90%;
+  height: auto;
+  margin: 0 auto;
+  /* padding: 0.5em 0.5em; */
+  background-color: var(--bglight);
+}
+.component-container {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+.single-post-container {
+  /* flex-wrap: nowrap; */
+  display: flex;
+  /* flex-basis: 40%; */
+  flex-flow: column nowrap;
+  margin: 0.5em 0.5em;
+  /* padding: 0.5em; */
+  background-color: var(--textwhite);
+
+  min-width: 200px;
+  box-shadow: 0.3em 0.3em 1.3em 0.3em var(--color1);
+
+  /* flex-grow: 1; */
+  flex: 1 0 40%;
+  border-radius: 1em 1em 1em 1em;
+}
+.single-post-container:hover {
+  box-shadow: 0.3em 0.3em 1.3em 0.3em var(--color2);
+}
+#router {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.post-bar {
+  height: 2em;
+  display: block;
+  background-color: var(--textwhite);
+  margin: 0;
+  width: 100%;
+  border-radius: 1em 1em 0 0;
+  border-bottom: var(--bglight) 2px solid;
+}
+.post {
+  border: 1px 0 solid var(--textwhite);
+  padding: 1em;
+  margin-bottom: auto;
+  flex-grow: 1;
+  border-radius: 1em 1em 0 0;
+}
+.post-footer {
+  height: 2em;
+
+  background-color: var(--textwhite);
+  border-top: var(--bglight) 2px solid;
+
+  width: 100%;
+  align-self: flex-end;
+  align-content: center;
+  margin-top: auto;
+  border-radius: 0 0 1em 1em;
+}

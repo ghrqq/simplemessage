@@ -24,6 +24,10 @@ const UserSchema = new Schema({
   },
   isMailsAllowed: {
     type: Boolean,
+    default: false,
+  },
+  isAgreed: {
+    type: Boolean,
     required: true,
   },
   isBlocked: {

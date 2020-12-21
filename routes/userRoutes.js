@@ -16,8 +16,9 @@ const { confirmationMailBody, transport } = require("../tools/nodemailer");
 
 const getUserId = async (req, res) => {
   const reqToken = req.cookies.usertoken;
-  const { userName, userMail, isMailsAllowed, userIp } = req.body;
-
+  const { userName, userMail, isAgreed, userIp } = req.body;
+  console.log("reqToken: ", reqToken, "userIp: ", userIp);
+  console.log("getuserid called");
   try {
     if (!reqToken) {
       const userId = uuid();
@@ -27,7 +28,7 @@ const getUserId = async (req, res) => {
         userId,
         userIp,
         userMail,
-        isMailsAllowed,
+        isAgreed,
         userName,
         token,
       });

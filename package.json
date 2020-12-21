@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ghrqq/simpletest.git"
+    "url": "git+https://github.com/ghrqq/simplemessage.git"
   },
   "keywords": [
     "ReactJS",
@@ -20,9 +20,9 @@
   "author": "Theo OZ",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ghrqq/simpletest/issues"
+    "url": "https://github.com/ghrqq/simplemessage/issues"
   },
-  "homepage": "https://github.com/ghrqq/simpletest#readme",
+  "homepage": "https://github.com/ghrqq/simplemessage#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",

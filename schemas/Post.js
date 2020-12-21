@@ -15,6 +15,11 @@ const PostSchema = new Schema({
     type: String,
     maxlength: 500,
   },
+  lang: {
+    type: String,
+    maxlength: 2,
+    required: true,
+  },
   rate: {
     type: Number,
     default: 0,
