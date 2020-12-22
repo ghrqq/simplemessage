@@ -89,7 +89,6 @@ code {
 }
 
 .post-bar {
-  height: 2em;
   display: block;
   background-color: var(--textwhite);
   margin: 0;
@@ -115,4 +114,22 @@ code {
   align-content: center;
   margin-top: auto;
   border-radius: 0 0 1em 1em;
+}
+
+.fab {
+  position: absolute;
+  bottom: 2em;
+  right: 2em;
+}
+
+.hashtag-container {
+  width: 80%;
+  margin: 1em auto;
+  border: solid 2px var(--bgdark);
+}
+
+.hashtag {
+  display: inline-block;
+  padding: 1em;
+  font-size: 1.3em;
 }
