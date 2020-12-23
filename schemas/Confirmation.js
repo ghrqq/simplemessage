@@ -10,7 +10,7 @@ const ConfirmationSchema = new Schema({
     type: String,
   },
 
-  confirmationCode: {
+  confirmationToken: {
     type: String,
   },
   mailConfirmationExpiry: {

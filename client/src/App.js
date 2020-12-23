@@ -10,12 +10,14 @@ import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import { union } from "lodash";
 import hashTagConverter from "./tools/hashTagConverter";
+import Cookies from "js-cookie";
 
 export const UserContext = React.createContext([]);
 export const PostContext = React.createContext([]);
 
 function App() {
   const [user, setuser] = useState({});
+  const [userToken, setuserToken] = useState(Cookies.get());
   const [posts, setposts] = useState({});
   const [loading, setloading] = useState(true);
   const [isIpLoading, setisIpLoading] = useState(true);
@@ -171,7 +173,7 @@ function App() {
 
             <KeyboardArrowRightIcon />
           </div>
-
+          {console.log(userToken)}
           <Router id="router">
             <Home path="/" />
             <Discover path="/discover" />

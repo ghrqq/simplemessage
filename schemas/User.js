@@ -6,9 +6,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  userIp: {
+  lang: {
     type: String,
-    required: true,
+    default: "en",
   },
   userName: {
     type: String,
@@ -54,6 +54,10 @@ const UserSchema = new Schema({
   isMailConfirmed: {
     type: Boolean,
     default: false,
+  },
+  favoriteHashtags: {
+    type: Array,
+    maxlength: 3,
   },
 });
 

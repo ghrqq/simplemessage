@@ -1,14 +1,26 @@
 const { sign } = require("jsonwebtoken");
 
-const createToken = (id, ip) => {
+const createToken = (id) => {
   return sign(
     {
       id,
-      ip,
     },
     process.env.tokenSecret,
     {
       expiresIn: "730d",
+    }
+  );
+};
+
+const createConfirmToken = (id, mail) => {
+  return sign(
+    {
+      id,
+      mail,
+    },
+    process.env.confirmTokenSecret,
+    {
+      expiresIn: "1d",
     }
   );
 };
@@ -27,4 +39,5 @@ const sendToken = (res, token) => {
 module.exports = {
   createToken,
   sendToken,
+  createConfirmToken,
 };
