@@ -18,7 +18,8 @@ const PostSchema = new Schema({
   lang: {
     type: String,
     maxlength: 2,
-    required: true,
+    required: false,
+    default: "en",
   },
   rate: {
     type: Number,
@@ -28,10 +29,6 @@ const PostSchema = new Schema({
     type: String,
   },
   creatorId: {
-    type: String,
-    required: true,
-  },
-  creatorIp: {
     type: String,
     required: true,
   },

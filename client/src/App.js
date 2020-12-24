@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import Navigation from "./components/Navigation";
 import Discover from "./pages/Discover";
 import Home from "./pages/Home";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import { union } from "lodash";
 import hashTagConverter from "./tools/hashTagConverter";
 import Cookies from "js-cookie";
+import CreateMessage from "./components/CreateMessage";
 
 export const UserContext = React.createContext([]);
 export const PostContext = React.createContext([]);
@@ -24,6 +24,7 @@ function App() {
   const [ip, setip] = useState("");
   const [userLoc, setuserLoc] = useState({});
   const [isAgreed, setisAgreed] = useState(true);
+  const [isCMOpen, setisCMOpen] = useState(false);
   const [incr, setincr] = useState(1);
   const [selectedHashtag, setselectedHashtag] = useState("");
   const [message, setmessage] = useState("");
@@ -179,15 +180,7 @@ function App() {
             <Discover path="/discover" />
           </Router>
           <div className="fab">
-            <Fab
-              color="primary"
-              variant="extended"
-              size="medium"
-              color="primary"
-              aria-label="add"
-            >
-              <AddIcon /> Create New Message
-            </Fab>
+            <CreateMessage isOpen={isCMOpen} />
           </div>
         </div>
       </PostContext.Provider>

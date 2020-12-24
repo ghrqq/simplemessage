@@ -8,17 +8,10 @@ const Rate = require("../schemas/Rate");
 const { checkToken, verifyTokenData } = require("../tools/checkToken");
 
 const rateMessage = async (req, res) => {
+  const { postid, rate, postCreatorId, userIp } = req.body;
+  // const reqToken = req.cookies.usertoken
   try {
-    const { postid, rate, postCreatorId, userIp } = req.body;
-    const user = await verifyTokenData(req);
-
-    console.log("user from rateRoute: ", user, "typeof", typeof user);
-
-    if (typeof user === "string") {
-      res.send({
-        message: `Cannot rate because your ip is not registered. Please refresh the page and try rating again. Original error: ${user}`,
-      });
-    }
+    // const {id} = checkToken(reqToken);
 
     const check = await Rate.find({ postid: postid, userIp });
     console.log("check from rateRoute", check, "check.length: ", check.length);
@@ -35,11 +28,7 @@ const rateMessage = async (req, res) => {
 
       const postToChange = await Post.findOne({ _id: postid });
 
-      console.log("postToChange: ", postToChange);
-
       const allRates = await Rate.find({ postid: postid });
-
-      console.log("allRates: ", allRates);
 
       const avgRate =
         allRates.map((item) => item.rate).reduce((a, b) => a + b, 0) /
@@ -83,10 +72,13 @@ const rateMessage = async (req, res) => {
 
       res.status(200).send({
         message: `Your vote is saved.`,
+        status: 200,
       });
     }
 
-    res.status(400).send({ message: "You can only once vote a post." });
+    res
+      .status(400)
+      .send({ message: "You can only once vote a post.", status: 400 });
   } catch (error) {
     error.message;
   }

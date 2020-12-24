@@ -18,7 +18,6 @@ const RateSchema = new Schema({
   },
   userIp: {
     type: String,
-    required: true,
   },
 });
 

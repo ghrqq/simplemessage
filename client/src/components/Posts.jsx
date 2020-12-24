@@ -22,6 +22,10 @@ const Posts = (props) => {
   const displayShare = !showShare ? "none" : null;
   const displayRate = !showrate ? "none" : null;
 
+  const hideRate = () => {
+    setshowrate(false);
+  };
+
   return (
     <div
       className="single-post-container"
@@ -34,6 +38,14 @@ const Posts = (props) => {
           style={{ textAlign: "left" }}
           onClick={() => setisHidden(true)}
         />
+        {!showrate ? (
+          <StarHalfIcon onClick={() => setshowrate(!showrate)} />
+        ) : (
+          <React.Fragment>
+            <StarHalfIcon onClick={() => setshowrate(!showrate)} />
+            <Voter postId={_id} creatorId={creatorId} hideRate={hideRate} />
+          </React.Fragment>
+        )}
         {!showDetails ? (
           <ExpandMoreIcon
             style={{ textAlign: "right" }}
@@ -47,15 +59,6 @@ const Posts = (props) => {
         )}
       </div>
       <div style={{ display: displayDetails }} className="post-detail">
-        {!showrate ? (
-          <StarHalfIcon onClick={() => setshowrate(!showrate)} />
-        ) : (
-          <React.Fragment>
-            <StarHalfIcon onClick={() => setshowrate(!showrate)} />
-            <Voter postId={_id} creatorId={creatorId} />
-          </React.Fragment>
-        )}
-
         {!showShare ? (
           <ShareIcon onClick={() => setshowShare(!showShare)} />
         ) : (

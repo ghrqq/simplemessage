@@ -15,54 +15,56 @@ const { getRates } = require("../tools/ratefunctions");
 const sendMessage = async (req, res) => {
   const reqToken = req.cookies.usertoken;
 
-  const { hashtags, message, creatorName, creatorMail, userIp } = req.body;
-  const hast = hashtags.slice(1, -1).split(",");
+  const { hashtags, message } = req.body;
+  const hast = hashtags;
+  // .slice(1, -1).split(",");
 
   if (!reqToken) {
-    res.send({
+    res.status(400).send({
       message: `Something went terribly wrong. Please refresh the page and try again. Do not forget to copy your message to somewhere safe. If problem continues clear cookies, refresh the page and pray for it to work. `,
+      status: 400,
     });
   }
 
-  const solvedToken = await checkToken(reqToken);
+  try {
+    const solvedToken = await checkToken(reqToken);
 
-  const user = await User.findOne({ userId: solvedToken.id });
+    const user = await User.findOne({ userId: solvedToken.id });
 
-  const isValid =
-    user.userIp === solvedToken.ip && user.userIp === userIp ? true : false;
+    const newPost = new Post({
+      hashtags: hast,
+      message,
+      creatorId: user.userId,
+    });
+    const createPost = await newPost.save();
 
-  if (user.isBlocked) {
-    res.send({
-      message:
-        "You are blocked! This might be because you messed up with your token. No need to worry. Since this is an open platform, all you need to do is clear your cookies and suddenly you will have a new account.",
+    user.messagesCreated = user.messagesCreated + 1;
+
+    console.log("user.userName: ", user.userName);
+
+    const isName = user.userName === undefined ? false : user.userName;
+    console.log("isName: ", isName);
+    const isMail = user.userMail === undefined ? false : true;
+
+    const updateUser = await user.save();
+
+    res.status(200).send({
+      message: "Post created successfuly.",
+      status: 200,
+      userName: isName,
+      userMail: isMail,
+    });
+  } catch (error) {
+    res.status(400).send({
+      error: `Error catched: ${error.message}`,
+      status: 400,
     });
   }
 
-  if (isValid) {
-    try {
-      const newPost = new Post({
-        hashtags: hast,
-        message,
-        creatorName,
-        creatorId: user.userId,
-        creatorIp: userIp,
-        creatorMail,
-      });
-      const createPost = await newPost.save();
-
-      user.messagesCreated = user.messagesCreated + 1;
-
-      const updateUser = await user.save();
-
-      res.send({ message: "Post created successfuly." });
-    } catch (error) {
-      res.send({
-        error: `Error catched: ${error.message}`,
-      });
-    }
-  } else {
-    res.send({ message: "There is a problem with your ip/token. " });
-  }
+  res.status(400).send({
+    message: "There is a problem with your ip/token. ",
+    status: 400,
+  });
 };
 // Get random posts
 const getRandom = async (_req, res) => {
@@ -80,7 +82,9 @@ const getByHashTag = async (req, res) => {
       .sort({ date: -1 });
 
     if (matchedPosts === [""]) {
-      res.send({ message: "No posts found with given hashtag." });
+      res
+        .status(400)
+        .send({ message: "No posts found with given hashtag.", status: 400 });
     }
 
     res.send(matchedPosts);
@@ -92,39 +96,34 @@ const getByHashTag = async (req, res) => {
 const deletePost = async (req, res) => {
   const reqToken = req.cookies.usertoken;
 
-  const { id, userIp } = req.body;
+  const { postId } = req.body;
 
   if (!reqToken) {
-    res.send({
-      message: `You do not have a valid token. So you need to refresh your page and then try again to delete this post. `,
+    res.status(400).send({
+      message: `You do not have a valid token. So you need to login and then try again to delete this post. `,
+
+      status: 400,
     });
   }
 
-  const solvedToken = await checkToken(reqToken);
-
-  const user = await User.findOne({ userId: solvedToken.id });
-
-  const isValid =
-    user.userIp === solvedToken.ip && user.userIp === userIp ? true : false;
-
-  if (user.isBlocked) {
-    res.send({
-      message:
-        "You are blocked! This might be because you messed up with your token. No need to worry. Since this is an open platform, all you need to do is clear your cookies and suddenly you will have a new account.",
-    });
-  }
-
-  if (isValid) {
-    try {
-      const result = Post.deleteOne({ _id: id });
-      res.send({ message: "Post deleted successfuly. " });
-    } catch (error) {
-      res.send({
-        error: `Error catched: ${error.message}`,
+  const { id } = checkToken(reqToken);
+  try {
+    const user = await User.findOne({ userId: id });
+    if (!user) {
+      res.status(400).send({
+        message: "Your token is invalid. Please login again.",
+        status: 400,
       });
     }
-  } else {
-    res.send({ message: "There is a problem with your ip/token. " });
+
+    const result = Post.deleteOne({ _id: postId });
+    res.status(200).send({ message: "Post deleted successfuly. " });
+  } catch (error) {
+    res.status(400).send({
+      error: `Error catched: ${error.message}`,
+
+      status: 400,
+    });
   }
 };
 

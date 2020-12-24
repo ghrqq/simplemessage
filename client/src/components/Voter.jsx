@@ -6,6 +6,9 @@ import CloseIcon from "@material-ui/icons/Close";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import SaveIcon from "@material-ui/icons/Save";
+import { Rating } from "primereact/rating";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 
 const Voter = (props) => {
   const [user] = useContext(UserContext);
@@ -45,27 +48,26 @@ const Voter = (props) => {
         body: JSON.stringify(data),
       })
     ).json();
+
     setstatus(result.status);
     if (result.message) {
       setmessage(result.message);
 
       setOpen(true);
+      setTimeout(() => {
+        props.hideRate();
+      }, 3000);
     }
   };
 
   return (
     <div>
-      <input
-        type="range"
-        min="-5"
-        max="5"
+      <Rating
         value={rate}
-        onChange={(e) => setrate(e.target.value)}
-        step="1"
-        style={{ color: "red" }}
+        onChange={(e) => setrate(e.value)}
+        cancel={false}
+        stars={5}
       />
-
-      <span style={{ color: color }}>{rate}</span>
 
       <SaveIcon onClick={() => sendRate()} />
       <Snackbar
@@ -79,7 +81,7 @@ const Voter = (props) => {
         message={message}
         action={
           <React.Fragment>
-            {status == 200 ? (
+            {status === 200 ? (
               <ThumbUpIcon style={{ color: "green" }} />
             ) : (
               <ThumbDownIcon style={{ color: "red" }} />
