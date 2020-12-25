@@ -67,36 +67,26 @@ function App() {
 
   useEffect(() => {
     async function getUserId() {
-      if (ip === "") {
-        return;
-      }
-
       const result = await (
-        await fetch("http://localhost:4000/getuserid", {
+        await fetch("http://localhost:4000/checkuserid", {
           method: "POST",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            userIp: ip,
-            isAgreed,
-          }),
         })
       ).json();
 
       setuser({
         id: result.id,
-        userIp: ip,
+        name: result.name,
+        ip: ip,
+        favoriteHashtags: result.favoriteHashtags,
+        isAgreed: result.isAgreed,
       });
-      // if (result.id !== "") {
-      //   window.alert(
-      //     "Welcome back! Would you like to share your name with us?"
-      //   );
-      // }
     }
     getUserId();
-  }, [ip]);
+  }, []);
 
   useEffect(() => {
     async function getByHashTag() {
@@ -174,7 +164,7 @@ function App() {
 
             <KeyboardArrowRightIcon />
           </div>
-          {console.log(userToken)}
+
           <Router id="router">
             <Home path="/" />
             <Discover path="/discover" />

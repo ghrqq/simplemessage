@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -17,13 +17,22 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import CancelIcon from "@material-ui/icons/Cancel";
 import WarningIcon from "@material-ui/icons/Warning";
 import Tooltip from "@material-ui/core/Tooltip";
+import Checkbox from "@material-ui/core/Checkbox";
+
+import { UserContext } from "../App";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function CreateMessage(props) {
+  const [user, setuser] = useContext(UserContext);
+
   const [open, setOpen] = useState(props.isOpen);
+  const [isAgreed, setisAgreed] = useState(
+    user.isAgreed === true ? true : false
+  );
+  const [isUserLoading, setisUserLoading] = useState(false);
   const [step, setstep] = useState(1);
   const [hashtags, sethashtags] = useState([]);
   const [hashtagsToShow, sethashtagsToShow] = useState([]);
@@ -44,6 +53,35 @@ export default function CreateMessage(props) {
   const style = !isMailValid ? "4px solid red" : "4px solid green";
 
   const [header, setheader] = useState("Create a message!");
+
+  const getUserId = async () => {
+    setisUserLoading(true);
+    if (user.id !== undefined) {
+      console.log("It happened again");
+      return;
+    }
+    const result = await (
+      await fetch("http://localhost:4000/getuserid", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          isAgreed: true,
+        }),
+      })
+    ).json();
+
+    setuser({
+      id: result.id,
+      name: result.name,
+      ip: user.ip,
+      favoriteHashtags: result.favoriteHashtags,
+      isAgreed: result.isAgreed,
+    });
+    setisUserLoading(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -77,13 +115,15 @@ export default function CreateMessage(props) {
     }
     setisInfoLoading(false);
     if (result.userMail) {
-      fetch("http://localhost:4000/confirmmail", {
+      let mailToConfirm = { userMail: result.userMail };
+      console.log(typeof mailToConfirm);
+      const confirmation = await fetch("http://localhost:4000/confirmmail", {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
-        body: result.userMail,
+        body: JSON.stringify(mailToConfirm),
       });
     }
   };
@@ -130,7 +170,7 @@ export default function CreateMessage(props) {
     ).json();
     setisName(result.userName);
     setisMail(result.userMail);
-    if (isName === false || isMail === false) {
+    if (result.userName === false || result.userMail === false) {
       setisInfoNeeded(true);
     }
 
@@ -192,6 +232,21 @@ export default function CreateMessage(props) {
         {step === 1 ? (
           <div>
             <DialogContent>
+              {user.isAgreed === true ? null : (
+                <div>
+                  <Checkbox
+                    color="primary"
+                    inputProps={{ "aria-label": "secondary checkbox" }}
+                    onChange={(e) => setisAgreed(!isAgreed)}
+                    onClick={() => getUserId()}
+                  />
+                  You should agree{" "}
+                  <a href="google.com" target="_blank">
+                    user terms
+                  </a>{" "}
+                  to create message.
+                </div>
+              )}
               <DialogContentText id="alert-dialog-slide-description">
                 Type your message in, choose some hashtags and hit Create
                 button!
@@ -264,7 +319,9 @@ export default function CreateMessage(props) {
               </Button>
               {message === "" ||
               message.length < 30 ||
-              hashtagsToShow.length < 1 ? (
+              hashtagsToShow.length < 1 ||
+              isAgreed === false ||
+              isUserLoading === true ? (
                 <Tooltip title="Your message should contain at least 30 characters and you should pick at least 1 hashtag.">
                   <Button variant="contained" color="primary" disabled>
                     Create

@@ -20,6 +20,7 @@ const {
   addUserDetails,
   confirmGetBack,
   getBackYourAccount,
+  checkUserId,
 } = require("./routes/userRoutes");
 const {
   sendMessage,
@@ -66,7 +67,9 @@ app.use(
 // User Routes
 
 app.post("/clearuser", (_req, res) => clearUser(_req, res));
+
 app.post("/getuserid", async (req, res) => getUserId(req, res));
+app.post("/checkuserid", async (req, res) => checkUserId(req, res));
 app.post("/confirmmail", async (req, res) => confirmMail(req, res));
 app.get("/confirmation/:code", async (req, res) => confirmation(req, res));
 app.post("/adduserdetails", async (req, res) => addUserDetails(req, res));

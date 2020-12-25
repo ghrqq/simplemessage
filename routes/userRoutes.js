@@ -28,12 +28,12 @@ const getUserId = async (req, res) => {
 
   try {
     if (!reqToken) {
-      if (!isAgreed) {
-        res.status(400).send({
-          message:
-            "I do not know how you have submitted this form but you should have agreed user terms. Please read carefully and if you agree the terms, check the tiny box that says 'I agree' and send the form again.",
-        });
-      }
+      // if (!isAgreed) {
+      //   res.status(400).send({
+      //     message:
+      //       "I do not know how you have submitted this form but you should have agreed user terms. Please read carefully and if you agree the terms, check the tiny box that says 'I agree' and send the form again.",
+      //   });
+      // }
       const userId = uuid();
 
       const token = await createToken(userId);
@@ -52,6 +52,7 @@ const getUserId = async (req, res) => {
       res.status(200).send({
         message: "You are registered. It couldn't be easier to register, huh?",
         id: newUser.userId,
+        isAgreed: newUser.isAgreed,
         status: 200,
       });
     } else {
@@ -66,8 +67,49 @@ const getUserId = async (req, res) => {
         message: "Welcome back!",
         id: user.userId,
         status: 200,
+        isAgreed: user.isAgreed,
       });
     }
+  } catch (error) {
+    res.status(400).send({
+      error: `Error catched: ${error.message}`,
+
+      status: 400,
+    });
+  }
+};
+
+// At first load, check if user is already registered by cookie.
+
+const checkUserId = async (req, res) => {
+  const reqToken = req.cookies.usertoken;
+  if (!reqToken) {
+    res.status(400).send({
+      message: "No token!",
+      status: 400,
+    });
+  }
+
+  try {
+    const solvedToken = await checkToken(reqToken);
+
+    const user = await User.findOne({ userId: solvedToken.id });
+    const newToken = createToken(user.userId);
+
+    const resName =
+      user.userName === undefined ? "Mysterious Messager" : user.userName;
+    user.token = newToken;
+    user.save();
+    console.log("isAgreed: ", user.isAgreed);
+
+    res.status(200).send({
+      message: "Welcome back!",
+      id: user.userId,
+      name: resName,
+      status: 200,
+      isAgreed: user.isAgreed,
+      favoriteHashtags: user.favoriteHashtags,
+    });
   } catch (error) {
     res.status(400).send({
       error: `Error catched: ${error.message}`,
@@ -221,6 +263,10 @@ const addUserDetails = async (req, res) => {
       ? favoriteHashtags
       : user.favoriteHashtags;
 
+    const postsToUpdate = await Post.updateMany(
+      { creatorId: user.userId },
+      { creatorName: user.userName }
+    );
     const isSaved = await user.save();
 
     // Dev Only
@@ -320,4 +366,5 @@ module.exports = {
   addUserDetails,
   getBackYourAccount,
   confirmGetBack,
+  checkUserId,
 };
