@@ -11,14 +11,14 @@ const { createToken, sendToken } = require("../tools/token");
 const { checkToken, verifyTokenData } = require("../tools/checkToken");
 const { confirmationMailBody, transport } = require("../tools/nodemailer");
 const { getRates } = require("../tools/ratefunctions");
-const { union } = require("lodash");
+const { union, toLower } = require("lodash");
 
 const sendMessage = async (req, res) => {
   const reqToken = req.cookies.usertoken;
 
   const { hashtags, message } = req.body;
-  const hast = hashtags;
-  // .slice(1, -1).split(",");
+
+  const hast = hashtags.map((item) => toLower(item));
 
   if (!reqToken) {
     res.status(400).send({
@@ -41,10 +41,8 @@ const sendMessage = async (req, res) => {
 
     user.messagesCreated = user.messagesCreated + 1;
 
-    console.log("user.userName: ", user.userName);
-
     const isName = user.userName === undefined ? false : user.userName;
-    console.log("isName: ", isName);
+
     const isMail = user.userMail === undefined ? false : true;
 
     const updateUser = await user.save();
@@ -61,11 +59,6 @@ const sendMessage = async (req, res) => {
       status: 400,
     });
   }
-
-  res.status(400).send({
-    message: "There is a problem with your ip/token. ",
-    status: 400,
-  });
 };
 // Get random posts
 const getRandom = async (_req, res) => {
@@ -78,19 +71,27 @@ const getByHashTag = async (req, res) => {
   const hashtag = req.params.hashtag;
 
   try {
-    const matchedPosts = await Post.find({ hashtags: hashtag })
+    const posts = await Post.find({ hashtags: hashtag })
       .limit(10)
       .sort({ date: -1 });
 
-    if (matchedPosts === [""]) {
-      res
-        .status(400)
-        .send({ message: "No posts found with given hashtag.", status: 400 });
+    const hashTagsRaw = posts.map((item) => item.hashtags);
+    const hashtags = union(...hashTagsRaw);
+    if (posts === null) {
+      res.status(400).send({
+        message: "No posts found.",
+        status: 400,
+      });
     }
-
-    res.send(matchedPosts);
+    res.status(200).send({
+      posts,
+      hashtags,
+    });
   } catch (error) {
-    error.message;
+    res.status(400).send({
+      message: error.message,
+      status: 400,
+    });
   }
 };
 
@@ -120,7 +121,7 @@ const deletePost = async (req, res) => {
     }
 
     const result = await Post.deleteOne({ _id: postId });
-    console.log("result delete: ", result);
+
     if (result.ok) {
       user.messagesCreated = user.messagesCreated - 1;
       const isSavedUser = await user.save();
@@ -153,10 +154,35 @@ const getSearchParams = async (req, res) => {
   }
 };
 
+const getUserPosts = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const posts = await Post.find({ creatorId: id });
+    const hashTagsRaw = posts.map((item) => item.hashtags);
+    const hashtags = union(...hashTagsRaw);
+    if (posts === null) {
+      res.status(400).send({
+        message: "User not found.",
+        status: 400,
+      });
+    }
+    res.status(200).send({
+      posts,
+      hashtags,
+    });
+  } catch (error) {
+    res.status(400).send({
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
 module.exports = {
   sendMessage,
   getRandom,
   getByHashTag,
   deletePost,
   getSearchParams,
+  getUserPosts,
 };

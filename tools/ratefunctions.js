@@ -16,7 +16,7 @@ const getRates = async (id, type) => {
   }
   if (type === "message") {
     const allRates = await Rate.find({ postid: id });
-    console.log("all Rates: ", allRates);
+
     const avgRate =
       (await allRates.reduce((a, b) => a.rate + b.rate)) / allRates.length;
     return avgRate;

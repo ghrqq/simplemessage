@@ -11,7 +11,6 @@ const Search = () => {
   const [searchParams, setsearchParams] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [picked, setpicked] = useState("");
-  const [color, setcolor] = useState("#f7f7f6");
 
   useEffect(() => {
     async function getParams() {
@@ -29,13 +28,6 @@ const Search = () => {
     }
     getParams();
   }, []);
-
-  const handleMouseOver = () => {
-    setcolor("#c19160");
-  };
-  const handleMouseLeave = () => {
-    setcolor("#f7f7f6");
-  };
 
   return (
     // <div className="search-box">
@@ -56,13 +48,12 @@ const Search = () => {
           options={searchParams.map((option) => option)}
           renderInput={(params) => (
             <div>
-              <div style={{ display: "inline-block", width: "8em" }}>
+              <div style={{ display: "inline-block", width: "10em" }}>
                 <TextField
                   className="Autocomplete"
                   {...params}
                   // label="Search input"
                   // variant="outlined"
-
                   fullWidth
                   InputProps={{ ...params.InputProps, type: "search" }}
                   placeholder="Search..."
@@ -73,16 +64,11 @@ const Search = () => {
         />
       )}
       <div style={{ display: "inline-block", color: "white" }}>
-        <Link to={`/hashtag/${hashTagConverter(picked, "percent")}`}>
-          <IconButton
-            type="submit"
-            style={{ color: color }}
-            className="search-icon"
-            // className={classes.iconButton}
-            aria-label="search"
-            onMouseOver={() => setcolor("#c19160")}
-            onMouseLeave={() => setcolor("#f7f7f6")}
-          >
+        <Link
+          className="Link"
+          to={`/hashtag/${hashTagConverter(picked, "percent")}`}
+        >
+          <IconButton type="submit" className="search-icon" aria-label="search">
             <SearchIcon size="60" />
           </IconButton>
         </Link>

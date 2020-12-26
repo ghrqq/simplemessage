@@ -21,6 +21,7 @@ const {
   confirmGetBack,
   getBackYourAccount,
   checkUserId,
+  userProfile,
 } = require("./routes/userRoutes");
 const {
   sendMessage,
@@ -28,6 +29,7 @@ const {
   getByHashTag,
   deletePost,
   getSearchParams,
+  getUserPosts,
 } = require("./routes/contentRoutes");
 const { rateMessage } = require("./routes/rateRoutes");
 
@@ -78,6 +80,7 @@ app.post("/getbackyouraccount", async (req, res) =>
   getBackYourAccount(req, res)
 );
 app.post("/confirmgetback/:code", async (req, res) => confirmGetBack(req, res));
+app.get("/userprofile/:user", async (req, res) => userProfile(req, res));
 
 // Content Routes
 
@@ -86,6 +89,7 @@ app.get("/getrandom", async (req, res) => getRandom(req, res));
 app.get("/getbyhashtag/:hashtag", async (req, res) => getByHashTag(req, res));
 app.delete("/deletepost", async (req, res) => deletePost(req, res));
 app.get("/getsearchparams", async (req, res) => getSearchParams(req, res));
+app.get("/getuserposts/:id", async (req, res) => getUserPosts(req, res));
 
 // Rate Routes
 app.post("/ratemessage", async (req, res) => rateMessage(req, res));

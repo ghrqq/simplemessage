@@ -100,7 +100,6 @@ const checkUserId = async (req, res) => {
       user.userName === undefined ? "Mysterious Messager" : user.userName;
     user.token = newToken;
     user.save();
-    console.log("isAgreed: ", user.isAgreed);
 
     res.status(200).send({
       message: "Welcome back!",
@@ -187,13 +186,12 @@ const confirmMail = async (req, res) => {
 
 const confirmation = async (req, res) => {
   const code = req.params.code;
-  console.log("code: ", code);
 
   try {
     const userConfirmation = await Confirmation.findOne({
       confirmationToken: code,
     });
-    console.log("userConfirmation: ", userConfirmation);
+
     if (!userConfirmation) {
       res.status(400).send({
         message:
@@ -203,7 +201,7 @@ const confirmation = async (req, res) => {
     }
 
     const { id, mail } = checkConfirmToken(code);
-    console.log("id from checkConfirmToken: ", id, "mail: ", mail);
+
     if (!id || !mail) {
       res.status(400).send({
         message: "Some data is missing in your token. Please get a new one. ",
@@ -213,7 +211,6 @@ const confirmation = async (req, res) => {
 
     const userToConfirm = await User.findOne({ userId: id });
 
-    console.log("usertoconfirm: ", userToConfirm);
     if (!userToConfirm) {
       res.status(400).send({
         message: "Looks like there is no user with given ID.",
@@ -358,6 +355,33 @@ const confirmGetBack = async () => {
     .send({ message: "New configurations are successfuly set.", status: 200 });
 };
 
+const userProfile = async (req, res) => {
+  const userId = req.params.user;
+  try {
+    const user = await User.findOne({ userId });
+
+    if (!user) {
+      res.status(400).send({
+        message: "User not found. ",
+        status: 400,
+      });
+    }
+
+    res.status(200).send({
+      lang: user.lang,
+      userName: user.userName,
+      rate: user.rate,
+      messagesCreated: user.messagesCreated,
+      status: 200,
+    });
+  } catch (error) {
+    res.status(400).send({
+      message: error.message,
+      status: 400,
+    });
+  }
+};
+
 module.exports = {
   clearUser,
   getUserId,
@@ -367,4 +391,5 @@ module.exports = {
   getBackYourAccount,
   confirmGetBack,
   checkUserId,
+  userProfile,
 };

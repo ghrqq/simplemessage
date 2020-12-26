@@ -26,10 +26,6 @@ const HashTagSlider = (props) => {
 
   return (
     <div>
-      {console.log(
-        hashTags.length,
-        hashTags.length + Math.abs((hashTags.length % 5) - 5)
-      )}
       <KeyboardArrowLeftIcon
         onClick={() => handleArrows(-5)}
         style={{ display: "inline-block", verticalAlign: "middle" }}
@@ -41,7 +37,10 @@ const HashTagSlider = (props) => {
         style={{ display: "inline-block", verticalAlign: "middle" }}
       >
         {hashTags.slice(step - 5, step).map((item) => (
-          <Link to={`/hashtag/${hashTagConverter(item, "percent")}`}>
+          <Link
+            className="Link"
+            to={`/hashtag/${hashTagConverter(item, "percent")}`}
+          >
             <Button
               style={{ display: "inline-block", verticalAlign: "middle" }}
             >
@@ -60,25 +59,3 @@ const HashTagSlider = (props) => {
 };
 
 export default HashTagSlider;
-{
-  /* <KeyboardArrowLeftIcon
-              style={{ display: "inline-block", verticalAlign: "middle" }}
-            />
-            <ButtonGroup
-              size="small"
-              variant="text"
-              aria-label="text primary button group"
-              style={{ display: "inline-block", verticalAlign: "middle" }}
-            >
-              {hashtags.map((item) => (
-                <HashTagContainer
-                  hashTagPercent={hashTagConverter(item, "percent")}
-                  hashTagPound={hashTagConverter(item, "pound")}
-                />
-              ))}
-            </ButtonGroup>
-             <HashTagSlider hashTags={hashtags} /> 
-            <KeyboardArrowRightIcon
-              style={{ display: "inline-block", verticalAlign: "middle" }}
-            /> */
-}

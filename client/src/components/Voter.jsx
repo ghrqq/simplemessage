@@ -13,7 +13,7 @@ import "primeicons/primeicons.css";
 const Voter = (props) => {
   const [user] = useContext(UserContext);
   const [status, setstatus] = useState(200);
-  const [rate, setrate] = useState(0);
+  const [rate, setrate] = useState(props.defRate);
   const [open, setOpen] = useState(false);
   const [message, setmessage] = useState("No action to show here yet!");
   const color = rate >= 0 ? "green" : "red";
@@ -37,7 +37,7 @@ const Voter = (props) => {
       postCreatorId: props.creatorId,
       userIp: user.userIp,
     };
-    console.log(data);
+
     const result = await (
       await fetch("http://localhost:4000/ratemessage", {
         method: "POST",

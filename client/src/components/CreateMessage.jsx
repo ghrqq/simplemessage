@@ -18,6 +18,8 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import WarningIcon from "@material-ui/icons/Warning";
 import Tooltip from "@material-ui/core/Tooltip";
 import Checkbox from "@material-ui/core/Checkbox";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 import { UserContext } from "../App";
 
@@ -53,11 +55,11 @@ export default function CreateMessage(props) {
   const style = !isMailValid ? "4px solid red" : "4px solid green";
 
   const [header, setheader] = useState("Create a message!");
+  const theme = useTheme();
 
   const getUserId = async () => {
     setisUserLoading(true);
     if (user.id !== undefined) {
-      console.log("It happened again");
       return;
     }
     const result = await (
@@ -116,7 +118,7 @@ export default function CreateMessage(props) {
     setisInfoLoading(false);
     if (result.userMail) {
       let mailToConfirm = { userMail: result.userMail };
-      console.log(typeof mailToConfirm);
+
       const confirmation = await fetch("http://localhost:4000/confirmmail", {
         method: "POST",
         credentials: "include",
@@ -153,7 +155,7 @@ export default function CreateMessage(props) {
     setstep(2);
     const data = {
       message,
-      hashtags,
+      hashtagsToShow,
     };
     const result = await (
       await fetch("http://localhost:4000/sendmessage", {
@@ -164,7 +166,7 @@ export default function CreateMessage(props) {
         credentials: "include",
         body: JSON.stringify({
           message,
-          hashtags,
+          hashtags: hashtagsToShow,
         }),
       })
     ).json();
@@ -208,10 +210,12 @@ export default function CreateMessage(props) {
     sethashtags([]);
     sethashtagsToShow([]);
   };
+
+  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <div>
       <Fab
-        color="primary"
+        style={{ backgroundColor: "#007f5f" }}
         variant="extended"
         size="medium"
         color="primary"
@@ -224,6 +228,7 @@ export default function CreateMessage(props) {
         open={open}
         TransitionComponent={Transition}
         keepMounted
+        fullScreen={fullScreen}
         onClose={handleClose}
         aria-labelledby="alert-dialog-slide-title"
         aria-describedby="alert-dialog-slide-description"
@@ -253,7 +258,7 @@ export default function CreateMessage(props) {
               </DialogContentText>
               <form onSubmit={handleSubmit}>
                 <textarea
-                  style={{ display: "block", width: "100%", height: "auto" }}
+                  // style={{ display: "block", width: "100%", height: "auto" }}
                   autofocus="autofocus"
                   rows={10}
                   maxlength={500}
@@ -277,7 +282,6 @@ export default function CreateMessage(props) {
                   can select maximum 3 hashtags.
                 </DialogContentText>
                 <input
-                  style={{ display: "inline-block", verticalAlign: "middle" }}
                   value={hashtags}
                   id="tags"
                   type="text"
@@ -290,9 +294,7 @@ export default function CreateMessage(props) {
                   style={{ display: "inline-block", verticalAlign: "middle" }}
                   onClick={handleClearTags}
                 />
-                <div
-                  style={{ display: "inline-block", verticalAlign: "middle" }}
-                >
+                <div className="inline-container">
                   {hashtagsToShow.length < 1 ? (
                     "You should pick at least 1 hashtag."
                   ) : (

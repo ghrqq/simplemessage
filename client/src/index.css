@@ -1,8 +1,9 @@
 :root {
   --bgdark: #202025;
   --textwhite: #f7f7f6;
-  --color1: #c19160;
-  --color2: #9e584c;
+  --color2: #2b9348;
+  --color1: #bfd200;
+  /* --bglight: #ffff3f; */
   --bglight: rgba(153 160 156 27%);
 }
 body {
@@ -13,6 +14,21 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--bglight);
+  vertical-align: "middle";
+}
+div {
+  display: block;
+  margin: 0 auto;
+  justify-content: center;
+  text-align: center;
+}
+textarea {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+input[type="text"] {
+  display: inline-block;
 }
 nav {
   margin: 0;
@@ -59,6 +75,11 @@ nav ul li a:hover {
   text-shadow: var(--bgdark);
   color: var(--color1);
 }
+.inline-container {
+  display: inline-block;
+  vertical-align: middle;
+  padding-left: 0.3em;
+}
 
 .search-box {
   display: flex;
@@ -82,17 +103,19 @@ nav ul li a:hover {
   padding: 0;
   margin: 0;
   height: 2em;
-  color: var(--color1);
+  color: black;
 
   background-color: var(--textwhite);
   vertical-align: middle;
 }
 .search-icon {
   color: var(--textwhite);
-  color: white;
+  color: black;
+  vertical-align: middle;
 }
 .search-icon:hover {
   color: var(--color1);
+  vertical-align: middle;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -103,20 +126,28 @@ code {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: flex-start;
+  justify-items: flex-start;
+  justify-self: center;
+
   /* width: 90%; */
   height: auto;
-  margin: 0 auto;
+  margin: 0 0 0 3em;
   /* padding: 0.5em 0.5em; */
   background-color: var(--bglight);
 }
+
 .component-container {
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
   width: 100%;
+  justify-self: center;
 }
 .single-post-container {
   /* flex-wrap: nowrap; */
   display: flex;
+  justify-content: flex-start;
+  justify-self: flex-start;
   /* flex-basis: 40%; */
   flex-flow: column nowrap;
   margin: 0.5em 0.5em;
@@ -134,19 +165,24 @@ code {
 .single-post-container:hover {
   box-shadow: 0.3em 0.3em 1.3em 0.3em var(--color2);
 }
+
 #router {
   margin: 0;
   padding: 0;
   width: 100%;
 }
 
+.Link {
+  color: black;
+  text-decoration: none;
+}
 .post-bar {
   display: block;
   background-color: var(--textwhite);
   margin: 0;
   width: 100%;
   border-radius: 1em 1em 0 0;
-  border-bottom: var(--bglight) 2px solid;
+  border-bottom: #55a630 2px solid;
 }
 .post {
   border: 1px 0 solid var(--textwhite);
@@ -154,12 +190,13 @@ code {
   margin-bottom: auto;
   flex-grow: 1;
   border-radius: 1em 1em 0 0;
+  justify-self: flex-start;
 }
 .post-footer {
   height: 2em;
 
   background-color: var(--textwhite);
-  border-top: var(--bglight) 2px solid;
+  border-top: #55a630 2px solid;
 
   width: 100%;
   align-self: flex-end;
@@ -169,9 +206,11 @@ code {
 }
 
 .fab {
-  position: absolute;
-  bottom: 2em;
-  right: 2em;
+  /* position: absolute; */
+  margin: 0.5em;
+  padding: 0.5em;
+  bottom: 1em;
+  right: 1em;
 }
 
 .hashtag-container {

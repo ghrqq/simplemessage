@@ -4,8 +4,6 @@ import Skeleton from "@material-ui/lab/Skeleton";
 const MainSkeleton = () => {
   return (
     <div>
-      <Skeleton variant="rect" width="100%" height="3.5em" />
-
       <Skeleton
         variant="rect"
         width="80%"

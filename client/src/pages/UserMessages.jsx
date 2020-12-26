@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useEffect, useState } from "react";
 import Posts from "../components/Posts";
 import HashTagSlider from "../components/HashTagSlider";
 
-export const Hashtag = (props) => {
+const UserMessages = (props) => {
   const [message, setmessage] = useState("");
   const [posts, setposts] = useState([]);
   const [hashtags, sethashtags] = useState([]);
   const [isLoading, setisLoading] = useState(true);
+
   useEffect(() => {
-    async function getPostsByHashtag() {
+    async function getUserPosts() {
       const result = await (
-        await fetch(`http://localhost:4000/getbyhashtag/${props.tagpercent}`, {
+        await fetch(`http://localhost:4000/getuserposts/${props.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -27,8 +27,10 @@ export const Hashtag = (props) => {
       sethashtags(result.hashtags);
       setisLoading(false);
     }
-    getPostsByHashtag();
-  }, [props]);
+    getUserPosts();
+  }, []);
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="component-container">
@@ -39,10 +41,10 @@ export const Hashtag = (props) => {
           posts.map((item) => <Posts post={item} />)
         )}
       </div>
-      <h2>Related Hashtags</h2>
+      <h2>Users Hashtags</h2>
       <HashTagSlider hashTags={hashtags} />
     </div>
   );
 };
 
-export default Hashtag;
+export default UserMessages;

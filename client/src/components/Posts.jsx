@@ -2,6 +2,8 @@ import React, { useState, useContext } from "react";
 import PostFooter from "./PostFooter";
 import Voter from "./Voter";
 
+import UserDetails from "./UserDetails";
+
 import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
@@ -15,9 +17,10 @@ const Posts = (props) => {
   const [showDetails, setshowDetails] = useState(false);
   const [showShare, setshowShare] = useState(false);
   const [showrate, setshowrate] = useState(false);
+  const [isUserDetailsOpen, setisUserDetailsOpen] = useState(false);
   const [user, setuser] = useContext(UserContext);
 
-  const { _id, creatorName, message, date, creatorId } = props.post;
+  const { _id, creatorName, message, date, creatorId, rate } = props.post;
 
   const displayVar = isHidden ? "none" : null;
   const displayDetails = !showDetails ? "none" : null;
@@ -26,6 +29,10 @@ const Posts = (props) => {
 
   const hideRate = () => {
     setshowrate(false);
+  };
+
+  const handleMouseOnUserDetails = () => {
+    setisUserDetailsOpen(!isUserDetailsOpen);
   };
 
   const deletePost = async () => {
@@ -44,7 +51,6 @@ const Posts = (props) => {
     if (result.status === 200) {
       setisHidden(true);
     }
-    console.log(result);
   };
 
   return (
@@ -72,7 +78,12 @@ const Posts = (props) => {
         ) : (
           <React.Fragment>
             <StarHalfIcon onClick={() => setshowrate(!showrate)} />
-            <Voter postId={_id} creatorId={creatorId} hideRate={hideRate} />
+            <Voter
+              postId={_id}
+              creatorId={creatorId}
+              hideRate={hideRate}
+              defRate={rate}
+            />
           </React.Fragment>
         )}
         {!showDetails ? (
@@ -97,13 +108,15 @@ const Posts = (props) => {
           </React.Fragment>
         )}
       </div>
+      Rating: {rate}
       <div className="post">{message}</div>
       <div className="post-footer">
-        <PersonIcon
-          style={{ display: "inline-block", verticalAlign: "middle" }}
-        />{" "}
-        <div style={{ display: "inline-block", verticalAlign: "middle" }}>
-          {creatorName ? creatorName : "Top-Secret"}
+        <div className="inline-container">
+          <UserDetails
+            content={message}
+            name={creatorName ? creatorName : "Top-Secret"}
+            id={creatorId}
+          />
         </div>
       </div>
     </div>

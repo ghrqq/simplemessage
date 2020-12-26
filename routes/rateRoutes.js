@@ -9,12 +9,9 @@ const { checkToken, verifyTokenData } = require("../tools/checkToken");
 
 const rateMessage = async (req, res) => {
   const { postid, rate, postCreatorId, userIp } = req.body;
-  // const reqToken = req.cookies.usertoken
-  try {
-    // const {id} = checkToken(reqToken);
 
+  try {
     const check = await Rate.find({ postid: postid, userIp });
-    console.log("check from rateRoute", check, "check.length: ", check.length);
 
     if (check.length === 0) {
       const newRate = new Rate({
@@ -43,11 +40,7 @@ const rateMessage = async (req, res) => {
 
       const userToChange = await User.findOne({ userId: postCreatorId });
 
-      console.log("userToChange: ", userToChange);
-
       const allUserRates = await Rate.find({ postCreatorId: postCreatorId });
-
-      console.log("allUserRates: ", allUserRates);
 
       const avgUserRate =
         allUserRates.map((item) => item.rate).reduce((a, b) => a + b, 0) /
@@ -59,16 +52,6 @@ const rateMessage = async (req, res) => {
           rate: avgUserRate,
         }
       );
-      console.log("avgUserRate: ", changeTheUser);
-      // userToChange.rate = avgUserRate;
-
-      // userToChange.save();
-      // console.log(
-      //   "usertochange: ",
-      //   userToChange,
-      //   "postToChange: ",
-      //   postToChange
-      // );
 
       res.status(200).send({
         message: `Your vote is saved.`,
