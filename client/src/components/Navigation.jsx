@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@reach/router";
+import Search from "./Search";
 
 const Navigation = (props) => {
   return (
@@ -11,7 +12,12 @@ const Navigation = (props) => {
         <li>
           <Link to="/discover">Discover</Link>
         </li>
-        <button onClick={() => props.logOutCallback()}>Clear User</button>
+        <li>
+          <button onClick={() => props.logOutCallback()}>Clear User</button>
+        </li>
+        <li>
+          <Search />
+        </li>
       </ul>
     </nav>
   );

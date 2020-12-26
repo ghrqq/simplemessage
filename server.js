@@ -27,6 +27,7 @@ const {
   getRandom,
   getByHashTag,
   deletePost,
+  getSearchParams,
 } = require("./routes/contentRoutes");
 const { rateMessage } = require("./routes/rateRoutes");
 
@@ -84,6 +85,7 @@ app.post("/sendmessage", async (req, res) => sendMessage(req, res));
 app.get("/getrandom", async (req, res) => getRandom(req, res));
 app.get("/getbyhashtag/:hashtag", async (req, res) => getByHashTag(req, res));
 app.delete("/deletepost", async (req, res) => deletePost(req, res));
+app.get("/getsearchparams", async (req, res) => getSearchParams(req, res));
 
 // Rate Routes
 app.post("/ratemessage", async (req, res) => rateMessage(req, res));

@@ -4,6 +4,10 @@ import React, { useEffect, useState } from "react";
 import Navigation from "./components/Navigation";
 import Discover from "./pages/Discover";
 import Home from "./pages/Home";
+import Hashtag from "./pages/Hashtag";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Button from "@material-ui/core/Button";
+import Chip from "@material-ui/core/Chip";
 
 import KeyboardArrowLeftIcon from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
@@ -11,6 +15,10 @@ import { union } from "lodash";
 import hashTagConverter from "./tools/hashTagConverter";
 import Cookies from "js-cookie";
 import CreateMessage from "./components/CreateMessage";
+import MainSkeleton from "./components/MainSkeleton";
+import HashTagContainer from "./components/HashTagContainer";
+import HashTagSlider from "./components/HashTagSlider";
+import MenuFab from "./components/MenuFab";
 
 export const UserContext = React.createContext([]);
 export const PostContext = React.createContext([]);
@@ -142,34 +150,47 @@ function App() {
     getPosts();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <MainSkeleton />;
 
   return (
     <UserContext.Provider value={[user, setuser]}>
       <PostContext.Provider value={[posts, setposts]}>
         <div className="App">
-          <Navigation logOutCallback={logOutCallback} />
+          {/* <Navigation logOutCallback={logOutCallback} /> */}
 
           <div className="hashtag-container">
-            <KeyboardArrowLeftIcon />
-
-            {hashtags.map((item) => (
-              <button
-                value={item}
-                onClick={(e) => setselectedHashtag(e.target.value)}
-              >
-                {item}
-              </button>
-            ))}
-
-            <KeyboardArrowRightIcon />
+            {/* <KeyboardArrowLeftIcon
+              style={{ display: "inline-block", verticalAlign: "middle" }}
+            />
+            <ButtonGroup
+              size="small"
+              variant="text"
+              aria-label="text primary button group"
+              style={{ display: "inline-block", verticalAlign: "middle" }}
+            >
+              {hashtags.map((item) => (
+                <HashTagContainer
+                  hashTagPercent={hashTagConverter(item, "percent")}
+                  hashTagPound={hashTagConverter(item, "pound")}
+                />
+              ))}
+            </ButtonGroup> */}
+            <HashTagSlider hashTags={hashtags} />
+            {/* <KeyboardArrowRightIcon
+              style={{ display: "inline-block", verticalAlign: "middle" }}
+            /> */}
           </div>
 
-          <Router id="router">
-            <Home path="/" />
-            <Discover path="/discover" />
-          </Router>
-          <div className="fab">
+          <div>
+            <Router id="router">
+              <Home path="/" />
+              <Discover path="/discover" />
+              <Hashtag path="/hashtag/:tagpercent" />
+            </Router>
+          </div>
+
+          <div className="fab" style={{ position: "fixed" }}>
+            <MenuFab logOutCallback={logOutCallback} />
             <CreateMessage isOpen={isCMOpen} />
           </div>
         </div>

@@ -22,15 +22,33 @@ nav {
   text-align: left;
 }
 nav ul {
+  display: flex;
+  /* flex-flow: row wrap; */
+  flex-flow: row wrap;
+  /* flex: 0 0 23%; */
+  /* flex-direction: column;
+  flex-wrap: wrap;
+  flex: 1 1 10%; */
   list-style: none;
   margin: 0 0 2em 0;
-  display: block;
+  /* display: block; */
 }
 nav ul li {
-  display: inline-block;
-  margin: 0;
+  display: flex;
+  flex-flow: row nowrap;
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin: auto 0;
   padding: 0.5em;
   font-size: 1.5em;
+}
+nav ul li:last-of-type {
+  /* display: inline-flex; */
+  justify-self: right;
+  justify-items: flex-end;
+  justify-content: flex-end;
+
+  margin: auto 0 auto auto;
 }
 nav ul li a {
   text-decoration: none;
@@ -42,6 +60,40 @@ nav ul li a:hover {
   color: var(--color1);
 }
 
+.search-box {
+  display: flex;
+  margin-left: auto;
+  justify-self: flex-end;
+
+  width: 12em;
+  height: 100%;
+  background-color: var(--bgdark);
+  color: var(--textwhite);
+  padding: 0.3em;
+  margin: 0;
+  vertical-align: middle;
+}
+.Autocomplete {
+  color: var(--color2);
+  display: inline-block;
+}
+
+#search {
+  padding: 0;
+  margin: 0;
+  height: 2em;
+  color: var(--color1);
+
+  background-color: var(--textwhite);
+  vertical-align: middle;
+}
+.search-icon {
+  color: var(--textwhite);
+  color: white;
+}
+.search-icon:hover {
+  color: var(--color1);
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

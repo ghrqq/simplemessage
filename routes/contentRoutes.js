@@ -11,6 +11,7 @@ const { createToken, sendToken } = require("../tools/token");
 const { checkToken, verifyTokenData } = require("../tools/checkToken");
 const { confirmationMailBody, transport } = require("../tools/nodemailer");
 const { getRates } = require("../tools/ratefunctions");
+const { union } = require("lodash");
 
 const sendMessage = async (req, res) => {
   const reqToken = req.cookies.usertoken;
@@ -68,7 +69,7 @@ const sendMessage = async (req, res) => {
 };
 // Get random posts
 const getRandom = async (_req, res) => {
-  const posts = await Post.find({}).limit(10).sort({ date: -1 });
+  const posts = await Post.find({}).limit(50).sort({ date: -1 });
   res.send(posts);
 };
 
@@ -106,9 +107,11 @@ const deletePost = async (req, res) => {
     });
   }
 
-  const { id } = checkToken(reqToken);
   try {
-    const user = await User.findOne({ userId: id });
+    const solvedToken = await checkToken(reqToken);
+
+    const user = await User.findOne({ userId: solvedToken.id });
+
     if (!user) {
       res.status(400).send({
         message: "Your token is invalid. Please login again.",
@@ -116,8 +119,17 @@ const deletePost = async (req, res) => {
       });
     }
 
-    const result = Post.deleteOne({ _id: postId });
-    res.status(200).send({ message: "Post deleted successfuly. " });
+    const result = await Post.deleteOne({ _id: postId });
+    console.log("result delete: ", result);
+    if (result.ok) {
+      user.messagesCreated = user.messagesCreated - 1;
+      const isSavedUser = await user.save();
+      res
+        .status(200)
+        .send({ message: "Post deleted successfuly. ", status: 200 });
+    } else {
+      res.status(400).send({ message: "Delete failed.", status: 400 });
+    }
   } catch (error) {
     res.status(400).send({
       error: `Error catched: ${error.message}`,
@@ -127,9 +139,24 @@ const deletePost = async (req, res) => {
   }
 };
 
+const getSearchParams = async (req, res) => {
+  try {
+    const tagsRaw = await Post.find({}).select("hashtags");
+    const tagsTotal = tagsRaw.map((item) => item.hashtags);
+    const tags = union(...tagsTotal);
+
+    res.status(200).send({ tags, status: 200 });
+  } catch (error) {
+    res.status(400).send({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   sendMessage,
   getRandom,
   getByHashTag,
   deletePost,
+  getSearchParams,
 };
