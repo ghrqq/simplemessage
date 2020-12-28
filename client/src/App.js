@@ -6,12 +6,15 @@ import Discover from "./pages/Discover";
 import Home from "./pages/Home";
 import Hashtag from "./pages/Hashtag";
 import UserMessages from "./pages/UserMessages";
+import FAQ from "./pages/FAQ";
+import Profile from "./pages/Profile";
 
 import { union } from "lodash";
 import hashTagConverter from "./tools/hashTagConverter";
 import Cookies from "js-cookie";
 import CreateMessage from "./components/CreateMessage";
 import MainSkeleton from "./components/MainSkeleton";
+import AlertDisplayer from "./components/AlertDisplayer";
 
 import HashTagSlider from "./components/HashTagSlider";
 import MenuFab from "./components/MenuFab";
@@ -29,9 +32,10 @@ function App() {
   const [userLoc, setuserLoc] = useState({});
   const [isAgreed, setisAgreed] = useState(true);
   const [isCMOpen, setisCMOpen] = useState(false);
-  const [incr, setincr] = useState(1);
-  const [selectedHashtag, setselectedHashtag] = useState("");
+  const [isAlert, setisAlert] = useState(false);
   const [message, setmessage] = useState("");
+  const [status, setstatus] = useState(200);
+  const [selectedHashtag, setselectedHashtag] = useState("");
   const [hashtags, sethashtags] = useState([
     "#Motivational",
     "#Inspiring",
@@ -39,14 +43,21 @@ function App() {
   ]);
 
   const logOutCallback = async () => {
-    await fetch("http://localhost:4000/clearuser", {
-      method: "POST",
-      credentials: "include",
-    });
+    const result = await (
+      await fetch("http://localhost:4000/clearuser", {
+        method: "POST",
+        credentials: "include",
+      })
+    ).json();
     // Clear user from context
     setuser({});
+    // navigate("/");
     // Navigate back to homepage
-    navigate("/");
+
+    setmessage(result.message);
+    setstatus(result.status);
+
+    setisAlert(true);
   };
 
   useEffect(() => {
@@ -80,7 +91,8 @@ function App() {
           },
         })
       ).json();
-
+      setmessage(result.message);
+      setstatus(result.status);
       setuser({
         id: result.id,
         name: result.name,
@@ -88,6 +100,9 @@ function App() {
         favoriteHashtags: result.favoriteHashtags,
         isAgreed: result.isAgreed,
       });
+      if (result.message && result.status !== 400) {
+        setisAlert(true);
+      }
     }
     getUserId();
   }, []);
@@ -155,16 +170,17 @@ function App() {
           <div className="hashtag-container">
             <HashTagSlider hashTags={hashtags} />
           </div>
-
           <div>
             <Router id="router">
               <Home path="/" />
               <Discover path="/discover" />
               <Hashtag path="/hashtag/:tagpercent" />
               <UserMessages path="/usermessages/:id" />
+              <Profile path="/myprofile" />
+              <FAQ default />
             </Router>
           </div>
-
+          <AlertDisplayer message={message} status={status} open={isAlert} />
           <div className="fab" style={{ position: "fixed" }}>
             <MenuFab logOutCallback={logOutCallback} />
 

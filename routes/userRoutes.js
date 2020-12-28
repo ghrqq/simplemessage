@@ -8,6 +8,7 @@ const Rate = require("../schemas/Rate");
 const { v4: uuid } = require("uuid");
 const { verify } = require("jsonwebtoken");
 const { hash, compare, genSalt } = require("bcryptjs");
+const { union } = require("lodash");
 const {
   createToken,
   sendToken,
@@ -85,7 +86,7 @@ const checkUserId = async (req, res) => {
   const reqToken = req.cookies.usertoken;
   if (!reqToken) {
     res.status(400).send({
-      message: "No token!",
+      message: "You are not logged in!",
       status: 400,
     });
   }
@@ -100,9 +101,10 @@ const checkUserId = async (req, res) => {
       user.userName === undefined ? "Mysterious Messager" : user.userName;
     user.token = newToken;
     user.save();
+    sendToken(res, newToken);
 
     res.status(200).send({
-      message: "Welcome back!",
+      message: `Welcome back ${resName}`,
       id: user.userId,
       name: resName,
       status: 200,
@@ -382,6 +384,53 @@ const userProfile = async (req, res) => {
   }
 };
 
+const myProfile = async (req, res) => {
+  const reqToken = req.cookies.usertoken;
+  const payloadId = req.body.id;
+
+  try {
+    const { id } = checkToken(reqToken);
+    if (payloadId !== id) {
+      res.status(400).send({
+        message: "You look like an impostor!",
+        status: 400,
+      });
+    }
+    const user = await User.findOne({ userId: id });
+    console.log("reqToken: ", reqToken, "user.token: ", user.token);
+    if (reqToken !== user.token) {
+      res.status(400).send({
+        message: "Tokens do not match.",
+        status: 400,
+      });
+    }
+
+    if (!user) {
+      res.status(400).send({
+        message: "We cannot find the user with given id.",
+        status: 400,
+      });
+    }
+
+    const posts = await Post.find({ creatorId: id });
+    const hashTagsRaw = posts.map((item) => item.hashtags);
+    const hashtags = union(...hashTagsRaw);
+
+    res.status(200).send({
+      lang: user.lang,
+      userName: user.userName,
+      rate: user.rate,
+      userMail: user.userMail,
+      isMailsAllowed: user.isMailsAllowed,
+      isAgreed: user.isAgreed,
+      isMailConfirmed: user.isMailConfirmed,
+      posts,
+      hashtags,
+      status: 200,
+    });
+  } catch (error) {}
+};
+
 module.exports = {
   clearUser,
   getUserId,
@@ -392,4 +441,5 @@ module.exports = {
   confirmGetBack,
   checkUserId,
   userProfile,
+  myProfile,
 };

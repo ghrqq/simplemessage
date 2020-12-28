@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 
 import Posts from "../components/Posts";
 import HashTagSlider from "../components/HashTagSlider";
+import AlertDisplayer from "../components/AlertDisplayer";
 
 export const Hashtag = (props) => {
+  const [isAlert, setisAlert] = useState(false);
   const [message, setmessage] = useState("");
+  const [status, setstatus] = useState(200);
   const [posts, setposts] = useState([]);
   const [hashtags, sethashtags] = useState([]);
   const [isLoading, setisLoading] = useState(true);
@@ -21,6 +24,8 @@ export const Hashtag = (props) => {
 
       if (result.message) {
         setmessage(result.message);
+        setstatus(result.status);
+        setisAlert(true);
         setisLoading(false);
       }
       setposts(result.posts);
@@ -41,6 +46,7 @@ export const Hashtag = (props) => {
       </div>
       <h2>Related Hashtags</h2>
       <HashTagSlider hashTags={hashtags} />
+      <AlertDisplayer message={message} status={status} open={isAlert} />
     </div>
   );
 };

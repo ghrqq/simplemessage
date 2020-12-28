@@ -22,6 +22,7 @@ const {
   getBackYourAccount,
   checkUserId,
   userProfile,
+  myProfile,
 } = require("./routes/userRoutes");
 const {
   sendMessage,
@@ -81,6 +82,7 @@ app.post("/getbackyouraccount", async (req, res) =>
 );
 app.post("/confirmgetback/:code", async (req, res) => confirmGetBack(req, res));
 app.get("/userprofile/:user", async (req, res) => userProfile(req, res));
+app.post("/myprofile", async (req, res) => myProfile(req, res));
 
 // Content Routes
 

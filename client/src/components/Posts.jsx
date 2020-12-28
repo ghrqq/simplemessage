@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import PostFooter from "./PostFooter";
 import Voter from "./Voter";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 
 import UserDetails from "./UserDetails";
 
@@ -20,7 +22,15 @@ const Posts = (props) => {
   const [isUserDetailsOpen, setisUserDetailsOpen] = useState(false);
   const [user, setuser] = useContext(UserContext);
 
-  const { _id, creatorName, message, date, creatorId, rate } = props.post;
+  const {
+    _id,
+    creatorName,
+    message,
+    date,
+    creatorId,
+    rate,
+    rateBadge,
+  } = props.post;
 
   const displayVar = isHidden ? "none" : null;
   const displayDetails = !showDetails ? "none" : null;
@@ -96,6 +106,11 @@ const Posts = (props) => {
             style={{ textAlign: "right" }}
             onClick={() => setshowDetails(!showDetails)}
           />
+        )}
+        {!rateBadge ? null : rateBadge >= 3 ? (
+          <ThumbUpIcon color="green" />
+        ) : (
+          <ThumbDownIcon color="red" />
         )}
       </div>
       <div style={{ display: displayDetails }} className="post-detail">

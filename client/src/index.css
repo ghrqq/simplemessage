@@ -13,8 +13,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--bglight);
+  /* background-color: var(--bglight); */
   vertical-align: "middle";
+  background-image: url("https://www.freepik.com/free-photo/orange-background-with-bokeh-lights_936280.htm#page=1&query=glow%20background&position=40");
 }
 div {
   display: block;
@@ -224,3 +225,51 @@ code {
   padding: 1em;
   font-size: 1.3em;
 }
+
+tr td:first-of-type {
+  text-justify: left;
+  text-align: left;
+}
+td {
+  padding: 5px 5px;
+}
+
+table tr:last-of-type td {
+  padding: 5px 0;
+}
+
+.user-summary {
+  display: block;
+  margin: 3em auto;
+  width: 40%;
+}
+
+.user-rating {
+  display: block;
+  /* width: 100%; */
+
+  height: auto;
+}
+
+.user-tops {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  justify-items: center;
+
+  justify-content: flex-start;
+}
+
+.testbox {
+  padding: 1em;
+  margin: 0 0;
+  flex: 1 1 0px;
+  /* width: auto; */
+}
+
+/* .testbox:nth-of-type(even) {
+  background-color: blueviolet;
+}
+.testbox:nth-of-type(odd) {
+  background-color: tomato;
+} */
