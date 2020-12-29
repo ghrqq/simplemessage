@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../App";
 import Posts from "../components/Posts";
 import HashTagSlider from "../components/HashTagSlider";
+
 import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
 import Button from "@material-ui/core/Button";
@@ -9,11 +10,23 @@ import StarIcon from "@material-ui/icons/Star";
 import AddIcon from "@material-ui/icons/Add";
 import LabelIcon from "@material-ui/icons/Label";
 import UserSummary from "../components/UserSummary";
+import AlertDisplayer from "../components/AlertDisplayer";
+import validation from "../tools/validation";
+// Prime React
+
+import { InputSwitch } from "primereact/inputswitch";
+import ChangeUserDetails from "../components/ChangeUserDetails";
 
 const Profile = () => {
   const [user] = useContext(UserContext);
   const [isLoading, setisLoading] = useState(true);
   const [posts, setposts] = useState([]);
+  const [isAlert, setisAlert] = useState(false);
+  const [message, setmessage] = useState("");
+  const [status, setstatus] = useState(200);
+  const [isAlertConf, setisAlertConf] = useState(false);
+  const [messageConf, setmessageConf] = useState("");
+  const [statusConf, setstatusConf] = useState(200);
 
   const [userData, setuserData] = useState({});
   const [hashtags, sethashtags] = useState([]);
@@ -28,6 +41,52 @@ const Profile = () => {
   };
   const handleDataChange = (event) => {
     setuserData({ ...userData, [event.target.name]: event.target.value });
+  };
+
+  const handleSubmit = async () => {
+    const result = await (
+      await fetch("http://localhost:4000/adduserdetails", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userName: userData.userName,
+          userMail: userData.userMail,
+          isMailsAllowed: state.isMailsAllowed,
+          isConfirm: state.sendMailConfirmation,
+          userId: user.id,
+        }),
+      })
+    ).json();
+    setmessage(result.message);
+    setstatus(result.status);
+    setisAlert(true);
+
+    const isValid = validation(userData.userMail, "email");
+    if (isValid === false) {
+      setmessageConf("Mail confirmation failed. Please type a valid e-mail.");
+      setstatusConf(400);
+      setisAlertConf(true);
+    }
+
+    if (state.isConfirm === true || isValid === true) {
+      let mailToConfirm = { userMail: userData.userMail };
+
+      const confirmation = await fetch("http://localhost:4000/confirmmail", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(mailToConfirm),
+      });
+
+      setmessageConf(confirmation.message);
+      setstatusConf(confirmation.status);
+      setisAlertConf(true);
+    }
   };
 
   useEffect(() => {
@@ -55,7 +114,13 @@ const Profile = () => {
   return (
     <div className="component-container">
       <div className="userdata-container inline-container">
-        <table>
+        <ChangeUserDetails
+          name={userData.userName}
+          mail={userData.userMail}
+          allow={userData.isMailsAllowed}
+          confirmed={userData.isMailConfirmed}
+        />
+        {/* <table>
           <tr>
             <th></th>
             <th>Value</th>
@@ -110,7 +175,7 @@ const Profile = () => {
             <td>{userData.isMailsAllowed ? "Allowed!" : "Not allowed!"}</td>
             <td>
               <Switch
-                checked={state.isMailsAllowed}
+                checked={userData.isMailsAllowed}
                 onChange={handleChange}
                 name="isMailsAllowed"
                 inputProps={{ "aria-label": "secondary checkbox" }}
@@ -141,12 +206,16 @@ const Profile = () => {
               </Button>
             </td>
             <td>
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+              >
                 Save Changes
               </Button>
             </td>
           </tr>
-        </table>
+        </table> */}
       </div>
       <UserSummary />
 
@@ -162,6 +231,12 @@ const Profile = () => {
           )}
         </div>
       </div>
+      <AlertDisplayer open={isAlert} message={message} status={status} />
+      <AlertDisplayer
+        open={isAlertConf}
+        message={messageConf}
+        status={statusConf}
+      />
     </div>
   );
 };

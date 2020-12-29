@@ -20,6 +20,10 @@ const AlertDisplayer = (props) => {
     setisOpen(true);
     return () => {};
   }, [message]);
+
+  if (message === undefined || message === "" || message === null) {
+    return null;
+  }
   return (
     <Snackbar
       anchorOrigin={{

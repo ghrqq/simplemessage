@@ -244,10 +244,18 @@ const addUserDetails = async (req, res) => {
     favoriteHashtags,
     userId,
     userMail,
+    isConfirm,
   } = req.body;
 
   try {
     const { id } = checkToken(reqToken);
+
+    if (id !== userId) {
+      res.status(400).send({
+        message: "Ids do not match. Clear your cookies and try again.",
+        status: 400,
+      });
+    }
 
     const user = await User.findOne({ userId: id });
 
