@@ -262,6 +262,9 @@ const addUserDetails = async (req, res) => {
     if (!user) {
       res.status(400).send({ message: "User not found.", status: 400 });
     }
+    if (userMail !== user.userMail) {
+      user.isMailConfirmed = false;
+    }
 
     user.userName = userName ? userName : user.userName;
     user.isMailsAllowed = isMailsAllowed ? true : user.isMailsAllowed;
@@ -274,17 +277,54 @@ const addUserDetails = async (req, res) => {
       { creatorId: user.userId },
       { creatorName: user.userName }
     );
+
     const isSaved = await user.save();
+    if (!isConfirm) {
+      res.status(200).send({
+        message:
+          "Your profile is updated successfuly. We promise that we won't sell any of your data.",
+        userMail: userMail,
+        status: 200,
+      });
+    }
 
-    // Dev Only
-    const checkUser = await User.findOne({ userId: id });
+    if (user.isMailConfirmed === true && userMail === user.userMail) {
+      res.status(200).send({
+        message: "Looks like your mail is already confirmed.",
+        userMail: userMail,
+        status: 200,
+      });
+    }
 
-    res.status(200).send({
-      message:
-        "Your profile is updated successfuly. We promise that we won't sell any of your data. ",
-      userMail: userMail,
-      status: 200,
+    const code = createConfirmToken(user.userId, userMail);
+
+    const newConfirmation = new Confirmation({
+      userId: user.userId,
+      userMail,
+      confirmationToken: code,
     });
+
+    newConfirmation.save();
+    // user.userMail = userMail;
+    // user.save();
+
+    const mail = {
+      from: "no-reply-confirm-mail@simplemsg.com", // Sender address
+      to: userMail, // List of recipients
+      subject: "Mail confirmation", // Subject line
+      text: `Click the link below to comfirm your mail: http://localhost:4000/confirmation/${code}`, // Plain text body
+    };
+    transport.sendMail(mail, function (err, info) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(info);
+      }
+    });
+
+    res
+      .status(200)
+      .send({ message: "Please check your mailbox.", status: 200 });
   } catch (error) {
     res
       .status(400)
@@ -314,7 +354,7 @@ const getBackYourAccount = async (req, res) => {
   const newConfirmation = new Confirmation({
     userId: user.userId,
     userMail: user.userMail,
-    confirmationCode: code,
+    confirmationToken: code,
   });
 
   newConfirmation.save();
@@ -326,18 +366,22 @@ const getBackYourAccount = async (req, res) => {
     }
   });
 
-  res.status(400).send({
+  res.status(200).send({
     message: `Dear ${user.userName}, we got your request to get back your account. Please check your inbox (and spam folder) and follow the steps in there. `,
-    status: 400,
+    status: 200,
   });
 };
 
-const confirmGetBack = async () => {
+const confirmGetBack = async (req, res) => {
   const code = req.params.code;
+  console.log("code: ", code);
 
   const userConfirmation = await Confirmation.findOne({
     confirmationToken: code,
   });
+
+  console.log("userConfirmation: ", userConfirmation);
+
   if (!userConfirmation) {
     res.status(400).send({
       message: "Your confirmation code is expired. Please get a new one.",
@@ -348,7 +392,7 @@ const confirmGetBack = async () => {
   const user = await User.findOne({ userId: userConfirmation.userId });
   if (!user) {
     res.status(400).send({
-      message: "Something went terribly wrong. We cannot identify you. ",
+      message: "Something went terribly wrong. We cannot identify you.",
       status: 400,
     });
   }
@@ -360,9 +404,11 @@ const confirmGetBack = async () => {
 
   sendToken(res, token);
 
-  res
-    .status(200)
-    .send({ message: "New configurations are successfuly set.", status: 200 });
+  res.status(200).send({
+    message:
+      "New configurations are successfuly set. Please refresh the page, and you are good to go!",
+    status: 200,
+  });
 };
 
 const userProfile = async (req, res) => {

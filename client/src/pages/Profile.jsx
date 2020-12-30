@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { UserContext } from "../App";
 import Posts from "../components/Posts";
 import HashTagSlider from "../components/HashTagSlider";
+import { difference } from "lodash";
 
 import TextField from "@material-ui/core/TextField";
 import Switch from "@material-ui/core/Switch";
@@ -27,6 +28,9 @@ const Profile = () => {
   const [isAlertConf, setisAlertConf] = useState(false);
   const [messageConf, setmessageConf] = useState("");
   const [statusConf, setstatusConf] = useState(200);
+  const [bestPost, setbestPost] = useState([]);
+  const [worstPost, setworstPost] = useState([]);
+  const [rated, setrated] = useState([]);
 
   const [userData, setuserData] = useState({});
   const [hashtags, sethashtags] = useState([]);
@@ -102,11 +106,37 @@ const Profile = () => {
         })
       ).json();
 
-      setuserData(result);
-      setposts(result.posts);
+      if (result) {
+        setuserData(result);
+        // setposts(result.posts);
 
-      sethashtags(result.hashtags);
-      setisLoading(false);
+        sethashtags(result.hashtags);
+        setisLoading(false);
+
+        const ratedPosts = result.posts.filter((item) => item.rateCount > 0);
+        if (ratedPosts.length > 1) {
+          const bestRated = ratedPosts.sort((a, b) => b.rate - a.rate);
+          // console.log(bestRated);
+          const best = bestRated[0];
+          const worst = bestRated[ratedPosts.length - 1];
+          setbestPost(best);
+          setworstPost(worst);
+          setrated(ratedPosts);
+          const other = difference(result.posts, ratedPosts);
+
+          setposts(other);
+        } else {
+          setrated(ratedPosts);
+          const other = difference(result.posts, ratedPosts);
+
+          setposts(other);
+          const best = ratedPosts[0];
+          setbestPost(best);
+          setworstPost(best);
+        }
+      } else {
+        return;
+      }
     }
     getMyProfile();
   }, [user]);
@@ -120,112 +150,32 @@ const Profile = () => {
           allow={userData.isMailsAllowed}
           confirmed={userData.isMailConfirmed}
         />
-        {/* <table>
-          <tr>
-            <th></th>
-            <th>Value</th>
-            <th>Edit</th>
-          </tr>
-          <tr>
-            <td>Your Name:</td>
-            <td>
-              <TextField
-                id="standard-basic"
-                disabled={!state.checkedA}
-                label={
-                  userData.userName ? userData.userName : "Your name is empty!"
-                }
-                onChange={handleDataChange}
-                name="userName"
-              />
-            </td>
-            <td>
-              <Switch
-                checked={state.checkedA}
-                onChange={handleChange}
-                name="checkedA"
-                inputProps={{ "aria-label": "secondary checkbox" }}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Your Name:</td>
-            <td>
-              <TextField
-                id="standard-basic"
-                disabled={!state.checkedB}
-                label={
-                  userData.userMail ? userData.userMail : "Your mail is empty!"
-                }
-                onChange={handleDataChange}
-                name="userMail"
-              />
-            </td>
-            <td>
-              <Switch
-                checked={state.checkedB}
-                onChange={handleChange}
-                name="checkedB"
-                inputProps={{ "aria-label": "secondary checkbox" }}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>Allow occasional mails?</td>
-            <td>{userData.isMailsAllowed ? "Allowed!" : "Not allowed!"}</td>
-            <td>
-              <Switch
-                checked={userData.isMailsAllowed}
-                onChange={handleChange}
-                name="isMailsAllowed"
-                inputProps={{ "aria-label": "secondary checkbox" }}
-              />
-            </td>
-            <td>{!state.isMailsAllowed ? "Not allow." : "Allow."}</td>
-          </tr>
-          <tr>
-            <td>Is your mail address confirmed?</td>
-            <td>
-              {userData.isMailConfirmed ? "Confirmed!" : "Not confirmed!"}
-            </td>
-            <td>
-              <Switch
-                checked={state.sendMailConfirmation}
-                onChange={handleChange}
-                name="sendMailConfirmation"
-                inputProps={{ "aria-label": "secondary checkbox" }}
-              />
-            </td>
-            <td>{state.sendMailConfirmation ? "Confirm now." : "Later."}</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <Button variant="contained" color="secondary" href="/">
-                Cancel
-              </Button>
-            </td>
-            <td>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-              >
-                Save Changes
-              </Button>
-            </td>
-          </tr>
-        </table> */}
       </div>
-      <UserSummary />
+      <UserSummary
+        totalPosts={
+          rated !== [] && posts !== [] ? posts.length + rated.length : null
+        }
+        totalHashtags={hashtags !== [] ? hashtags.length : null}
+        bestRate={bestPost !== undefined ? bestPost.rate : null}
+        worstRate={worstPost !== undefined ? worstPost.rate : null}
+        userRate={userData !== undefined ? userData.rate : 0}
+      />
 
       <h2>Your Hashtags</h2>
       <HashTagSlider hashTags={hashtags} />
-      <h2>Your Posts</h2>
+      <h2>Your Rated Posts</h2>
       <div style={{ width: "80%" }}>
         <div className="post-container">
-          {posts === [] ? (
-            <div>Loading...</div>
+          {rated.length === 0 || rated === undefined ? (
+            <div>None of your posts has been rated yet.</div>
+          ) : (
+            rated.map((item) => <Posts post={item} />)
+          )}
+        </div>
+        <h2>Your Unrated Posts</h2>
+        <div className="post-container">
+          {posts === [] || posts.length === 0 ? (
+            <div>You do not have any unrated posts.</div>
           ) : (
             posts.map((item) => <Posts post={item} />)
           )}

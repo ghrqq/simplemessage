@@ -34,6 +34,10 @@ const UserMessages = (props) => {
 
   return (
     <div className="component-container">
+      <div style={{ marginBottom: "1em" }}>
+        <h2>Users Hashtags</h2>
+        <HashTagSlider hashTags={hashtags} />
+      </div>
       <div className="post-container">
         {posts === [] ? (
           <div>Loading...</div>
@@ -41,8 +45,6 @@ const UserMessages = (props) => {
           posts.map((item) => <Posts post={item} />)
         )}
       </div>
-      <h2>Users Hashtags</h2>
-      <HashTagSlider hashTags={hashtags} />
     </div>
   );
 };

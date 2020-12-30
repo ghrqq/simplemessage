@@ -8,8 +8,6 @@ import AlertDisplayer from "./AlertDisplayer";
 import { Button } from "primereact/button";
 
 const ChangeUserDetails = (props) => {
-  // const {userName, userMail, isMailsAllowed, isMailConfirmed, isAgreed, lang} = props;
-
   const [user] = useContext(UserContext);
   const [userName, setuserName] = useState("");
   const [userMail, setuserMail] = useState("");
@@ -32,23 +30,20 @@ const ChangeUserDetails = (props) => {
   const [isAlert, setisAlert] = useState(false);
   const [message, setmessage] = useState("");
   const [status, setstatus] = useState(200);
-  const [isAlertConf, setisAlertConf] = useState(false);
-  const [messageConf, setmessageConf] = useState("");
-  const [statusConf, setstatusConf] = useState(200);
-
-  const handleMailChange = (e) => {
-    const mail = e.target.value;
-    const isValid = validation(mail, "email");
-    if (isValid === true) {
-      setisMailValid(true);
-      setuserMail(mail);
-    } else {
-      setuserMail(mail);
-      setisMailValid(false);
-    }
-  };
 
   const handleSubmit = async () => {
+    if (isConfirm === true) {
+      const valid = await validation(userMail, "email");
+
+      setisMailValid(valid);
+      if (valid !== true) {
+        setmessage("You have to type a valid e-mail to confirm your mail.");
+        setstatus(400);
+        setisAlert(true);
+        return;
+      }
+    }
+
     const result = await (
       await fetch("http://localhost:4000/adduserdetails", {
         method: "POST",
@@ -68,23 +63,6 @@ const ChangeUserDetails = (props) => {
     setmessage(result.message);
     setstatus(result.status);
     setisAlert(true);
-
-    if (isConfirm === true || isMailValid === true) {
-      let mailToConfirm = { userMail: userMail };
-
-      const confirmation = await fetch("http://localhost:4000/confirmmail", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(mailToConfirm),
-      });
-
-      setmessageConf(confirmation.message);
-      setstatusConf(confirmation.status);
-      setisAlertConf(true);
-    }
   };
 
   return (
@@ -132,9 +110,9 @@ const ChangeUserDetails = (props) => {
               <InputText
                 type="text"
                 value={userMail}
-                onChange={(e) => handleMailChange(e)}
-                keyfilter="email"
-                validateOnly={true}
+                onChange={(e) => setuserMail(e.target.value)}
+                // keyfilter="email"
+                // validateOnly={true}
                 placeholder={props.mail}
                 tooltip="Your Mail"
                 className={isMailValid === false ? "p-invalid p-d-block" : null}
@@ -178,11 +156,6 @@ const ChangeUserDetails = (props) => {
               fuck={allowMails}
             />
           </td>
-          <td>
-            {allowMails
-              ? "You will get mails."
-              : "You are not going to get mails."}
-          </td>
         </tr>
         <tr>
           <td>Is your mail confirmed?</td>
@@ -207,13 +180,6 @@ const ChangeUserDetails = (props) => {
               />
             )}
           </td>
-          <td>
-            {props.confirmed
-              ? null
-              : isConfirm
-              ? "You will get a confirmation mail. Please check your inbox after you save changes."
-              : "You do not have to confirm your mail address but, if you clear your cookies, there is no way to reach your account again. Ever."}
-          </td>
         </tr>
         <tr>
           <td></td>
@@ -221,22 +187,11 @@ const ChangeUserDetails = (props) => {
             <Button label="Cancel" className="p-button-danger" />
           </td>
           <td>
-            {!isConfirm ? (
-              <Button onClick={handleSubmit} label="Save" />
-            ) : isMailValid !== false ? (
-              <Button onClick={handleSubmit} label="Save" />
-            ) : (
-              <Button disabled tooltip="Invalid mail address." label="Save" />
-            )}
+            <Button onClick={() => handleSubmit()} label="Save" />
           </td>
         </tr>
       </table>
       <AlertDisplayer open={isAlert} message={message} status={status} />
-      <AlertDisplayer
-        open={isAlertConf}
-        message={messageConf}
-        status={statusConf}
-      />
     </div>
   );
 };

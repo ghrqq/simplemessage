@@ -107,7 +107,7 @@ const Posts = (props) => {
             onClick={() => setshowDetails(!showDetails)}
           />
         )}
-        {!rateBadge ? null : rateBadge >= 3 ? (
+        {!rateBadge ? null : rateBadge === "best" ? (
           <ThumbUpIcon color="green" />
         ) : (
           <ThumbDownIcon color="red" />

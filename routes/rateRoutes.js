@@ -35,6 +35,7 @@ const rateMessage = async (req, res) => {
         { _id: postid },
         {
           rate: avgRate,
+          rateCount: postToChange.rateCount + 1,
         }
       );
 

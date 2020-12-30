@@ -8,6 +8,7 @@ import Hashtag from "./pages/Hashtag";
 import UserMessages from "./pages/UserMessages";
 import FAQ from "./pages/FAQ";
 import Profile from "./pages/Profile";
+import GetBack from "./pages/GetBack";
 
 import { union } from "lodash";
 import hashTagConverter from "./tools/hashTagConverter";
@@ -21,9 +22,11 @@ import MenuFab from "./components/MenuFab";
 
 export const UserContext = React.createContext([]);
 export const PostContext = React.createContext([]);
+export const RefreshContext = React.createContext([]);
 
 function App() {
   const [user, setuser] = useState({});
+  const [refresh, setrefresh] = useState(0);
   const [userToken, setuserToken] = useState(Cookies.get());
   const [posts, setposts] = useState({});
   const [loading, setloading] = useState(true);
@@ -105,7 +108,7 @@ function App() {
       }
     }
     getUserId();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     async function getByHashTag() {
@@ -166,27 +169,31 @@ function App() {
   return (
     <UserContext.Provider value={[user, setuser]}>
       <PostContext.Provider value={[posts, setposts]}>
-        <div className="App">
-          <div className="hashtag-container">
-            <HashTagSlider hashTags={hashtags} />
-          </div>
-          <div>
-            <Router id="router">
-              <Home path="/" />
-              <Discover path="/discover" />
-              <Hashtag path="/hashtag/:tagpercent" />
-              <UserMessages path="/usermessages/:id" />
-              <Profile path="/myprofile" />
-              <FAQ default />
-            </Router>
-          </div>
-          <AlertDisplayer message={message} status={status} open={isAlert} />
-          <div className="fab" style={{ position: "fixed" }}>
-            <MenuFab logOutCallback={logOutCallback} />
+        <RefreshContext.Provider value={[refresh, setrefresh]}>
+          <div className="App">
+            <div className="hashtag-container">
+              <HashTagSlider hashTags={hashtags} />
+            </div>
+            <div>
+              <Router id="router">
+                <Home path="/" />
+                <Discover path="/discover" />
+                <Hashtag path="/hashtag/:tagpercent" />
+                <UserMessages path="/usermessages/:id" />
+                <Profile path="/myprofile" />
+                <GetBack path="/getbackmyaccount" />
 
-            <CreateMessage isOpen={isCMOpen} />
+                <FAQ default />
+              </Router>
+            </div>
+            <AlertDisplayer message={message} status={status} open={isAlert} />
+            <div className="fab" style={{ position: "fixed" }}>
+              <MenuFab logOutCallback={logOutCallback} />
+
+              <CreateMessage isOpen={isCMOpen} />
+            </div>
           </div>
-        </div>
+        </RefreshContext.Provider>
       </PostContext.Provider>
     </UserContext.Provider>
   );

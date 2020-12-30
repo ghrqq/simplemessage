@@ -233,6 +233,10 @@ tr td:first-of-type {
 td {
   padding: 5px 5px;
 }
+table {
+  /* width: 60%; */
+  margin: 3em auto;
+}
 
 table tr:last-of-type td {
   padding: 5px 0;

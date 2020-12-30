@@ -25,6 +25,10 @@ const PostSchema = new Schema({
     type: Number,
     default: 0,
   },
+  rateCount: {
+    type: Number,
+    default: 0,
+  },
   creatorName: {
     type: String,
   },

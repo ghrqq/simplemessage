@@ -80,7 +80,7 @@ app.post("/adduserdetails", async (req, res) => addUserDetails(req, res));
 app.post("/getbackyouraccount", async (req, res) =>
   getBackYourAccount(req, res)
 );
-app.post("/confirmgetback/:code", async (req, res) => confirmGetBack(req, res));
+app.get("/confirmgetback/:code", async (req, res) => confirmGetBack(req, res));
 app.get("/userprofile/:user", async (req, res) => userProfile(req, res));
 app.post("/myprofile", async (req, res) => myProfile(req, res));
 

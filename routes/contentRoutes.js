@@ -36,6 +36,7 @@ const sendMessage = async (req, res) => {
       hashtags: hast,
       message,
       creatorId: user.userId,
+      creatorName: user.userName,
     });
     const createPost = await newPost.save();
 

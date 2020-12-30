@@ -4,12 +4,14 @@ import AddIcon from "@material-ui/icons/Add";
 import LabelIcon from "@material-ui/icons/Label";
 
 const UserSummary = (props) => {
-  const { totalPosts, totalHashtags, bestRate, worstRate } = props;
+  const { totalPosts, totalHashtags, bestRate, worstRate, userRate } = props;
 
   return (
     <div className="user-summary">
       <div className="user-rating">
+        <h2>Overall Rating</h2>
         <StarIcon style={{ fontSize: "60", color: "orange" }} />
+        <h2>{userRate}</h2>
       </div>
       <div className="user-tops">
         <div className="testbox">
