@@ -94,6 +94,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
+    setisLoading(true);
     async function getMyProfile() {
       const result = await (
         await fetch("http://localhost:4000/myprofile", {
@@ -111,7 +112,7 @@ const Profile = () => {
         // setposts(result.posts);
 
         sethashtags(result.hashtags);
-        setisLoading(false);
+        // setisLoading(false);
 
         const ratedPosts = result.posts.filter((item) => item.rateCount > 0);
         if (ratedPosts.length > 1) {
@@ -123,7 +124,7 @@ const Profile = () => {
           setworstPost(worst);
           setrated(ratedPosts);
           const other = difference(result.posts, ratedPosts);
-
+          setisLoading(false);
           setposts(other);
         } else {
           setrated(ratedPosts);
@@ -133,6 +134,7 @@ const Profile = () => {
           const best = ratedPosts[0];
           setbestPost(best);
           setworstPost(best);
+          setisLoading(false);
         }
       } else {
         return;
@@ -141,6 +143,9 @@ const Profile = () => {
     getMyProfile();
   }, [user]);
 
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
   return (
     <div className="component-container">
       <div className="userdata-container inline-container">

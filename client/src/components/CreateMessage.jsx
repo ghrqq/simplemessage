@@ -20,14 +20,17 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Checkbox from "@material-ui/core/Checkbox";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { InputText } from "primereact/inputtext";
+// import { Button } from "primereact/button";
 
-import { UserContext } from "../App";
+import { UserContext, RefreshByEntryContext } from "../App";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function CreateMessage(props) {
+  const [refreshByEntry, setrefreshByEntry] = useContext(RefreshByEntryContext);
   const [user, setuser] = useContext(UserContext);
 
   const [open, setOpen] = useState(props.isOpen);
@@ -94,6 +97,7 @@ export default function CreateMessage(props) {
     const data = {
       userName: isName === false ? userName : undefined,
       userMail: isMail === false ? userMail : undefined,
+      userId: user.id,
     };
     if (isMailValid === false) {
       window.alert("Please type a valid e-mail.");
@@ -180,6 +184,7 @@ export default function CreateMessage(props) {
       setresMessage(result.message);
     }
     setisLoading(false);
+    setrefreshByEntry(refreshByEntry + 1);
   };
 
   const handleTagChange = (e) => {
@@ -377,7 +382,7 @@ export default function CreateMessage(props) {
                     Would you like to share your name with us?
                   </DialogContentText>
 
-                  <input
+                  <InputText
                     type="text"
                     placeholder="Your Name"
                     onChange={(e) => setuserName(e.target.value)}
@@ -399,7 +404,7 @@ export default function CreateMessage(props) {
                     every device. If you don't there is no way to reach your
                     account once you clear browser cookies.
                   </DialogContentText>
-                  <input
+                  <InputText
                     type="email"
                     placeholder="Your Email"
                     onChange={(e) => handleMailChange(e)}

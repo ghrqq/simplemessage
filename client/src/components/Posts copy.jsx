@@ -70,29 +70,24 @@ const Posts = (props) => {
       key={_id}
     >
       <div className="post-bar">
-        <div className="rate">Rating: {rate}</div>
         {user.id === creatorId ? (
           <DeleteIcon
-            style={{ fontSize: "25", color: "red" }}
+            fontSize="small"
+            style={{ textAlign: "left", color: "red" }}
             onClick={() => deletePost()}
           />
         ) : (
           <DeleteIcon
-            style={{ fontSize: "25" }}
+            fontSize="small"
+            style={{ textAlign: "left" }}
             onClick={() => setisHidden(true)}
           />
         )}
         {!showrate ? (
-          <StarHalfIcon
-            style={{ fontSize: "25" }}
-            onClick={() => setshowrate(!showrate)}
-          />
+          <StarHalfIcon onClick={() => setshowrate(!showrate)} />
         ) : (
           <React.Fragment>
-            <StarHalfIcon
-              style={{ fontSize: "25" }}
-              onClick={() => setshowrate(!showrate)}
-            />
+            <StarHalfIcon onClick={() => setshowrate(!showrate)} />
             <Voter
               postId={_id}
               creatorId={creatorId}
@@ -101,7 +96,7 @@ const Posts = (props) => {
             />
           </React.Fragment>
         )}
-        {/* {!showDetails ? (
+        {!showDetails ? (
           <ExpandMoreIcon
             style={{ textAlign: "right" }}
             onClick={() => setshowDetails(!showDetails)}
@@ -111,30 +106,24 @@ const Posts = (props) => {
             style={{ textAlign: "right" }}
             onClick={() => setshowDetails(!showDetails)}
           />
-        )} */}
+        )}
         {!rateBadge ? null : rateBadge === "best" ? (
           <ThumbUpIcon color="green" />
         ) : (
           <ThumbDownIcon color="red" />
         )}
-        {/* <div style={{ display: displayDetails }} className="post-detail"> */}
+      </div>
+      <div style={{ display: displayDetails }} className="post-detail">
         {!showShare ? (
-          <ShareIcon
-            style={{ fontSize: "25" }}
-            onClick={() => setshowShare(!showShare)}
-          />
+          <ShareIcon onClick={() => setshowShare(!showShare)} />
         ) : (
           <React.Fragment>
-            <ShareIcon
-              style={{ fontSize: "25" }}
-              onClick={() => setshowShare(!showShare)}
-            />
+            <ShareIcon onClick={() => setshowShare(!showShare)} />
             <PostFooter />
           </React.Fragment>
         )}
       </div>
-      {/* </div> */}
-
+      Rating: {rate}
       <div className="post">{message}</div>
       <div className="post-footer">
         <div className="inline-container">

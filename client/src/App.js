@@ -23,22 +23,27 @@ import MenuFab from "./components/MenuFab";
 export const UserContext = React.createContext([]);
 export const PostContext = React.createContext([]);
 export const RefreshContext = React.createContext([]);
+export const RefreshByEntryContext = React.createContext([]);
 
 function App() {
   const [user, setuser] = useState({});
   const [refresh, setrefresh] = useState(0);
-  const [userToken, setuserToken] = useState(Cookies.get());
+  const [refreshByEntry, setrefreshByEntry] = useState(0);
+  // const [userToken, setuserToken] = useState(Cookies.get());
   const [posts, setposts] = useState({});
   const [loading, setloading] = useState(true);
+  const [limit, setlimit] = useState(20);
+  const [skip, setskip] = useState(0);
+  const [count, setcount] = useState(20);
   const [isIpLoading, setisIpLoading] = useState(true);
   const [ip, setip] = useState("");
   const [userLoc, setuserLoc] = useState({});
-  const [isAgreed, setisAgreed] = useState(true);
+  // const [isAgreed, setisAgreed] = useState(true);
   const [isCMOpen, setisCMOpen] = useState(false);
   const [isAlert, setisAlert] = useState(false);
   const [message, setmessage] = useState("");
   const [status, setstatus] = useState(200);
-  const [selectedHashtag, setselectedHashtag] = useState("");
+  // const [selectedHashtag, setselectedHashtag] = useState("");
   const [hashtags, sethashtags] = useState([
     "#Motivational",
     "#Inspiring",
@@ -64,6 +69,62 @@ function App() {
   };
 
   useEffect(() => {
+    async function getPosts() {
+      const result = await (
+        await fetch(`http://localhost:4000/getrandom/20/0`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "x-www-form-urlencoded",
+          },
+        })
+      ).json();
+      setposts(result.posts);
+      setcount(parseInt(result.count));
+      setloading(false);
+      const hastArr = result.posts.map((item) => item.hashtags);
+      const hastArrMerged = union(...hastArr);
+
+      sethashtags(hastArrMerged);
+    }
+    getPosts();
+  }, [refreshByEntry]);
+
+  const handleLimitChange = async () => {
+    let sumskip = skip;
+    let sumlim = limit;
+    if (limit + 20 <= count) {
+      sumskip = limit;
+      sumlim = limit + 20;
+      setskip(sumskip);
+      setlimit(sumlim);
+    } else {
+      sumskip = skip + 20;
+      sumlim = count;
+
+      setlimit(sumlim);
+      setskip(sumskip);
+    }
+
+    const result = await (
+      await fetch(`http://localhost:4000/getrandom/${sumlim}/${sumskip}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "x-www-form-urlencoded",
+        },
+      })
+    ).json();
+    setposts([...posts, ...result.posts]);
+    setloading(false);
+    const hastArr = posts.map((item) => item.hashtags);
+    const hastArrMerged = union(...hastArr);
+
+    sethashtags(hastArrMerged);
+    // window.scrollTo(0, 150);
+  };
+
+  useEffect(() => {
     async function getUserGeolocationDetails() {
       const result = await (
         await fetch(
@@ -79,8 +140,9 @@ function App() {
       setip(result.IPv4);
       setisIpLoading(false);
     }
-
-    getUserGeolocationDetails();
+    setTimeout(() => {
+      getUserGeolocationDetails();
+    }, 5000);
   }, []);
 
   useEffect(() => {
@@ -107,62 +169,42 @@ function App() {
         setisAlert(true);
       }
     }
+
     getUserId();
   }, [refresh]);
 
-  useEffect(() => {
-    async function getByHashTag() {
-      if (selectedHashtag === "") {
-        return;
-      }
+  // useEffect(() => {
+  //   async function getByHashTag() {
+  //     if (selectedHashtag === "") {
+  //       return;
+  //     }
 
-      setloading(true);
-      const param = hashTagConverter(selectedHashtag);
-      const result = await (
-        await fetch(`http://localhost:4000/getbyhashtag/${param}`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-      ).json();
+  //     setloading(true);
+  //     const param = hashTagConverter(selectedHashtag);
+  //     const result = await (
+  //       await fetch(`http://localhost:4000/getbyhashtag/${param}`, {
+  //         method: "GET",
+  //         credentials: "include",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       })
+  //     ).json();
 
-      if (result.message) {
-        setmessage(result.message);
-      }
+  //     if (result.message) {
+  //       setmessage(result.message);
+  //     }
 
-      setposts(result);
-      setloading(false);
-      const hastArr = result.map((item) => item.hashtags);
-      const hastArrMerged = union(...hastArr);
+  //     setposts(result);
+  //     setloading(false);
+  //     const hastArr = result.map((item) => item.hashtags);
+  //     const hastArrMerged = union(...hastArr);
 
-      sethashtags(hastArrMerged);
-    }
+  //     sethashtags(hastArrMerged);
+  //   }
 
-    getByHashTag();
-  }, [selectedHashtag]);
-
-  useEffect(() => {
-    async function getPosts() {
-      const result = await (
-        await fetch("http://localhost:4000/getrandom", {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "x-www-form-urlencoded",
-          },
-        })
-      ).json();
-      setposts(result);
-      setloading(false);
-      const hastArr = result.map((item) => item.hashtags);
-      const hastArrMerged = union(...hastArr);
-
-      sethashtags(hastArrMerged);
-    }
-    getPosts();
-  }, []);
+  //   getByHashTag();
+  // }, [selectedHashtag]);
 
   if (loading) return <MainSkeleton />;
 
@@ -170,29 +212,42 @@ function App() {
     <UserContext.Provider value={[user, setuser]}>
       <PostContext.Provider value={[posts, setposts]}>
         <RefreshContext.Provider value={[refresh, setrefresh]}>
-          <div className="App">
-            <div className="hashtag-container">
-              <HashTagSlider hashTags={hashtags} />
-            </div>
-            <div>
-              <Router id="router">
-                <Home path="/" />
-                <Discover path="/discover" />
-                <Hashtag path="/hashtag/:tagpercent" />
-                <UserMessages path="/usermessages/:id" />
-                <Profile path="/myprofile" />
-                <GetBack path="/getbackmyaccount" />
+          <RefreshByEntryContext.Provider
+            value={[refreshByEntry, setrefreshByEntry]}
+          >
+            <div className="App">
+              <div className="hashtag-container">
+                <HashTagSlider hashTags={hashtags} />
+              </div>
+              <div>
+                <Router id="router">
+                  <Home
+                    path="/"
+                    limitHandler={handleLimitChange}
+                    limit={limit}
+                    count={count}
+                  />
+                  <Discover path="/discover" />
+                  <Hashtag path="/hashtag/:tagpercent" />
+                  <UserMessages path="/usermessages/:id" />
+                  <Profile path="/myprofile" />
+                  <GetBack path="/getbackmyaccount" />
 
-                <FAQ default />
-              </Router>
-            </div>
-            <AlertDisplayer message={message} status={status} open={isAlert} />
-            <div className="fab" style={{ position: "fixed" }}>
-              <MenuFab logOutCallback={logOutCallback} />
+                  <FAQ default />
+                </Router>
+              </div>
+              <AlertDisplayer
+                message={message}
+                status={status}
+                open={isAlert}
+              />
+              <div className="fab" style={{ position: "fixed" }}>
+                <MenuFab logOutCallback={logOutCallback} />
 
-              <CreateMessage isOpen={isCMOpen} />
+                <CreateMessage isOpen={isCMOpen} />
+              </div>
             </div>
-          </div>
+          </RefreshByEntryContext.Provider>
         </RefreshContext.Provider>
       </PostContext.Provider>
     </UserContext.Provider>

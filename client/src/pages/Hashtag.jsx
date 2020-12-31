@@ -37,6 +37,8 @@ export const Hashtag = (props) => {
 
   return (
     <div className="component-container">
+      <h2>Related Hashtags</h2>
+      <HashTagSlider hashTags={hashtags} />
       <div className="post-container">
         {posts === [] ? (
           <div>Loading...</div>
@@ -44,8 +46,6 @@ export const Hashtag = (props) => {
           posts.map((item) => <Posts post={item} />)
         )}
       </div>
-      <h2>Related Hashtags</h2>
-      <HashTagSlider hashTags={hashtags} />
       <AlertDisplayer message={message} status={status} open={isAlert} />
     </div>
   );

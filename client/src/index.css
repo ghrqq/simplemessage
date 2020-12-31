@@ -178,12 +178,18 @@ code {
   text-decoration: none;
 }
 .post-bar {
-  display: block;
+  display: flex;
+  justify-content: flex-end;
   background-color: var(--textwhite);
+  padding: 0.2em 0;
   margin: 0;
   width: 100%;
   border-radius: 1em 1em 0 0;
   border-bottom: #55a630 2px solid;
+}
+.rate {
+  justify-self: flex-start;
+  margin-left: 1em;
 }
 .post {
   border: 1px 0 solid var(--textwhite);

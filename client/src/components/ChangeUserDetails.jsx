@@ -8,9 +8,9 @@ import AlertDisplayer from "./AlertDisplayer";
 import { Button } from "primereact/button";
 
 const ChangeUserDetails = (props) => {
-  const [user] = useContext(UserContext);
-  const [userName, setuserName] = useState("");
-  const [userMail, setuserMail] = useState("");
+  const [user, setuser] = useContext(UserContext);
+  const [userName, setuserName] = useState(props.name ? props.name : "");
+  const [userMail, setuserMail] = useState(props.mail ? props.mail : "");
   const [isMailValid, setisMailValid] = useState("");
   const [isMailsAllowed, setisMailsAllowed] = useState(
     props.allow == true ? true : false
@@ -20,7 +20,7 @@ const ChangeUserDetails = (props) => {
   const [editName, seteditName] = useState(props.name !== "" ? false : true);
   const [editMail, seteditMail] = useState(props.mail !== "" ? false : true);
   const [allowMails, setallowMails] = useState(
-    props.allow === true ? false : true
+    props.allow === true ? true : false
   );
   const [confirmMail, setconfirmMail] = useState(
     props.confirmed ? true : false
@@ -63,6 +63,18 @@ const ChangeUserDetails = (props) => {
     setmessage(result.message);
     setstatus(result.status);
     setisAlert(true);
+    // setuser({ userName: userName });
+  };
+
+  const handleCancel = () => {
+    setuserName(props.name ? props.name : "");
+    seteditName(props.name !== "" ? false : true);
+    setuserMail(props.mail ? props.mail : "");
+    setisMailValid("");
+    setisConfirm("");
+    seteditMail(props.mail !== "" ? false : true);
+    setallowMails(props.allow === true ? false : true);
+    return;
   };
 
   return (
@@ -184,7 +196,11 @@ const ChangeUserDetails = (props) => {
         <tr>
           <td></td>
           <td>
-            <Button label="Cancel" className="p-button-danger" />
+            <Button
+              label="Cancel"
+              onClick={handleCancel}
+              className="p-button-danger"
+            />
           </td>
           <td>
             <Button onClick={() => handleSubmit()} label="Save" />

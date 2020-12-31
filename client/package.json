@@ -21,6 +21,8 @@
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
     "react-share": "^4.3.1",
+    "react-visibility-sensor": "^5.1.1",
+    "react-waypoint": "^9.0.3",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

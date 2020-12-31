@@ -16,7 +16,7 @@ const ConfirmationSchema = new Schema({
   mailConfirmationExpiry: {
     type: Date,
     default: Date.now,
-    index: {
+    indexes: {
       expires: 86400,
     },
   },

@@ -272,13 +272,13 @@ const addUserDetails = async (req, res) => {
     user.favoriteHashtags = favoriteHashtags
       ? favoriteHashtags
       : user.favoriteHashtags;
+    const isSaved = await user.save();
 
     const postsToUpdate = await Post.updateMany(
       { creatorId: user.userId },
       { creatorName: user.userName }
     );
 
-    const isSaved = await user.save();
     if (!isConfirm) {
       res.status(200).send({
         message:

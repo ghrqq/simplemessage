@@ -48,27 +48,25 @@ const MenuFab = (props) => {
         TransitionComponent={Fade}
         paper
       >
-        <MenuItem onClick={handleClose}>
-          <Link className="Link" to="/">
-            Home
-          </Link>
-        </MenuItem>
+        <Link className="Link" to="/">
+          <MenuItem onClick={handleClose}>Home</MenuItem>
+        </Link>
         {/* <MenuItem onClick={handleClose}>
           <Link className="Link" to="/discover">
             Discover
           </Link>
         </MenuItem> */}
-        <MenuItem>
-          {user.id ? (
-            <Link className="Link" to="/myprofile">
-              My Profile
-            </Link>
-          ) : (
-            <Link className="Link" to="/register:)">
-              Register/Login
-            </Link>
-          )}
-        </MenuItem>
+
+        {user.id ? (
+          <Link className="Link" to="/myprofile">
+            <MenuItem onClick={handleClose}>My Profile</MenuItem>
+          </Link>
+        ) : (
+          <Link className="Link" to="/register:)">
+            <MenuItem onClick={handleClose}>Register/Login</MenuItem>
+          </Link>
+        )}
+
         <MenuItem onClick={handleClose}>
           {" "}
           {user.id ? (
