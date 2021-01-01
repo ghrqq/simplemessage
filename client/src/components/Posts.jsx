@@ -3,6 +3,7 @@ import PostFooter from "./PostFooter";
 import Voter from "./Voter";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import PostButtons from "./PostButtons";
 
 import UserDetails from "./UserDetails";
 
@@ -21,6 +22,7 @@ const Posts = (props) => {
   const [showrate, setshowrate] = useState(false);
   const [isUserDetailsOpen, setisUserDetailsOpen] = useState(false);
   const [user, setuser] = useContext(UserContext);
+  const [isButton, setisButton] = useState(false);
 
   const {
     _id,
@@ -32,17 +34,12 @@ const Posts = (props) => {
     rateBadge,
   } = props.post;
 
-  const displayVar = isHidden ? "none" : null;
-  const displayDetails = !showDetails ? "none" : null;
-  const displayShare = !showShare ? "none" : null;
-  const displayRate = !showrate ? "none" : null;
-
-  const hideRate = () => {
-    setshowrate(false);
-  };
-
   const handleMouseOnUserDetails = () => {
     setisUserDetailsOpen(!isUserDetailsOpen);
+  };
+
+  const handleMouse = () => {
+    setisButton(!isButton);
   };
 
   const deletePost = async () => {
@@ -65,86 +62,60 @@ const Posts = (props) => {
 
   return (
     <div
-      className="single-post-container"
-      style={{ display: displayVar }}
+      className="grid-container"
+      style={{ display: "grid" }}
       key={_id}
+      onMouseEnter={handleMouse}
+      onMouseLeave={handleMouse}
     >
-      <div className="post-bar">
-        <div className="rate">Rating: {rate}</div>
-        {user.id === creatorId ? (
-          <DeleteIcon
-            style={{ fontSize: "25", color: "red" }}
-            onClick={() => deletePost()}
-          />
-        ) : (
-          <DeleteIcon
-            style={{ fontSize: "25" }}
-            onClick={() => setisHidden(true)}
-          />
-        )}
-        {!showrate ? (
-          <StarHalfIcon
-            style={{ fontSize: "25" }}
-            onClick={() => setshowrate(!showrate)}
-          />
-        ) : (
-          <React.Fragment>
-            <StarHalfIcon
-              style={{ fontSize: "25" }}
-              onClick={() => setshowrate(!showrate)}
-            />
-            <Voter
-              postId={_id}
-              creatorId={creatorId}
-              hideRate={hideRate}
-              defRate={rate}
-            />
-          </React.Fragment>
-        )}
-        {/* {!showDetails ? (
-          <ExpandMoreIcon
-            style={{ textAlign: "right" }}
-            onClick={() => setshowDetails(!showDetails)}
-          />
-        ) : (
-          <UnfoldMoreIcon
-            style={{ textAlign: "right" }}
-            onClick={() => setshowDetails(!showDetails)}
-          />
-        )} */}
-        {!rateBadge ? null : rateBadge === "best" ? (
-          <ThumbUpIcon color="green" />
-        ) : (
-          <ThumbDownIcon color="red" />
-        )}
-        {/* <div style={{ display: displayDetails }} className="post-detail"> */}
-        {!showShare ? (
-          <ShareIcon
-            style={{ fontSize: "25" }}
-            onClick={() => setshowShare(!showShare)}
-          />
-        ) : (
-          <React.Fragment>
-            <ShareIcon
-              style={{ fontSize: "25" }}
-              onClick={() => setshowShare(!showShare)}
-            />
-            <PostFooter />
-          </React.Fragment>
-        )}
-      </div>
-      {/* </div> */}
+      <div style={{ gridColumn: 1, gridRow: 1 }}>
+        {/* <PostButtons /> */}
+        <div className="post-button-body">
+          <Voter postId={_id} creatorId={creatorId} defRate={rate} />
 
-      <div className="post">{message}</div>
-      <div className="post-footer">
-        <div className="inline-container">
           <UserDetails
             content={message}
             name={creatorName ? creatorName : "Top-Secret"}
             id={creatorId}
           />
+          <PostFooter />
         </div>
       </div>
+      <div
+        style={{ gridColumn: 1, gridRow: 1 }}
+        className={isButton ? "post-body blurred indexed" : "post-body"}
+      >
+        <div className="post-first-buttons">
+          <div className="post-first-expand">
+            <ExpandMoreIcon
+              style={{
+                color: "white",
+                // margin: "0.3em auto 0 auto",
+                fontSize: "35",
+              }}
+            />
+            <div className="post-first-rest">
+              <StarHalfIcon style={{ fontSize: "25", color: "white" }} /> {rate}
+            </div>
+          </div>
+        </div>
+
+        <div className="post-text">
+          <p
+            style={{
+              fontSize:
+                message.length < 150
+                  ? "1.2em"
+                  : message.length > 400
+                  ? "0.7em"
+                  : null,
+            }}
+          >
+            {message}
+          </p>
+        </div>
+      </div>
+      {/* <PostButtons /> */}
     </div>
   );
 };

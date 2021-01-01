@@ -1,21 +1,25 @@
 :root {
-  --bgdark: #202025;
+  /* --bgdark: #202025;
   --textwhite: #f7f7f6;
   --color2: #2b9348;
-  --color1: #bfd200;
+  --color1: #bfd200; */
   /* --bglight: #ffff3f; */
-  --bglight: rgba(153 160 156 27%);
+  --bglight: #fff;
+  --maintext: #37301f;
+  --secondary: #f6f2ea;
+  --bgdark: #b79e5c;
+  --maingray: #fff;
 }
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  font-family: -apple-system, BlinkMacSystemFont, Oswald, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+  color: var(--maintext);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background-color: var(--bglight); */
+  background-color: var(--bglight);
   vertical-align: "middle";
-  background-image: url("https://www.freepik.com/free-photo/orange-background-with-bokeh-lights_936280.htm#page=1&query=glow%20background&position=40");
 }
 div {
   display: block;
@@ -34,7 +38,7 @@ input[type="text"] {
 nav {
   margin: 0;
   background-color: var(--bgdark);
-  color: var(--textwhite);
+  color: var(--maintext);
   text-decoration: none;
   text-align: left;
 }
@@ -89,14 +93,14 @@ nav ul li a:hover {
 
   width: 12em;
   height: 100%;
-  background-color: var(--bgdark);
-  color: var(--textwhite);
+  /* background-color: var(--bgdark); */
+  color: var(--maintext);
   padding: 0.3em;
   margin: 0;
   vertical-align: middle;
 }
 .Autocomplete {
-  color: var(--color2);
+  color: var(--maingray);
   display: inline-block;
 }
 
@@ -106,7 +110,7 @@ nav ul li a:hover {
   height: 2em;
   color: black;
 
-  background-color: var(--textwhite);
+  /* background-color: var(--textwhite); */
   vertical-align: middle;
 }
 .search-icon {
@@ -115,7 +119,7 @@ nav ul li a:hover {
   vertical-align: middle;
 }
 .search-icon:hover {
-  color: var(--color1);
+  /* color: var(--color1); */
   vertical-align: middle;
 }
 code {
@@ -135,7 +139,7 @@ code {
   height: auto;
   margin: 0 0 0 3em;
   /* padding: 0.5em 0.5em; */
-  background-color: var(--bglight);
+  /* background-color: var(--maingray); */
 }
 
 .component-container {
@@ -153,18 +157,86 @@ code {
   flex-flow: column nowrap;
   margin: 0.5em 0.5em;
   /* padding: 0.5em; */
-  background-color: var(--textwhite);
+  /* background-color: red; */
 
-  min-width: 200px;
-  box-shadow: 0.3em 0.3em 1.3em 0.3em var(--color1);
+  /* min-width: 200px; */
+  /* box-shadow: 10px 10px 11px 2px rgba(143, 143, 143, 1); */
   align-items: center;
 
   /* flex-grow: 1; */
   flex: 0 0 23%;
   border-radius: 1em 1em 1em 1em;
 }
+.post-body {
+  width: 300px;
+  height: 400px;
+  background: #4b4432;
+  border-radius: 36px;
+  align-items: center;
+  justify-items: center;
+  margin: 1em auto;
+}
+.post-button-body {
+  width: 300px;
+  height: 400px;
+  background: rgba(75, 68, 50, 0.55);
+  border-radius: 36px;
+  align-items: center;
+  justify-items: center;
+  margin: 1em auto;
+}
+.post-text {
+  width: 270px;
+  height: 370px;
+  font-family: Oswald;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.9em;
+  line-height: 18px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.12em;
+  padding: 1em 2em;
+  text-justify: justify;
+  justify-content: center;
+  /* margin: auto; */
+
+  color: #ffffff;
+}
+.post-text p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  margin: auto;
+  text-align: center;
+}
+.post-first-buttons {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 0 0 10%;
+  justify-content: flex-end;
+}
+/* .post-first-expand {
+  display: inline-block;
+}
+.post-first-rest {
+  display: inline-block;
+  margin: 0.1em 0.1em 0 auto;
+} */
+
+.blurred {
+  filter: blur(0.2em);
+}
+.indexed {
+  z-index: -1;
+}
+/* .post-body:hover {
+  filter: blur(0.2em);
+} */
 .single-post-container:hover {
-  box-shadow: 0.3em 0.3em 1.3em 0.3em var(--color2);
+  box-shadow: 10px 10px 11px 2px rgba(253, 133, 41, 1);
 }
 
 #router {
@@ -180,7 +252,7 @@ code {
 .post-bar {
   display: flex;
   justify-content: flex-end;
-  background-color: var(--textwhite);
+  /* background-color: var(--textwhite); */
   padding: 0.2em 0;
   margin: 0;
   width: 100%;
@@ -202,7 +274,7 @@ code {
 .post-footer {
   height: 2em;
 
-  background-color: var(--textwhite);
+  /* background-color: var(--textwhite); */
   border-top: #55a630 2px solid;
 
   width: 100%;

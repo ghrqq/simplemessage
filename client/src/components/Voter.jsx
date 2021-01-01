@@ -55,7 +55,7 @@ const Voter = (props) => {
 
       setOpen(true);
       setTimeout(() => {
-        props.hideRate();
+        // props.hideRate();
       }, 3000);
     }
   };
