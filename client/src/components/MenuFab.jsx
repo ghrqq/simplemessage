@@ -26,7 +26,7 @@ const MenuFab = (props) => {
   return (
     <div>
       <Fab
-        style={{ backgroundColor: "#007f5f" }}
+        style={{ backgroundColor: "rgba(225, 162, 0 , 0.67)" }}
         aria-controls="fade-menu"
         aria-haspopup="true"
         onClick={handleClick}

@@ -220,7 +220,7 @@ export default function CreateMessage(props) {
   return (
     <div>
       <Fab
-        style={{ backgroundColor: "#007f5f" }}
+        style={{ backgroundColor: "rgba(225, 162, 0 , 0.67)" }}
         variant="extended"
         size="medium"
         color="primary"

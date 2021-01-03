@@ -16,9 +16,12 @@ import Cookies from "js-cookie";
 import CreateMessage from "./components/CreateMessage";
 import MainSkeleton from "./components/MainSkeleton";
 import AlertDisplayer from "./components/AlertDisplayer";
+import ads from "./tools/ads.json";
+import adSplicer from "./tools/adSplicer";
 
 import HashTagSlider from "./components/HashTagSlider";
 import MenuFab from "./components/MenuFab";
+import useWindowDimensions from "./tools/getWindowDimensions";
 
 export const UserContext = React.createContext([]);
 export const PostContext = React.createContext([]);
@@ -26,10 +29,13 @@ export const RefreshContext = React.createContext([]);
 export const RefreshByEntryContext = React.createContext([]);
 
 function App() {
+  const [please, setplease] = useState("");
+  const [adverts, setAdverts] = useState(ads);
   const [user, setuser] = useState({});
   const [refresh, setrefresh] = useState(0);
   const [refreshByEntry, setrefreshByEntry] = useState(0);
   // const [userToken, setuserToken] = useState(Cookies.get());
+  const [hashtagStyles, sethashtagStyles] = useState("hashtag-container");
   const [posts, setposts] = useState({});
   const [loading, setloading] = useState(true);
   const [limit, setlimit] = useState(20);
@@ -43,13 +49,14 @@ function App() {
   const [isAlert, setisAlert] = useState(false);
   const [message, setmessage] = useState("");
   const [status, setstatus] = useState(200);
+
   // const [selectedHashtag, setselectedHashtag] = useState("");
   const [hashtags, sethashtags] = useState([
     "#Motivational",
     "#Inspiring",
     "#Creative",
   ]);
-
+  const { height, width } = useWindowDimensions();
   const logOutCallback = async () => {
     const result = await (
       await fetch("http://localhost:4000/clearuser", {
@@ -79,7 +86,14 @@ function App() {
           },
         })
       ).json();
-      setposts(result.posts);
+
+      let shadow = [...result.posts];
+      const adsSplicedPosts = await adSplicer(shadow, limit, skip, adverts.ads);
+      const imagePaths = adverts.ads.map((item) => item.imgPath);
+      // console.log("paths ", imagePaths);
+      // setplease(adsSplicedPosts);
+      // console.log(adsSplicedPosts);
+      setposts(adsSplicedPosts);
       setcount(parseInt(result.count));
       setloading(false);
       const hastArr = result.posts.map((item) => item.hashtags);
@@ -206,6 +220,8 @@ function App() {
   //   getByHashTag();
   // }, [selectedHashtag]);
 
+  const responsive = width < 800 ? "hashtag-container-s" : "hashtag-container";
+
   if (loading) return <MainSkeleton />;
 
   return (
@@ -216,10 +232,10 @@ function App() {
             value={[refreshByEntry, setrefreshByEntry]}
           >
             <div className="App">
-              <div className="hashtag-container">
+              <div className={responsive}>
                 <HashTagSlider hashTags={hashtags} />
               </div>
-              <div>
+              <div style={{ marginTop: "4em" }}>
                 <Router id="router">
                   <Home
                     path="/"

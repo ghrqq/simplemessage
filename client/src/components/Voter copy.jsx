@@ -6,15 +6,14 @@ import CloseIcon from "@material-ui/icons/Close";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import SaveIcon from "@material-ui/icons/Save";
-// import { Rating } from "primereact/rating";
+import { Rating } from "primereact/rating";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { Rating } from "semantic-ui-react";
 
 const Voter = (props) => {
   const [user] = useContext(UserContext);
   const [status, setstatus] = useState(200);
-  const [rate, setrate] = useState(0);
+  const [rate, setrate] = useState(props.defRate);
   const [open, setOpen] = useState(false);
   const [message, setmessage] = useState("No action to show here yet!");
   const color = rate >= 0 ? "green" : "red";
@@ -31,10 +30,10 @@ const Voter = (props) => {
     setOpen(false);
   };
 
-  const sendRate = async (e, rating) => {
+  const sendRate = async () => {
     const data = {
       postid: props.postId,
-      rate: rating,
+      rate,
       postCreatorId: props.creatorId,
       userIp: user.userIp,
     };
@@ -62,28 +61,20 @@ const Voter = (props) => {
   };
 
   return (
-    <div style={{ paddingTop: "2em", borderBottom: "1px dotted white" }}>
-      {/* <Rating
+    <div>
+      <Rating
         value={rate}
         onChange={(e) => setrate(e.value)}
         cancel={false}
         stars={5}
-       
-        // style={{ color: "white", fontSize: "2em" }}
-      /> */}
 
-      {/* <SaveIcon
-        onClick={() => sendRate()}
-        style={{ color: "white", fontSize: "30" }}
-      /> */}
-      <Rating
-        icon="star"
-        defaultRating={1}
-        maxRating={5}
-        size="massive"
-        onRate={(e, { rating }) => sendRate(e, rating)}
+        // style={{ color: "white", fontSize: "2em" }}
       />
 
+      <SaveIcon
+        onClick={() => sendRate()}
+        style={{ color: "white", fontSize: "30" }}
+      />
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",

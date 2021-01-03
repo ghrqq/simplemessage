@@ -53,16 +53,23 @@ const UserDetails = (props) => {
   const { content, name, id } = props;
 
   return (
-    <div>
+    <div style={{ textShadow: "3px 3px 5px black" }}>
       <Link className="Link" to={`/usermessages/${id}`}>
         <Typography
           aria-owns={open ? "mouse-over-popover" : undefined}
           aria-haspopup="true"
           onMouseEnter={handlePopoverOpen}
           onMouseLeave={handlePopoverClose}
+          style={{ color: "white", fontSize: "1.4em", fontFamily: "Oswald" }}
         >
           <PersonIcon
-            style={{ display: "inline-block", verticalAlign: "middle" }}
+            style={{
+              display: "inline-block",
+              verticalAlign: "middle",
+              fontSize: "30",
+              color: "white",
+              textShadow: "3px 3px 5px black",
+            }}
           />{" "}
           <div className="inline-container">{name}</div>
         </Typography>
