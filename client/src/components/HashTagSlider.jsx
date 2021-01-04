@@ -30,17 +30,6 @@ const HashTagSlider = (props) => {
 
   return (
     <div className="hashtag-slider">
-      <KeyboardArrowLeftIcon
-        onClick={() => handleArrows(-5)}
-        style={{
-          display: "inline-block",
-          verticalAlign: "middle",
-          fontSize: font,
-          color: "rgba(225, 162, 0, 1)",
-          cursor: "pointer",
-          marginRight: font,
-        }}
-      />
       <ButtonGroup
         size="large"
         variant="text"
@@ -51,6 +40,17 @@ const HashTagSlider = (props) => {
           fontSize: font,
         }}
       >
+        <KeyboardArrowLeftIcon
+          onClick={() => handleArrows(-5)}
+          style={{
+            display: "inline-block",
+            verticalAlign: "middle",
+            fontSize: font,
+            color: "rgba(225, 162, 0, 1)",
+            cursor: "pointer",
+            marginRight: font,
+          }}
+        />
         {hashTags.slice(step - 5, step).map((item) => (
           <Link
             className="Link"
@@ -68,20 +68,19 @@ const HashTagSlider = (props) => {
             </Button>
           </Link>
         ))}
+        <KeyboardArrowRightIcon
+          onClick={() => handleArrows(5)}
+          style={{
+            display: "inline-block",
+            verticalAlign: "middle",
+            color: "rgba(225, 162, 0, 1)",
+            fontSize: font,
+            cursor: "pointer",
+
+            marginLeft: font,
+          }}
+        />
       </ButtonGroup>
-
-      <KeyboardArrowRightIcon
-        onClick={() => handleArrows(5)}
-        style={{
-          display: "inline-block",
-          verticalAlign: "middle",
-          color: "rgba(225, 162, 0, 1)",
-          fontSize: font,
-          cursor: "pointer",
-
-          marginLeft: font,
-        }}
-      />
     </div>
   );
 };

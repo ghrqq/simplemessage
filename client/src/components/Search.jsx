@@ -7,7 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { Link } from "@reach/router";
 import hashTagConverter from "../tools/hashTagConverter";
 
-const Search = () => {
+const Search = ({ handleClose }) => {
   const [searchParams, setsearchParams] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const [picked, setpicked] = useState("");
@@ -67,6 +67,7 @@ const Search = () => {
         <Link
           className="Link"
           to={`/hashtag/${hashTagConverter(picked, "percent")}`}
+          onClick={handleClose}
         >
           <IconButton type="submit" className="search-icon" aria-label="search">
             <SearchIcon size="60" />

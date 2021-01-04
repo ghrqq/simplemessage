@@ -67,6 +67,12 @@ const MenuFab = (props) => {
           </Link>
         )}
 
+        <Link className="Link" to="/about">
+          <MenuItem onClick={handleClose}>About</MenuItem>
+        </Link>
+        <Link className="Link" to="/FAQ">
+          <MenuItem onClick={handleClose}>FAQ</MenuItem>
+        </Link>
         <MenuItem onClick={handleClose}>
           {" "}
           {user.id ? (
@@ -80,7 +86,7 @@ const MenuFab = (props) => {
           )}
         </MenuItem>
         <MenuItem>
-          <Search />
+          <Search handleClose={handleClose} />
         </MenuItem>
       </Menu>
     </div>

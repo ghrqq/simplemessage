@@ -2,7 +2,7 @@ import "./App.css";
 import { Router, navigate } from "@reach/router";
 import React, { useEffect, useState } from "react";
 
-import Discover from "./pages/Discover";
+import About from "./pages/About";
 import Home from "./pages/Home";
 import Hashtag from "./pages/Hashtag";
 import UserMessages from "./pages/UserMessages";
@@ -94,9 +94,7 @@ function App() {
       let shadow = [...result.posts];
       const adsSplicedPosts = await adSplicer(shadow, limit, skip, adverts.ads);
       const imagePaths = adverts.ads.map((item) => item.imgPath);
-      // console.log("paths ", imagePaths);
-      // setplease(adsSplicedPosts);
-      // console.log(adsSplicedPosts);
+
       setposts(adsSplicedPosts);
       setcount(parseInt(result.count));
       setloading(false);
@@ -106,7 +104,8 @@ function App() {
       sethashtags(hastArrMerged);
     }
     getPosts();
-  }, []);
+    window.scrollTo(0, 0);
+  }, [refreshByEntry]);
 
   useEffect(() => {
     console.log("limit effect: ", limit, skip);
@@ -128,10 +127,6 @@ function App() {
         skip + 4,
         adverts.ads
       );
-      // const imagePaths = adverts.ads.map((item) => item.imgPath);
-      // console.log("paths ", imagePaths);
-      // setplease(adsSplicedPosts);
-      // console.log(adsSplicedPosts);
 
       setposts([...posts, ...adsSplicedPosts]);
       setloading(false);
@@ -160,35 +155,6 @@ function App() {
       setlimit(sumlim);
       setskip(sumskip);
     }
-
-    // const result = await (
-    //   await fetch(`http://localhost:4000/getrandom/${sumlim}/${sumskip}`, {
-    //     method: "GET",
-    //     credentials: "include",
-    //     headers: {
-    //       "Content-Type": "x-www-form-urlencoded",
-    //     },
-    //   })
-    // ).json();
-    // // setposts([...posts, ...result.posts]);
-    // let shadow = [...result.posts];
-    // const adsSplicedPosts = await adSplicer(
-    //   shadow,
-    //   limit + 4,
-    //   skip + 4,
-    //   adverts.ads
-    // );
-    // const imagePaths = adverts.ads.map((item) => item.imgPath);
-    // // console.log("paths ", imagePaths);
-    // // setplease(adsSplicedPosts);
-    // // console.log(adsSplicedPosts);
-    // setposts([...posts, ...adsSplicedPosts]);
-    // setloading(false);
-    // const hastArr = posts.map((item) => item.hashtags);
-    // const hastArrMerged = union(...hastArr);
-
-    // sethashtags(hastArrMerged);
-    // // window.scrollTo(0, 150);
   };
 
   useEffect(() => {
@@ -240,39 +206,6 @@ function App() {
     getUserId();
   }, [refresh]);
 
-  // useEffect(() => {
-  //   async function getByHashTag() {
-  //     if (selectedHashtag === "") {
-  //       return;
-  //     }
-
-  //     setloading(true);
-  //     const param = hashTagConverter(selectedHashtag);
-  //     const result = await (
-  //       await fetch(`http://localhost:4000/getbyhashtag/${param}`, {
-  //         method: "GET",
-  //         credentials: "include",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       })
-  //     ).json();
-
-  //     if (result.message) {
-  //       setmessage(result.message);
-  //     }
-
-  //     setposts(result);
-  //     setloading(false);
-  //     const hastArr = result.map((item) => item.hashtags);
-  //     const hastArrMerged = union(...hastArr);
-
-  //     sethashtags(hastArrMerged);
-  //   }
-
-  //   getByHashTag();
-  // }, [selectedHashtag]);
-
   const responsive = width < 800 ? "hashtag-container-s" : "hashtag-container";
 
   if (loading) return <MainSkeleton />;
@@ -297,7 +230,7 @@ function App() {
                     limit={limit}
                     count={count}
                   />
-                  <Discover path="/discover" />
+                  <About path="/about" />
                   <Hashtag path="/hashtag/:tagpercent" />
                   <UserMessages path="/usermessages/:id" />
                   <Profile path="/myprofile" />

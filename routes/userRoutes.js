@@ -14,6 +14,7 @@ const {
   sendToken,
   createConfirmToken,
 } = require("../tools/token");
+const { htmlMailCreator } = require("../tools/htmlMailCreator");
 const {
   checkToken,
   verifyTokenData,
@@ -167,19 +168,31 @@ const confirmMail = async (req, res) => {
   // user.userMail = userMail;
   // user.save();
 
-  const mail = {
-    from: "no-reply-confirm-mail@simplemsg.com", // Sender address
-    to: userMail, // List of recipients
-    subject: "Mail confirmation", // Subject line
-    text: `Click the link below to comfirm your mail: http://localhost:4000/confirmation/${code}`, // Plain text body
-  };
-  transport.sendMail(mail, function (err, info) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(info);
+  // const mail = {
+  //   from: "no-reply-confirm-mail@simplemsg.com", // Sender address
+  //   to: userMail, // List of recipients
+  //   subject: "Mail confirmation", // Subject line
+  //   text: `Click the link below to comfirm your mail: http://localhost:4000/confirmation/${code}`, // Plain text body
+  //   html: "<html><a href='abc'>Click this fucking shit.</a></html>",
+  // };
+
+  // (code, name, mail, route, type)
+  transport.sendMail(
+    htmlMailCreator(
+      code,
+      user.userName,
+      userMail,
+      "http://localhost:4000/confirmation",
+      "mailconfirm"
+    ),
+    function (err, info) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(info);
+      }
     }
-  });
+  );
 
   res.status(200).send({ message: "Please check your mailbox.", status: 200 });
 };
@@ -308,19 +321,23 @@ const addUserDetails = async (req, res) => {
     // user.userMail = userMail;
     // user.save();
 
-    const mail = {
-      from: "no-reply-confirm-mail@simplemsg.com", // Sender address
-      to: userMail, // List of recipients
-      subject: "Mail confirmation", // Subject line
-      text: `Click the link below to comfirm your mail: http://localhost:4000/confirmation/${code}`, // Plain text body
-    };
-    transport.sendMail(mail, function (err, info) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(info);
+    // (code, name, mail, route, type)
+    transport.sendMail(
+      htmlMailCreator(
+        code,
+        user.userName,
+        userMail,
+        "http://localhost:4000/confirmation",
+        "mailconfirm"
+      ),
+      function (err, info) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(info);
+        }
       }
-    });
+    );
 
     res
       .status(200)
@@ -358,13 +375,23 @@ const getBackYourAccount = async (req, res) => {
   });
 
   newConfirmation.save();
-  transport.sendMail(confirmationMailBody(code), function (err, info) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(info);
+  // (code, name, mail, route, type)
+  transport.sendMail(
+    htmlMailCreator(
+      code,
+      user.userName,
+      user.userMail,
+      "http://localhost:4000/confirmation",
+      "getback"
+    ),
+    function (err, info) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(info);
+      }
     }
-  });
+  );
 
   res.status(200).send({
     message: `Dear ${user.userName}, we got your request to get back your account. Please check your inbox (and spam folder) and follow the steps in there. `,

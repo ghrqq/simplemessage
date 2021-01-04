@@ -64,8 +64,24 @@ const GetBack = () => {
   };
 
   return (
-    <div>
-      <table style={{ marginTop: "3em" }}>
+    <div
+      style={{
+        marginTop: "3em",
+        display: "flex",
+        margin: "0 auto",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
+      <table
+        style={{
+          marginTop: "3em",
+          display: "flex",
+          margin: "0 auto",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
         <tr>
           <td>
             <InputText
