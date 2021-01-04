@@ -187,9 +187,9 @@ const confirmMail = async (req, res) => {
     ),
     function (err, info) {
       if (err) {
-        console.log(err);
+        throw new Error();
       } else {
-        console.log(info);
+        return;
       }
     }
   );
@@ -332,9 +332,9 @@ const addUserDetails = async (req, res) => {
       ),
       function (err, info) {
         if (err) {
-          console.log(err);
+          throw new Error();
         } else {
-          console.log(info);
+          return;
         }
       }
     );
@@ -386,9 +386,9 @@ const getBackYourAccount = async (req, res) => {
     ),
     function (err, info) {
       if (err) {
-        console.log(err);
+        throw new Error();
       } else {
-        console.log(info);
+        return;
       }
     }
   );
@@ -401,13 +401,10 @@ const getBackYourAccount = async (req, res) => {
 
 const confirmGetBack = async (req, res) => {
   const code = req.params.code;
-  console.log("code: ", code);
 
   const userConfirmation = await Confirmation.findOne({
     confirmationToken: code,
   });
-
-  console.log("userConfirmation: ", userConfirmation);
 
   if (!userConfirmation) {
     res.status(400).send({
@@ -478,7 +475,7 @@ const myProfile = async (req, res) => {
       });
     }
     const user = await User.findOne({ userId: id });
-    console.log("reqToken: ", reqToken, "user.token: ", user.token);
+
     if (reqToken !== user.token) {
       res.status(400).send({
         message: "Tokens do not match.",

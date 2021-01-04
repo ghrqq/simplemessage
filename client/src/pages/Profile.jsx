@@ -117,7 +117,7 @@ const Profile = () => {
         const ratedPosts = result.posts.filter((item) => item.rateCount > 0);
         if (ratedPosts.length > 1) {
           const bestRated = ratedPosts.sort((a, b) => b.rate - a.rate);
-          // console.log(bestRated);
+
           const best = bestRated[0];
           const worst = bestRated[ratedPosts.length - 1];
           setbestPost(best);

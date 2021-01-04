@@ -79,7 +79,6 @@ function App() {
   // Get first load of posts on initial render.
 
   useEffect(() => {
-    console.log("initial post req.");
     async function getPosts() {
       const result = await (
         await fetch(`http://localhost:4000/getrandom/20/0`, {
@@ -108,7 +107,6 @@ function App() {
   }, [refreshByEntry]);
 
   useEffect(() => {
-    console.log("limit effect: ", limit, skip);
     async function getPosts() {
       const result = await (
         await fetch(`http://localhost:4000/getrandom/20/0`, {
@@ -139,8 +137,6 @@ function App() {
   }, [limit]);
 
   const handleLimitChange = async () => {
-    console.log("Limit change fired.");
-
     let sumskip = skip;
     let sumlim = limit;
     if (limit + 20 <= count) {
@@ -217,7 +213,6 @@ function App() {
           <RefreshByEntryContext.Provider
             value={[refreshByEntry, setrefreshByEntry]}
           >
-            {console.log("rendered")}
             <div className="App">
               <div className={responsive}>
                 <HashTagSlider hashTags={hashtags} />

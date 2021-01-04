@@ -66,17 +66,11 @@ const getRandom = async (req, res) => {
   const lim = parseInt(req.params.lim);
   const skip = parseInt(req.params.skip);
 
-  console.log("lim: ", lim, "skip: ", skip);
-
   try {
     const posts = await Post.find({}).limit(20).skip(skip).sort({ date: -1 });
-    // const posts = await Post.find({}, null, { limit: lim, skip: skip }).sort({
-    //   date: -1,
-    // });
-    console.log("length: ", posts.length);
 
     const count = await Post.count({});
-    console.log("count: ", count);
+
     res.status(200).send({ posts, count });
   } catch (error) {
     res.status(400).send({
@@ -90,8 +84,7 @@ const getByHashTag = async (req, res) => {
   const hashtag = req.params.hashtag;
 
   try {
-    const posts = await Post.find({ hashtags: hashtag })
-    .sort({ date: -1 });
+    const posts = await Post.find({ hashtags: hashtag }).sort({ date: -1 });
 
     const hashTagsRaw = posts.map((item) => item.hashtags);
     const hashtags = union(...hashTagsRaw);

@@ -12,12 +12,7 @@
   /* background-color: #1b1a18; */
   z-index: -999;
 }
-#root {
-  /* background-color: #1b1a18; */
-}
-.app {
-  /* background-color: #1b1a18; */
-}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Oswald, "Segoe UI", "Roboto",
