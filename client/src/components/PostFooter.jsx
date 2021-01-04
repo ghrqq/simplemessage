@@ -16,27 +16,76 @@ import {
   WorkplaceIcon,
 } from "react-share";
 
-const PostFooter = () => {
+const PostFooter = ({ id, message, hashtags }) => {
+  const msgSlicer = () => {
+    return Math.floor(message.length / 3) + 1;
+  };
+
   return (
     <div>
-      <EmailShareButton subject="Check this Mssngr post!">
+      <EmailShareButton
+        openShareDialogOnClick={true}
+        subject="Check this SimpleMessage post!"
+        body={message}
+        url={`http://localhost:3000/post/${id}`}
+        seperator="&&&"
+      >
         <EmailIcon size={32} round />
       </EmailShareButton>
-      <FacebookShareButton url="https://github.com">
+      <FacebookShareButton
+        // url={`http://localhost:3000/post/${id}`}
+        url="https://github.com"
+        hashtag="#SimpleMessage"
+        quote={
+          message.slice(0, Math.floor(message.length / 3) + 1) +
+          "... SEE THE REST IN SIMPLEMESSAGE!"
+        }
+      >
         {" "}
         <FacebookIcon size={32} round />
       </FacebookShareButton>
 
-      <LinkedinShareButton>
+      <LinkedinShareButton
+        url={`http://localhost:3000/post/${id}`}
+        title="SimpleMessage Post!"
+        summary={
+          message.slice(0, Math.floor(message.length / 3) + 1) +
+          "... SEE THE REST IN SIMPLEMESSAGE!"
+        }
+        source="http://localhost:3000"
+      >
         <LinkedinIcon size={32} round />
       </LinkedinShareButton>
-      <TwitterShareButton url="https://github.com">
+      <TwitterShareButton
+        // url={`http://localhost:3000/post/${id}`}
+        url="https://github.com"
+        title={`Check this simple message post: ${message.slice(
+          0,
+          Math.floor(message.length / 3) + 1
+        )} ... SEE THE REST IN SIMPLEMESSAGE!`}
+        via="SimpleMessage"
+        hashtags={hashtags.map((item) => item.slice(1, item.length - 1))}
+        related={["SimpleMessage"]}
+      >
         <TwitterIcon size={32} round />
       </TwitterShareButton>
-      <WhatsappShareButton>
+      <WhatsappShareButton
+        url={`http://localhost:3000/post/${id}`}
+        title={
+          message.slice(0, Math.floor(message.length / 3) + 1) +
+          "... SEE THE REST IN SIMPLEMESSAGE!"
+        }
+      >
         <WhatsappIcon size={32} round />{" "}
       </WhatsappShareButton>
-      <WorkplaceShareButton>
+      <WorkplaceShareButton
+        url={`http://localhost:3000/post/${id}`}
+        quote={
+          message.slice(0, Math.floor(message.length / 3) + 1) +
+          "... SEE THE REST IN SIMPLEMESSAGE!"
+        }
+        hashtag="#SimpleMessage"
+      >
         <WorkplaceIcon size={32} round />
       </WorkplaceShareButton>
     </div>

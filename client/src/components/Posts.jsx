@@ -6,6 +6,7 @@ import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import PostButtons from "./PostButtons";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import hashTagConverter from "../tools/hashTagConverter";
 
 // import shit from "../adimgs/freecodecamp.jpeg";
 
@@ -43,6 +44,7 @@ const Posts = (props) => {
     isAd,
     imgPath,
     alias,
+    hashtags,
   } = props.post;
 
   const handleMouseOnUserDetails = () => {
@@ -134,7 +136,7 @@ const Posts = (props) => {
               name={creatorName ? creatorName : "Top-Secret"}
               id={creatorId}
             />
-            <PostFooter />
+            <PostFooter id={_id} message={message} hashtags={hashtags} />
             {user.id === creatorId ? (
               <div className="post-button-delete" onClick={() => deletePost()}>
                 {" "}

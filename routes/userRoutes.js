@@ -113,11 +113,7 @@ const checkUserId = async (req, res) => {
       favoriteHashtags: user.favoriteHashtags,
     });
   } catch (error) {
-    res.status(400).send({
-      error: `Error catched: ${error.message}`,
-
-      status: 400,
-    });
+    console.log(`Error catched: ${error.message}`);
   }
 };
 
@@ -182,7 +178,7 @@ const confirmMail = async (req, res) => {
       code,
       user.userName,
       userMail,
-      "http://localhost:4000/confirmation",
+      "http://localhost:3000/confirmation",
       "mailconfirm"
     ),
     function (err, info) {
@@ -213,6 +209,7 @@ const confirmation = async (req, res) => {
           "Your confirmation code is expired or false. Please get a new one.",
         status: 400,
       });
+      return;
     }
 
     const { id, mail } = checkConfirmToken(code);
@@ -222,6 +219,7 @@ const confirmation = async (req, res) => {
         message: "Some data is missing in your token. Please get a new one. ",
         status: 400,
       });
+      return;
     }
 
     const userToConfirm = await User.findOne({ userId: id });
@@ -231,6 +229,7 @@ const confirmation = async (req, res) => {
         message: "Looks like there is no user with given ID.",
         status: 400,
       });
+      return;
     }
     if (userToConfirm.userMail === mail) {
       (userToConfirm.isMailConfirmed = true), userToConfirm.save();
@@ -242,10 +241,7 @@ const confirmation = async (req, res) => {
       res.status(400).send({ message: "Fucked up", status: 400 });
     }
   } catch (error) {
-    res.status(400).send({
-      error: `Error catched: ${error.message}`,
-      status: 400,
-    });
+    console.log(`Error catched line 241: ${error.message}`);
   }
 };
 
@@ -327,7 +323,7 @@ const addUserDetails = async (req, res) => {
         code,
         user.userName,
         userMail,
-        "http://localhost:4000/confirmation",
+        "http://localhost:3000/confirmation",
         "mailconfirm"
       ),
       function (err, info) {
@@ -381,7 +377,7 @@ const getBackYourAccount = async (req, res) => {
       code,
       user.userName,
       user.userMail,
-      "http://localhost:4000/confirmation",
+      "http://localhost:3000/confirmation",
       "getback"
     ),
     function (err, info) {
@@ -429,8 +425,7 @@ const confirmGetBack = async (req, res) => {
   sendToken(res, token);
 
   res.status(200).send({
-    message:
-      "New configurations are successfuly set. Please refresh the page, and you are good to go!",
+    message: "New configurations are successfuly set. You are good to go!",
     status: 200,
   });
 };

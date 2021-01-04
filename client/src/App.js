@@ -9,6 +9,8 @@ import UserMessages from "./pages/UserMessages";
 import FAQ from "./pages/FAQ";
 import Profile from "./pages/Profile";
 import GetBack from "./pages/GetBack";
+import ConfirmationLanding from "./pages/ConfirmationLanding";
+import SinglePost from "./pages/SinglePost";
 
 import { union } from "lodash";
 import hashTagConverter from "./tools/hashTagConverter";
@@ -230,6 +232,8 @@ function App() {
                   <UserMessages path="/usermessages/:id" />
                   <Profile path="/myprofile" />
                   <GetBack path="/getbackmyaccount" />
+                  <SinglePost path="/post/:id" />
+                  <ConfirmationLanding path="/confirmation/:code" />
 
                   <FAQ default />
                 </Router>

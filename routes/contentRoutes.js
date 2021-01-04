@@ -79,6 +79,27 @@ const getRandom = async (req, res) => {
   }
 };
 
+// Get a single post by ID
+
+const singlePost = async (req, res) => {
+  const { id } = req.params;
+
+  const post = await Post.findById(id);
+
+  if (post === undefined || !post) {
+    res.status(404).send({
+      message:
+        "Not found. Post must be deleted by creator or maybe it never existed.",
+      status: 404,
+    });
+  }
+
+  res.status(200).send({
+    post,
+    status: 200,
+  });
+};
+
 // Get posts by hashtag
 const getByHashTag = async (req, res) => {
   const hashtag = req.params.hashtag;
@@ -196,4 +217,5 @@ module.exports = {
   deletePost,
   getSearchParams,
   getUserPosts,
+  singlePost,
 };

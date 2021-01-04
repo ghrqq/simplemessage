@@ -31,6 +31,7 @@ const {
   deletePost,
   getSearchParams,
   getUserPosts,
+  singlePost,
 } = require("./routes/contentRoutes");
 const { rateMessage } = require("./routes/rateRoutes");
 
@@ -86,6 +87,7 @@ app.post("/myprofile", async (req, res) => myProfile(req, res));
 
 // Content Routes
 
+app.get("/singlepost/:id", async (req, res) => singlePost(req, res));
 app.post("/sendmessage", async (req, res) => sendMessage(req, res));
 app.get("/getrandom/:lim/:skip", async (req, res) => getRandom(req, res));
 app.get("/getbyhashtag/:hashtag", async (req, res) => getByHashTag(req, res));
