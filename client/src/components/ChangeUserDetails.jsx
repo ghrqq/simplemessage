@@ -78,7 +78,10 @@ const ChangeUserDetails = (props) => {
   };
 
   return (
-    <div className="userdata-container inline-container">
+    <div
+      className="userdata-container inline-container"
+      style={{ color: "white" }}
+    >
       <table>
         <tr>
           <th></th>

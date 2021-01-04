@@ -65,7 +65,7 @@ const GetBack = () => {
 
   return (
     <div>
-      <table>
+      <table style={{ marginTop: "3em" }}>
         <tr>
           <td>
             <InputText

@@ -42,6 +42,7 @@ const Posts = (props) => {
     link,
     isAd,
     imgPath,
+    alias,
   } = props.post;
 
   const handleMouseOnUserDetails = () => {
@@ -72,15 +73,42 @@ const Posts = (props) => {
 
   if (isAd && isAd === true) {
     // import(imgPath).then((img) => setimage(img));
-    console.log("imgPath: ", imgPath);
+
     const postImage = require(`${imgPath}`);
-    console.log(postImage);
 
     return (
-      <div className="post-button-body">
-        <a href={link} target="_blank">
-          <img src={postImage.default} />
-          {message}
+      <div
+        className="grid-container"
+        style={{ display: displayVar }}
+        key={_id}
+        onMouseEnter={handleMouse}
+        onMouseLeave={handleMouse}
+      >
+        <a
+          href={link}
+          target="_blank"
+          style={{ color: "white", textDecoration: "none" }}
+        >
+          <div className="post-body">
+            <img src={postImage.default} />
+            <h4 style={{ color: "white" }}>{alias}</h4>
+
+            <p
+              style={{
+                fontSize:
+                  message.length < 150
+                    ? "1.2em"
+                    : message.length > 400
+                    ? "0.8em"
+                    : null,
+                textJustify: "justify",
+                padding: "5px 15px",
+                margin: "auto",
+              }}
+            >
+              {message}
+            </p>
+          </div>
         </a>
       </div>
     );

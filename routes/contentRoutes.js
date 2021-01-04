@@ -91,8 +91,7 @@ const getByHashTag = async (req, res) => {
 
   try {
     const posts = await Post.find({ hashtags: hashtag })
-      .limit(10)
-      .sort({ date: -1 });
+    .sort({ date: -1 });
 
     const hashTagsRaw = posts.map((item) => item.hashtags);
     const hashtags = union(...hashTagsRaw);

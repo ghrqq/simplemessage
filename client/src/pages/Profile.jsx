@@ -132,8 +132,9 @@ const Profile = () => {
 
           setposts(other);
           const best = ratedPosts[0];
+          const worst = ratedPosts[ratedPosts.length - 1];
           setbestPost(best);
-          setworstPost(best);
+          setworstPost(worst);
           setisLoading(false);
         }
       } else {
@@ -166,21 +167,25 @@ const Profile = () => {
         userRate={userData !== undefined ? userData.rate : 0}
       />
 
-      <h2>Your Hashtags</h2>
+      <h2 style={{ color: "white" }}>Your Hashtags</h2>
       <HashTagSlider hashTags={hashtags} />
-      <h2>Your Rated Posts</h2>
+      <h2 style={{ color: "white" }}>Your Rated Posts</h2>
       <div style={{ width: "80%" }}>
         <div className="post-container">
           {rated.length === 0 || rated === undefined ? (
-            <div>None of your posts has been rated yet.</div>
+            <div style={{ color: "white" }}>
+              None of your posts has been rated yet.
+            </div>
           ) : (
             rated.map((item) => <Posts post={item} />)
           )}
         </div>
-        <h2>Your Unrated Posts</h2>
+        <h2 style={{ color: "white" }}>Your Unrated Posts</h2>
         <div className="post-container">
           {posts === [] || posts.length === 0 ? (
-            <div>You do not have any unrated posts.</div>
+            <div style={{ color: "white" }}>
+              You do not have any unrated posts.
+            </div>
           ) : (
             posts.map((item) => <Posts post={item} />)
           )}

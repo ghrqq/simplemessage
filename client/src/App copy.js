@@ -36,7 +36,7 @@ function App() {
   const [refreshByEntry, setrefreshByEntry] = useState(0);
   // const [userToken, setuserToken] = useState(Cookies.get());
   const [hashtagStyles, sethashtagStyles] = useState("hashtag-container");
-  const [posts, setposts] = useState([]);
+  const [posts, setposts] = useState({});
   const [loading, setloading] = useState(true);
   const [limit, setlimit] = useState(20);
   const [skip, setskip] = useState(0);
@@ -57,7 +57,6 @@ function App() {
     "#Creative",
   ]);
   const { height, width } = useWindowDimensions();
-
   const logOutCallback = async () => {
     const result = await (
       await fetch("http://localhost:4000/clearuser", {
@@ -76,10 +75,7 @@ function App() {
     setisAlert(true);
   };
 
-  // Get first load of posts on initial render.
-
   useEffect(() => {
-    console.log("initial post req.");
     async function getPosts() {
       const result = await (
         await fetch(`http://localhost:4000/getrandom/20/0`, {
@@ -106,46 +102,9 @@ function App() {
       sethashtags(hastArrMerged);
     }
     getPosts();
-  }, []);
-
-  useEffect(() => {
-    console.log("limit effect: ", limit, skip);
-    async function getPosts() {
-      const result = await (
-        await fetch(`http://localhost:4000/getrandom/20/0`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "x-www-form-urlencoded",
-          },
-        })
-      ).json();
-
-      let shadow = [...result.posts];
-      const adsSplicedPosts = await adSplicer(
-        shadow,
-        limit + 4,
-        skip + 4,
-        adverts.ads
-      );
-      // const imagePaths = adverts.ads.map((item) => item.imgPath);
-      // console.log("paths ", imagePaths);
-      // setplease(adsSplicedPosts);
-      // console.log(adsSplicedPosts);
-
-      setposts([...posts, ...adsSplicedPosts]);
-      setloading(false);
-      const hastArr = result.posts.map((item) => item.hashtags);
-      const hastArrMerged = union(...hastArr);
-
-      sethashtags(hastArrMerged);
-    }
-    getPosts();
-  }, [limit]);
+  }, [refreshByEntry]);
 
   const handleLimitChange = async () => {
-    console.log("Limit change fired.");
-
     let sumskip = skip;
     let sumlim = limit;
     if (limit + 20 <= count) {
@@ -161,34 +120,34 @@ function App() {
       setskip(sumskip);
     }
 
-    // const result = await (
-    //   await fetch(`http://localhost:4000/getrandom/${sumlim}/${sumskip}`, {
-    //     method: "GET",
-    //     credentials: "include",
-    //     headers: {
-    //       "Content-Type": "x-www-form-urlencoded",
-    //     },
-    //   })
-    // ).json();
-    // // setposts([...posts, ...result.posts]);
-    // let shadow = [...result.posts];
-    // const adsSplicedPosts = await adSplicer(
-    //   shadow,
-    //   limit + 4,
-    //   skip + 4,
-    //   adverts.ads
-    // );
-    // const imagePaths = adverts.ads.map((item) => item.imgPath);
-    // // console.log("paths ", imagePaths);
-    // // setplease(adsSplicedPosts);
-    // // console.log(adsSplicedPosts);
-    // setposts([...posts, ...adsSplicedPosts]);
-    // setloading(false);
-    // const hastArr = posts.map((item) => item.hashtags);
-    // const hastArrMerged = union(...hastArr);
+    const result = await (
+      await fetch(`http://localhost:4000/getrandom/${sumlim}/${sumskip}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "x-www-form-urlencoded",
+        },
+      })
+    ).json();
+    // setposts([...posts, ...result.posts]);
+    let shadow = [...result.posts];
+    const adsSplicedPosts = await adSplicer(
+      shadow,
+      limit + 4,
+      skip + 4,
+      adverts.ads
+    );
+    const imagePaths = adverts.ads.map((item) => item.imgPath);
+    // console.log("paths ", imagePaths);
+    // setplease(adsSplicedPosts);
+    // console.log(adsSplicedPosts);
+    setposts([...posts, ...adsSplicedPosts]);
+    setloading(false);
+    const hastArr = posts.map((item) => item.hashtags);
+    const hastArrMerged = union(...hastArr);
 
-    // sethashtags(hastArrMerged);
-    // // window.scrollTo(0, 150);
+    sethashtags(hastArrMerged);
+    // window.scrollTo(0, 150);
   };
 
   useEffect(() => {
@@ -284,7 +243,6 @@ function App() {
           <RefreshByEntryContext.Provider
             value={[refreshByEntry, setrefreshByEntry]}
           >
-            {console.log("rendered")}
             <div className="App">
               <div className={responsive}>
                 <HashTagSlider hashTags={hashtags} />

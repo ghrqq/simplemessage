@@ -13,7 +13,7 @@ const Home = (props) => {
         {post === {} ? (
           <div>Loading...</div>
         ) : (
-          post.map((item) => <Posts post={item} />)
+          post.map((item) => <Posts post={item} index={post.indexOf(item)} />)
         )}
       </div>
       {props.limit < props.count ? (

@@ -4,6 +4,8 @@ import Posts from "../components/Posts";
 import HashTagSlider from "../components/HashTagSlider";
 import AlertDisplayer from "../components/AlertDisplayer";
 
+import adSplicer from "../tools/adSplicerGenImported";
+
 export const Hashtag = (props) => {
   const [isAlert, setisAlert] = useState(false);
   const [message, setmessage] = useState("");
@@ -11,6 +13,7 @@ export const Hashtag = (props) => {
   const [posts, setposts] = useState([]);
   const [hashtags, sethashtags] = useState([]);
   const [isLoading, setisLoading] = useState(true);
+
   useEffect(() => {
     async function getPostsByHashtag() {
       const result = await (
@@ -28,7 +31,9 @@ export const Hashtag = (props) => {
         setisAlert(true);
         setisLoading(false);
       }
-      setposts(result.posts);
+      let shadow = [...result.posts];
+      const adsSplicedPosts = await adSplicer(shadow, posts.length, 5);
+      setposts(adsSplicedPosts);
       sethashtags(result.hashtags);
       setisLoading(false);
     }
@@ -37,7 +42,7 @@ export const Hashtag = (props) => {
 
   return (
     <div className="component-container">
-      <h2>Related Hashtags</h2>
+      <h2 style={{ color: "white" }}>Related Hashtags</h2>
       <HashTagSlider hashTags={hashtags} />
       <div className="post-container">
         {posts === [] ? (

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Posts from "../components/Posts";
 import HashTagSlider from "../components/HashTagSlider";
+import adSplicer from "../tools/adSplicerGenImported";
 
 const UserMessages = (props) => {
   const [message, setmessage] = useState("");
@@ -23,7 +24,12 @@ const UserMessages = (props) => {
         setmessage(result.message);
         setisLoading(false);
       }
-      setposts(result.posts);
+      // setposts(result.posts);
+      // sethashtags(result.hashtags);
+      // setisLoading(false);
+      let shadow = [...result.posts];
+      const adsSplicedPosts = await adSplicer(shadow, result.posts.length, 5);
+      setposts(adsSplicedPosts);
       sethashtags(result.hashtags);
       setisLoading(false);
     }
@@ -33,7 +39,7 @@ const UserMessages = (props) => {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div className="component-container">
+    <div className="component-container" style={{ color: "white" }}>
       <div style={{ marginBottom: "1em" }}>
         <h2>Users Hashtags</h2>
         <HashTagSlider hashTags={hashtags} />
