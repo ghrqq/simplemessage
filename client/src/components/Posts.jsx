@@ -57,7 +57,7 @@ const Posts = (props) => {
 
   const deletePost = async () => {
     const result = await (
-      await fetch("http://localhost:4000/deletepost", {
+      await fetch("/api/deletepost", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

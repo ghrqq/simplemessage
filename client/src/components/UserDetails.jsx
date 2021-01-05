@@ -25,7 +25,7 @@ const UserDetails = (props) => {
   const getUserDetails = async () => {
     setisLoading(true);
     const result = await (
-      await fetch(`http://localhost:4000/userprofile/${id}`, {
+      await fetch(`/api/userprofile/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

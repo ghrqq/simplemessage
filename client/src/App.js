@@ -62,7 +62,7 @@ function App() {
 
   const logOutCallback = async () => {
     const result = await (
-      await fetch("http://localhost:4000/clearuser", {
+      await fetch("/api/clearuser", {
         method: "POST",
         credentials: "include",
       })
@@ -83,7 +83,7 @@ function App() {
   useEffect(() => {
     async function getPosts() {
       const result = await (
-        await fetch(`http://localhost:4000/getrandom/20/0`, {
+        await fetch(`/api/getrandom/20/0`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -111,7 +111,7 @@ function App() {
   useEffect(() => {
     async function getPosts() {
       const result = await (
-        await fetch(`http://localhost:4000/getrandom/20/0`, {
+        await fetch(`/api/getrandom/20/0`, {
           method: "GET",
           credentials: "include",
           headers: {
@@ -179,7 +179,7 @@ function App() {
   useEffect(() => {
     async function getUserId() {
       const result = await (
-        await fetch("http://localhost:4000/checkuserid", {
+        await fetch("/api/checkuserid", {
           method: "POST",
           credentials: "include",
           headers: {

@@ -14,7 +14,7 @@ const ConfirmationLanding = (props) => {
     async function Confirm() {
       if (props.code.length < 10) {
         const result = await (
-          await fetch(`http://localhost:4000/confirmgetback/${props.code}`, {
+          await fetch(`/api/confirmgetback/${props.code}`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -35,7 +35,7 @@ const ConfirmationLanding = (props) => {
         }
       } else {
         const result = await (
-          await fetch(`http://localhost:4000/confirmation/${props.code}`, {
+          await fetch(`/api/confirmation/${props.code}`, {
             method: "GET",
             credentials: "include",
             headers: {

@@ -66,7 +66,7 @@ export default function CreateMessage(props) {
       return;
     }
     const result = await (
-      await fetch("http://localhost:4000/getuserid", {
+      await fetch("/api/getuserid", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -104,7 +104,7 @@ export default function CreateMessage(props) {
     }
 
     const result = await (
-      await fetch("http://localhost:4000/adduserdetails", {
+      await fetch("/api/adduserdetails", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -123,7 +123,7 @@ export default function CreateMessage(props) {
     if (result.userMail) {
       let mailToConfirm = { userMail: result.userMail };
 
-      const confirmation = await fetch("http://localhost:4000/confirmmail", {
+      const confirmation = await fetch("/api/confirmmail", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -162,7 +162,7 @@ export default function CreateMessage(props) {
       hashtagsToShow,
     };
     const result = await (
-      await fetch("http://localhost:4000/sendmessage", {
+      await fetch("/api/sendmessage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -33,8 +33,7 @@ const PostFooter = ({ id, message, hashtags }) => {
         <EmailIcon size={32} round />
       </EmailShareButton>
       <FacebookShareButton
-        // url={`http://localhost:3000/post/${id}`}
-        url="https://github.com"
+        url={`http://localhost:3000/post/${id}`}
         hashtag="#SimpleMessage"
         quote={
           message.slice(0, Math.floor(message.length / 3) + 1) +

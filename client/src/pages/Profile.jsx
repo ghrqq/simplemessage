@@ -49,7 +49,7 @@ const Profile = () => {
 
   const handleSubmit = async () => {
     const result = await (
-      await fetch("http://localhost:4000/adduserdetails", {
+      await fetch("/api/adduserdetails", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -78,7 +78,7 @@ const Profile = () => {
     if (state.isConfirm === true || isValid === true) {
       let mailToConfirm = { userMail: userData.userMail };
 
-      const confirmation = await fetch("http://localhost:4000/confirmmail", {
+      const confirmation = await fetch("/api/confirmmail", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -97,7 +97,7 @@ const Profile = () => {
     setisLoading(true);
     async function getMyProfile() {
       const result = await (
-        await fetch("http://localhost:4000/myprofile", {
+        await fetch("/api/myprofile", {
           method: "POST",
           credentials: "include",
           headers: {

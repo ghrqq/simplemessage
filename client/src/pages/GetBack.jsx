@@ -24,7 +24,7 @@ const GetBack = () => {
     setisMailValid(valid);
     if (valid === true) {
       const result = await (
-        await fetch("http://localhost:4000/getbackyouraccount", {
+        await fetch("/api/getbackyouraccount", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -45,7 +45,7 @@ const GetBack = () => {
 
   const handleCodeSubmit = async () => {
     const result = await (
-      await fetch(`http://localhost:4000/confirmgetback/${code}`, {
+      await fetch(`/api/confirmgetback/${code}`, {
         method: "GET",
         credentials: "include",
         headers: {

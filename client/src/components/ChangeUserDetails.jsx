@@ -45,7 +45,7 @@ const ChangeUserDetails = (props) => {
     }
 
     const result = await (
-      await fetch("http://localhost:4000/adduserdetails", {
+      await fetch("/api/adduserdetails", {
         method: "POST",
         credentials: "include",
         headers: {

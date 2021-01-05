@@ -17,7 +17,7 @@ export const Hashtag = (props) => {
   useEffect(() => {
     async function getPostsByHashtag() {
       const result = await (
-        await fetch(`http://localhost:4000/getbyhashtag/${props.tagpercent}`, {
+        await fetch(`/api/getbyhashtag/${props.tagpercent}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -18,7 +18,7 @@ const SinglePost = ({ id }) => {
     setisLoading(true);
     async function getSinglePost() {
       const result = await (
-        await fetch(`http://localhost:4000/singlepost/${id}`, {
+        await fetch(`/api/singlepost/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -15,7 +15,7 @@ const Search = ({ handleClose }) => {
   useEffect(() => {
     async function getParams() {
       const result = await (
-        await fetch("http://localhost:4000/getsearchparams", {
+        await fetch("/api/getsearchparams", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

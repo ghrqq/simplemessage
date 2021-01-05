@@ -4,8 +4,9 @@
   "description": "A simple MERN Stack app to display random messages from other users by categories.",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
   "repository": {
     "type": "git",
@@ -36,5 +37,8 @@
     "mongoose": "^5.11.7",
     "nodemailer": "^6.4.17",
     "uuid": "^8.3.2"
+  },
+  "engines": {
+    "node": "12.16.2"
   }
 }

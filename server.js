@@ -71,47 +71,48 @@ app.use(
   })
 );
 
+app.use(express.static(path.join(__dirname, "client", "build")));
+
 // User Routes
 
-app.post("/clearuser", (_req, res) => clearUser(_req, res));
+app.post("/api/clearuser", (_req, res) => clearUser(_req, res));
 
-app.post("/getuserid", async (req, res) => getUserId(req, res));
-app.post("/checkuserid", async (req, res) => checkUserId(req, res));
-app.post("/confirmmail", async (req, res) => confirmMail(req, res));
-app.get("/confirmation/:code", async (req, res) => confirmation(req, res));
-app.post("/adduserdetails", async (req, res) => addUserDetails(req, res));
-app.post("/getbackyouraccount", async (req, res) =>
+app.post("/api/getuserid", async (req, res) => getUserId(req, res));
+app.post("/api/checkuserid", async (req, res) => checkUserId(req, res));
+app.post("/api/confirmmail", async (req, res) => confirmMail(req, res));
+app.get("/api/confirmation/:code", async (req, res) => confirmation(req, res));
+app.post("/api/adduserdetails", async (req, res) => addUserDetails(req, res));
+app.post("/api/getbackyouraccount", async (req, res) =>
   getBackYourAccount(req, res)
 );
-app.get("/confirmgetback/:code", async (req, res) => confirmGetBack(req, res));
-app.get("/userprofile/:user", async (req, res) => userProfile(req, res));
-app.post("/myprofile", async (req, res) => myProfile(req, res));
+app.get("/api/confirmgetback/:code", async (req, res) =>
+  confirmGetBack(req, res)
+);
+app.get("/api/userprofile/:user", async (req, res) => userProfile(req, res));
+app.post("/api/myprofile", async (req, res) => myProfile(req, res));
 
 // Content Routes
 
-app.get("/singlepost/:id", async (req, res) => singlePost(req, res));
-app.post("/sendmessage", async (req, res) => sendMessage(req, res));
-app.get("/getrandom/:lim/:skip", async (req, res) => getRandom(req, res));
-app.get("/getbyhashtag/:hashtag", async (req, res) => getByHashTag(req, res));
-app.delete("/deletepost", async (req, res) => deletePost(req, res));
-app.get("/getsearchparams", async (req, res) => getSearchParams(req, res));
-app.get("/getuserposts/:id", async (req, res) => getUserPosts(req, res));
+app.get("/api/singlepost/:id", async (req, res) => singlePost(req, res));
+app.post("/api/sendmessage", async (req, res) => sendMessage(req, res));
+app.get("/api/getrandom/:lim/:skip", async (req, res) => getRandom(req, res));
+app.get("/api/getbyhashtag/:hashtag", async (req, res) =>
+  getByHashTag(req, res)
+);
+app.delete("/api/deletepost", async (req, res) => deletePost(req, res));
+app.get("/api/getsearchparams", async (req, res) => getSearchParams(req, res));
+app.get("/api/getuserposts/:id", async (req, res) => getUserPosts(req, res));
 
 // Rate Routes
-app.post("/ratemessage", async (req, res) => rateMessage(req, res));
+app.post("/api/ratemessage", async (req, res) => rateMessage(req, res));
 
-app.get("/", (_req, res) => {
+app.get("/api/", (_req, res) => {
   res.send(`Hello again `);
 });
 
-if (process.env.NODE_ENV === "production") {
-  // set static folder
-  app.use(express.static("client/build"));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
-}
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
 
 const PORT = process.env.PORT || 4000;
 

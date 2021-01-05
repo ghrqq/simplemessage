@@ -12,7 +12,7 @@ const UserMessages = (props) => {
   useEffect(() => {
     async function getUserPosts() {
       const result = await (
-        await fetch(`http://localhost:4000/getuserposts/${props.id}`, {
+        await fetch(`/api/getuserposts/${props.id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

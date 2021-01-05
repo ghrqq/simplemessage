@@ -40,7 +40,7 @@ const Voter = (props) => {
     };
 
     const result = await (
-      await fetch("http://localhost:4000/ratemessage", {
+      await fetch("/api/ratemessage", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
