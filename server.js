@@ -107,7 +107,7 @@ app.get("/api/getuserposts/:id", async (req, res) => getUserPosts(req, res));
 app.post("/api/ratemessage", async (req, res) => rateMessage(req, res));
 
 app.get("/api/", (_req, res) => {
-  res.send(`Hello again `);
+  res.send(`Hi `);
 });
 
 app.get("*", (req, res) => {
