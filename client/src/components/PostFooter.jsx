@@ -18,7 +18,7 @@ import {
 
 const PostFooter = ({ id, message, hashtags }) => {
   const msgSlicer = () => {
-    return Math.floor(message.length / 3) + 1;
+    return Math.floor(message.length / 2) + 1;
   };
 
   return (
@@ -27,16 +27,16 @@ const PostFooter = ({ id, message, hashtags }) => {
         openShareDialogOnClick={true}
         subject="Check this SimpleMessage post!"
         body={message}
-        url={`http://localhost:3000/post/${id}`}
+        url={`https://simplemessage.herokuapp.com/post/${id}`}
         seperator="&&&"
       >
         <EmailIcon size={32} round />
       </EmailShareButton>
       <FacebookShareButton
-        url={`http://localhost:3000/post/${id}`}
+        url={`https://simplemessage.herokuapp.com/post/${id}`}
         hashtag="#SimpleMessage"
         quote={
-          message.slice(0, Math.floor(message.length / 3) + 1) +
+          message.slice(0, Math.floor(message.length / 2) + 1) +
           "... SEE THE REST IN SIMPLEMESSAGE!"
         }
       >
@@ -45,42 +45,41 @@ const PostFooter = ({ id, message, hashtags }) => {
       </FacebookShareButton>
 
       <LinkedinShareButton
-        url={`http://localhost:3000/post/${id}`}
+        url={`https://simplemessage.herokuapp.com/post/${id}`}
         title="SimpleMessage Post!"
         summary={
-          message.slice(0, Math.floor(message.length / 3) + 1) +
+          message.slice(0, Math.floor(message.length / 2) + 1) +
           "... SEE THE REST IN SIMPLEMESSAGE!"
         }
-        source="http://localhost:3000"
+        source="https://simplemessage.herokuapp.com/"
       >
         <LinkedinIcon size={32} round />
       </LinkedinShareButton>
       <TwitterShareButton
-        // url={`http://localhost:3000/post/${id}`}
-        url="https://github.com"
+        url={`https://simplemessage.herokuapp.com/post/${id}`}
         title={`Check this simple message post: ${message.slice(
           0,
-          Math.floor(message.length / 3) + 1
+          Math.floor(message.length / 2) + 1
         )} ... SEE THE REST IN SIMPLEMESSAGE!`}
         via="SimpleMessage"
-        hashtags={hashtags.map((item) => item.slice(1, item.length - 1))}
+        hashtags={hashtags.map((item) => item.slice(1, item.length))}
         related={["SimpleMessage"]}
       >
         <TwitterIcon size={32} round />
       </TwitterShareButton>
       <WhatsappShareButton
-        url={`http://localhost:3000/post/${id}`}
+        url={`https://simplemessage.herokuapp.com/post/${id}`}
         title={
-          message.slice(0, Math.floor(message.length / 3) + 1) +
+          message.slice(0, Math.floor(message.length / 2) + 1) +
           "... SEE THE REST IN SIMPLEMESSAGE!"
         }
       >
         <WhatsappIcon size={32} round />{" "}
       </WhatsappShareButton>
       <WorkplaceShareButton
-        url={`http://localhost:3000/post/${id}`}
+        url={`https://simplemessage.herokuapp.com/post/${id}`}
         quote={
-          message.slice(0, Math.floor(message.length / 3) + 1) +
+          message.slice(0, Math.floor(message.length / 2) + 1) +
           "... SEE THE REST IN SIMPLEMESSAGE!"
         }
         hashtag="#SimpleMessage"

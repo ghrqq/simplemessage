@@ -3,24 +3,13 @@ const nodemailer = require("nodemailer");
 const { htmlMailCreator } = require("./htmlMailCreator");
 
 const transport = nodemailer.createTransport({
-  host: "smtp.mailtrap.io",
-  port: 2525,
+  host: process.env.mailHost,
+  port: process.env.mailPort,
   auth: {
     user: process.env.mailUser,
     pass: process.env.mailPass,
   },
 });
-
-const message = {
-  from: "elonmusk@tesla.com", // Sender address
-  to: "to@email.com", // List of recipients
-  subject: "Design Your Model S | Tesla", // Subject line
-  text: "Have the most fun you can in a car. Get your Tesla today!", // Plain text body
-};
-
-const htmlCompiler = () => {
-  return "<html><a href='abc'>Click this fucking shit.</a></html>";
-};
 
 const confirmationMailBody = (code, name, mail, route, type) => {
   return {
