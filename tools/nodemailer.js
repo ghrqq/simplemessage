@@ -22,6 +22,17 @@ const confirmationMailBody = (code, name, mail, route, type) => {
   };
 };
 
+const message = {
+  from: "elonmusk@tesla.com", // Sender address
+  to: "to@email.com", // List of recipients
+  subject: "Design Your Model S | Tesla", // Subject line
+  text: "Have the most fun you can in a car. Get your Tesla today!", // Plain text body
+};
+
+const htmlCompiler = () => {
+  return "<html><a href='abc'>Click this fucking shit.</a></html>";
+};
+
 module.exports = {
   transport,
   message,
