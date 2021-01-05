@@ -1,4 +1,4 @@
-require("dotenv").config();
+// require("dotenv").config();
 
 const cookieParser = require("cookie-parser");
 const Post = require("../schemas/Post");
