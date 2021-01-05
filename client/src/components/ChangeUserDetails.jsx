@@ -97,7 +97,6 @@ const ChangeUserDetails = (props) => {
                 value={userName}
                 onChange={(e) => setuserName(e.target.value)}
                 placeholder={props.name}
-                tooltip="Your Name"
               />
             ) : (
               <InputText
@@ -105,7 +104,6 @@ const ChangeUserDetails = (props) => {
                 value={userName}
                 disabled
                 placeholder={props.name}
-                tooltip="Switch the button to change your name! =>"
               />
             )}
           </td>
@@ -129,7 +127,6 @@ const ChangeUserDetails = (props) => {
                 // keyfilter="email"
                 // validateOnly={true}
                 placeholder={props.mail}
-                tooltip="Your Mail"
                 className={isMailValid === false ? "p-invalid p-d-block" : null}
               />
             ) : (
@@ -139,7 +136,6 @@ const ChangeUserDetails = (props) => {
                 className={isMailValid === false ? "p-invalid p-d-block" : null}
                 disabled
                 placeholder={props.mail}
-                tooltip="Switch the button to change your mail! =>"
               />
             )}
             <br />
@@ -184,7 +180,7 @@ const ChangeUserDetails = (props) => {
               <InputSwitch
                 checked={true}
                 onChange={(e) => setisConfirm(e.value)}
-                tooltip="Your mail is confirmed, already."
+                tooltip="Your mail is already confirmed."
                 disabled
               />
             ) : (

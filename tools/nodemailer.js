@@ -13,7 +13,7 @@ const transport = nodemailer.createTransport({
 
 const confirmationMailBody = (code, name, mail, route, type) => {
   return {
-    from: "no-reply-confirm-mail@simplemsg.com", // Sender address
+    from: process.env.mailSender, // Sender address
     to: mail, // List of recipients
     subject: "Mail confirmation", // Subject line
     text: `Click the link below to comfirm your mail. ${code}`,

@@ -89,8 +89,6 @@ const GetBack = () => {
               value={userMail}
               className={isMailValid === false ? "p-invalid p-d-block" : null}
               placeholder="Email"
-              tooltip="Type your confirmed mail address."
-              tooltipOptions={{ position: "left" }}
               onChange={(e) => setuserMail(e.target.value)}
             />
             <br />
@@ -115,8 +113,6 @@ const GetBack = () => {
                 type="text"
                 value={code}
                 placeholder="Confirmation code"
-                tooltip="Type or paste confirmation code from your mail."
-                tooltipOptions={{ position: "left" }}
                 onChange={(e) => setcode(e.target.value)}
               />
             </td>
