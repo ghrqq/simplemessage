@@ -1,5 +1,5 @@
 const express = require("express");
-require("dotenv").config();
+// require("dotenv").config();
 
 const path = require("path");
 
@@ -8,11 +8,7 @@ const cors = require("cors");
 const Post = require("./schemas/Post");
 const User = require("./schemas/User");
 const Confirmation = require("./schemas/Confirmation");
-const { v4: uuid } = require("uuid");
-const { verify } = require("jsonwebtoken");
-const { hash, compare, genSalt } = require("bcryptjs");
-const { createToken, sendToken } = require("./tools/token");
-const { checkToken, verifyTokenData } = require("./tools/checkToken");
+
 const nodemailer = require("nodemailer");
 const {
   clearUser,
