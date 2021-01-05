@@ -1,6 +1,8 @@
 const express = require("express");
 require("dotenv").config();
 
+const path = require("path");
+
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const Post = require("./schemas/Post");
@@ -101,6 +103,15 @@ app.post("/ratemessage", async (req, res) => rateMessage(req, res));
 app.get("/", (_req, res) => {
   res.send(`Hello again `);
 });
+
+if (process.env.NODE_ENV === "production") {
+  // set static folder
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 const PORT = process.env.PORT || 4000;
 
