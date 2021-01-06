@@ -1,32 +1,21 @@
 import React, { useState, useContext } from "react";
 import PostFooter from "./PostFooter";
 import Voter from "./Voter";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import PostButtons from "./PostButtons";
+
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import hashTagConverter from "../tools/hashTagConverter";
-
-// import shit from "../adimgs/freecodecamp.jpeg";
 
 import UserDetails from "./UserDetails";
 
-import DeleteIcon from "@material-ui/icons/Delete";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
-import PersonIcon from "@material-ui/icons/Person";
-import ShareIcon from "@material-ui/icons/Share";
+
 import StarHalfIcon from "@material-ui/icons/StarHalf";
 import { UserContext } from "../App";
-import { Rating } from "semantic-ui-react";
 
 const Posts = (props) => {
   const [isHidden, setisHidden] = useState(false);
   const [image, setimage] = useState("");
-  const [showDetails, setshowDetails] = useState(false);
-  const [showShare, setshowShare] = useState(false);
-  const [showrate, setshowrate] = useState(false);
+
   const [rateValue, setrateValue] = useState(props.rate);
   const [isUserDetailsOpen, setisUserDetailsOpen] = useState(false);
   const [user, setuser] = useContext(UserContext);
@@ -197,7 +186,6 @@ const Posts = (props) => {
             </p>
           </div>
         </div>
-        {/* <PostButtons /> */}
       </div>
     );
   }
