@@ -110,7 +110,7 @@ function App() {
   useEffect(() => {
     async function getPosts() {
       const result = await (
-        await fetch(`/api/getrandom/20/0`, {
+        await fetch(`/api/getrandom/${limit}/${skip}`, {
           method: "GET",
           credentials: "include",
           headers: {
