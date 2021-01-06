@@ -44,12 +44,14 @@ export const Hashtag = (props) => {
     <div className="component-container">
       <h2 style={{ color: "white" }}>Related Hashtags</h2>
       <HashTagSlider hashTags={hashtags} />
-      <div className="post-container">
-        {posts === [] ? (
-          <div>Loading...</div>
-        ) : (
-          posts.map((item) => <Posts post={item} />)
-        )}
+      <div className="component-container">
+        <div className="post-container">
+          {posts === [] ? (
+            <div>Loading...</div>
+          ) : (
+            posts.map((item) => <Posts post={item} />)
+          )}
+        </div>
       </div>
       <AlertDisplayer message={message} status={status} open={isAlert} />
     </div>

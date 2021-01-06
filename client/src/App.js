@@ -220,7 +220,12 @@ function App() {
               </div>
               <div style={{ marginTop: "4em" }}>
                 <Router id="router">
-                  <Home path="/" limitHandler={handleLimitChange} />
+                  <Home
+                    path="/"
+                    limitHandler={handleLimitChange}
+                    count={count}
+                    limit={limit}
+                  />
                   <About path="/about" />
                   <Hashtag path="/hashtag/:tagpercent" />
                   <UserMessages path="/usermessages/:id" />
