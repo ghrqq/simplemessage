@@ -327,7 +327,7 @@ export default function CreateMessage(props) {
               {message === "" ||
               message.length < 30 ||
               hashtagsToShow.length < 1 ||
-              isAgreed === false ||
+              // isAgreed === false ||
               isUserLoading === true ? (
                 <Tooltip title="Your message should contain at least 30 characters and you should pick at least 1 hashtag.">
                   <Button variant="contained" color="primary" disabled>

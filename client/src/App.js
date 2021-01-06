@@ -13,8 +13,7 @@ import ConfirmationLanding from "./pages/ConfirmationLanding";
 import SinglePost from "./pages/SinglePost";
 
 import { union } from "lodash";
-import hashTagConverter from "./tools/hashTagConverter";
-import Cookies from "js-cookie";
+
 import CreateMessage from "./components/CreateMessage";
 import MainSkeleton from "./components/MainSkeleton";
 import AlertDisplayer from "./components/AlertDisplayer";
@@ -221,12 +220,7 @@ function App() {
               </div>
               <div style={{ marginTop: "4em" }}>
                 <Router id="router">
-                  <Home
-                    path="/"
-                    limitHandler={handleLimitChange}
-                    limit={limit}
-                    count={count}
-                  />
+                  <Home path="/" limitHandler={handleLimitChange} />
                   <About path="/about" />
                   <Hashtag path="/hashtag/:tagpercent" />
                   <UserMessages path="/usermessages/:id" />

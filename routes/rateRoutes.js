@@ -1,11 +1,9 @@
 // require("dotenv").config();
 
-const cookieParser = require("cookie-parser");
 const Post = require("../schemas/Post");
 const User = require("../schemas/User");
-const Confirmation = require("../schemas/Confirmation");
+
 const Rate = require("../schemas/Rate");
-const { checkToken, verifyTokenData } = require("../tools/checkToken");
 
 const rateMessage = async (req, res) => {
   const { postid, rate, postCreatorId, userIp } = req.body;

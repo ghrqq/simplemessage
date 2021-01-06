@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AlertDisplayer from "../components/AlertDisplayer";
+
 import Posts from "../components/Posts";
 import Hashtag from "./Hashtag";
 import hashTagConverter from "../tools/hashTagConverter";
@@ -8,11 +8,6 @@ const SinglePost = ({ id }) => {
   const [isLoading, setisLoading] = useState(false);
   const [post, setpost] = useState([]);
   const [hashtags, sethashtags] = useState([]);
-  const [relatedPosts, setrelatedPosts] = useState([]);
-  // Alert states.
-  const [isAlert, setisAlert] = useState(false);
-  const [message, setmessage] = useState("");
-  const [status, setstatus] = useState(200);
 
   useEffect(() => {
     setisLoading(true);

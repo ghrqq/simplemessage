@@ -4,18 +4,11 @@ import Posts from "../components/Posts";
 import HashTagSlider from "../components/HashTagSlider";
 import { difference } from "lodash";
 
-import TextField from "@material-ui/core/TextField";
-import Switch from "@material-ui/core/Switch";
-import Button from "@material-ui/core/Button";
-import StarIcon from "@material-ui/icons/Star";
-import AddIcon from "@material-ui/icons/Add";
-import LabelIcon from "@material-ui/icons/Label";
 import UserSummary from "../components/UserSummary";
 import AlertDisplayer from "../components/AlertDisplayer";
 import validation from "../tools/validation";
 // Prime React
 
-import { InputSwitch } from "primereact/inputswitch";
 import ChangeUserDetails from "../components/ChangeUserDetails";
 
 const Profile = () => {

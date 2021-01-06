@@ -1,7 +1,7 @@
 const htmlMailCreator = (code, name, mail, route, type) => {
   if (type === "getback") {
     return {
-      from: "no-reply-confirm-mail@simplemsg.com", // Sender address
+      from: process.env.mailSender, // Sender address
       to: mail, // List of recipients
       subject: "Get back your simple message account!", // Subject line
       text: `Dear ${name}, you may click the link below or type the code manually to the input on the page. Please bear in mind that if you choose to click the link, this will redirect you to the confirmation page and that page will set a cookie to the browser. If you would like to reach your account from another browser, you may copy the link and paste it in your choice of browser. Your code is: ${code}
@@ -26,7 +26,7 @@ const htmlMailCreator = (code, name, mail, route, type) => {
 
   if (type === "mailconfirm") {
     return {
-      from: "no-reply-confirm-mail@simplemsg.com", // Sender address
+      from: process.env.mailSender, // Sender address
       to: mail, // List of recipients
       subject: "Please confirm your mail for Simple Message!", // Subject line
       text: ` Dear ${name}, you may click the button below to confirm your mail address. You DO NOT have to confirm your mail to enjoy full features of simple message, but as confirming your mail allows you to reach your account from any device and browser, we recommend it. Have a great day! 
@@ -47,7 +47,7 @@ const htmlMailCreator = (code, name, mail, route, type) => {
     };
   } else {
     return {
-      from: "no-reply-confirm-mail@simplemsg.com", // Sender address
+      from: process.env.mailSender, // Sender address
       to: mail, // List of recipients
       subject: "Simple message has a message for you!", // Subject line
       text: ` Dear ${name}, our server has no idea why this mail has been sent to you. If you see a confirmation code below, feel free to click the button because probably you have tried to confirm your mail or reach your account again. If not, please ignore this mail and accept our apoligy. 

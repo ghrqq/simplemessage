@@ -1,16 +1,11 @@
 // require("dotenv").config();
 
-const cookieParser = require("cookie-parser");
 const Post = require("../schemas/Post");
 const User = require("../schemas/User");
 const Confirmation = require("../schemas/Confirmation");
-const { v4: uuid } = require("uuid");
-const { verify } = require("jsonwebtoken");
-const { hash, compare, genSalt } = require("bcryptjs");
-const { createToken, sendToken } = require("../tools/token");
-const { checkToken, verifyTokenData } = require("../tools/checkToken");
-const { confirmationMailBody, transport } = require("../tools/nodemailer");
-const { getRates } = require("../tools/ratefunctions");
+
+const { checkToken } = require("../tools/checkToken");
+
 const { union, toLower } = require("lodash");
 
 const sendMessage = async (req, res) => {

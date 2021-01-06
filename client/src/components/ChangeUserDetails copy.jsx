@@ -108,15 +108,12 @@ const ChangeUserDetails = (props) => {
             )}
           </td>
           <td>
-            {editName === false ? (
-              <Button color="warning" onClick={(e) => seteditName(!editName)}>
-                Edit
-              </Button>
-            ) : (
-              <Button color="primary" onClick={(e) => seteditName(!editName)}>
-                Lock
-              </Button>
-            )}
+            {" "}
+            <InputSwitch
+              checked={editName}
+              onChange={(e) => seteditName(e.value)}
+              tooltip="Change name?"
+            />
           </td>
         </tr>
         <tr>
@@ -150,15 +147,11 @@ const ChangeUserDetails = (props) => {
           </td>
           <td>
             {" "}
-            {editMail === false ? (
-              <Button color="warning" onClick={(e) => seteditMail(!editMail)}>
-                Edit
-              </Button>
-            ) : (
-              <Button color="primary" onClick={(e) => seteditMail(!editMail)}>
-                Lock
-              </Button>
-            )}
+            <InputSwitch
+              checked={editMail}
+              onChange={(e) => seteditMail(e.value)}
+              tooltip="Change mail?"
+            />
           </td>
         </tr>
         <tr>
@@ -167,21 +160,12 @@ const ChangeUserDetails = (props) => {
             {props.allow ? "Currently allowed." : "Currently not allowed."}
           </td>
           <td>
-            {allowMails === false ? (
-              <Button
-                color="warning"
-                onClick={(e) => setallowMails(!allowMails)}
-              >
-                Allow
-              </Button>
-            ) : (
-              <Button
-                color="danger"
-                onClick={(e) => setallowMails(!allowMails)}
-              >
-                Do not allow
-              </Button>
-            )}
+            <InputSwitch
+              checked={allowMails}
+              onChange={(e) => setallowMails(e.value)}
+              tooltip="Allow mails?"
+              fuck={allowMails}
+            />
           </td>
         </tr>
         <tr>
@@ -192,24 +176,19 @@ const ChangeUserDetails = (props) => {
               : "Your mail is not confirmed"}
           </td>
           <td>
-            {props.confirmed === true ? (
-              <Button color="primary" disabled>
-                Confirmed
-              </Button>
-            ) : isConfirm === true ? (
-              <Button
-                color="warning"
-                onClick={(e) => setallowMails(!allowMails)}
-              >
-                Confirm
-              </Button>
+            {props.confirmed ? (
+              <InputSwitch
+                checked={true}
+                onChange={(e) => setisConfirm(e.value)}
+                tooltip="Your mail is already confirmed."
+                disabled
+              />
             ) : (
-              <Button
-                color="danger"
-                onClick={(e) => setallowMails(!allowMails)}
-              >
-                Do not confirm
-              </Button>
+              <InputSwitch
+                checked={isConfirm}
+                onChange={(e) => setisConfirm(e.value)}
+                tooltip="Confirm mail?"
+              />
             )}
           </td>
         </tr>

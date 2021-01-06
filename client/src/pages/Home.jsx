@@ -1,5 +1,5 @@
 import Posts from "../components/Posts";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext } from "react";
 import { UserContext, PostContext } from "../App";
 import VisibilitySensor from "react-visibility-sensor";
 
