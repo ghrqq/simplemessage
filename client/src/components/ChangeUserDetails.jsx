@@ -109,11 +109,17 @@ const ChangeUserDetails = (props) => {
           </td>
           <td>
             {editName === false ? (
-              <Button color="warning" onClick={(e) => seteditName(!editName)}>
+              <Button
+                className="p-button-warning"
+                onClick={(e) => seteditName(!editName)}
+              >
                 Edit
               </Button>
             ) : (
-              <Button color="primary" onClick={(e) => seteditName(!editName)}>
+              <Button
+                className="p-button-primary"
+                onClick={(e) => seteditName(!editName)}
+              >
                 Lock
               </Button>
             )}
@@ -151,11 +157,17 @@ const ChangeUserDetails = (props) => {
           <td>
             {" "}
             {editMail === false ? (
-              <Button color="warning" onClick={(e) => seteditMail(!editMail)}>
+              <Button
+                className="p-button-warning"
+                onClick={(e) => seteditMail(!editMail)}
+              >
                 Edit
               </Button>
             ) : (
-              <Button color="primary" onClick={(e) => seteditMail(!editMail)}>
+              <Button
+                className="p-button-primary"
+                onClick={(e) => seteditMail(!editMail)}
+              >
                 Lock
               </Button>
             )}
@@ -169,14 +181,14 @@ const ChangeUserDetails = (props) => {
           <td>
             {allowMails === false ? (
               <Button
-                color="warning"
+                className="p-button-warning"
                 onClick={(e) => setallowMails(!allowMails)}
               >
                 Allow
               </Button>
             ) : (
               <Button
-                color="danger"
+                className="p-button-danger"
                 onClick={(e) => setallowMails(!allowMails)}
               >
                 Do not allow
@@ -193,20 +205,20 @@ const ChangeUserDetails = (props) => {
           </td>
           <td>
             {props.confirmed === true ? (
-              <Button color="primary" disabled>
+              <Button className="p-button-primary" disabled>
                 Confirmed
               </Button>
             ) : isConfirm === true ? (
               <Button
-                color="warning"
-                onClick={(e) => setallowMails(!allowMails)}
+                className="p-button-warning"
+                onClick={(e) => setisConfirm(!isConfirm)}
               >
                 Confirm
               </Button>
             ) : (
               <Button
-                color="danger"
-                onClick={(e) => setallowMails(!allowMails)}
+                className="p-button-danger"
+                onClick={(e) => setisConfirm(!isConfirm)}
               >
                 Do not confirm
               </Button>

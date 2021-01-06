@@ -406,11 +406,6 @@ td {
   padding: 5px 5px;
 }
 table {
-  display: flex;
-  flex-shrink: 1;
-  flex-direction: column;
-
-  /* width: 60%; */
   margin: 0 auto;
   padding: 10px;
 }
