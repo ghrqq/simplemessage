@@ -3,11 +3,15 @@ import React, { useEffect, useState } from "react";
 import Posts from "../components/Posts";
 import Hashtag from "./Hashtag";
 import hashTagConverter from "../tools/hashTagConverter";
+import AlertDisplayer from "../components/AlertDisplayer";
 
 const SinglePost = ({ id }) => {
   const [isLoading, setisLoading] = useState(false);
   const [post, setpost] = useState([]);
   const [hashtags, sethashtags] = useState([]);
+  const [isAlert, setisAlert] = useState(false);
+  const [message, setmessage] = useState("");
+  const [status, setstatus] = useState(200);
 
   useEffect(() => {
     setisLoading(true);
@@ -47,6 +51,7 @@ const SinglePost = ({ id }) => {
         : hashtags.map((item) => (
             <Hashtag tagpercent={hashTagConverter(item, "percent")} />
           ))}
+      <AlertDisplayer message={message} status={status} open={isAlert} />
     </div>
   );
 };
