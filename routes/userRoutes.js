@@ -188,13 +188,11 @@ const confirmMail = async (req, res) => {
     }
   );
 
-  res
-    .status(200)
-    .send({
-      message:
-        "Please check your mailbox. (Spam and other secondary folders too.)",
-      status: 200,
-    });
+  res.status(200).send({
+    message:
+      "Please check your mailbox. (Spam and other secondary folders too.)",
+    status: 200,
+  });
 };
 
 // To send back the mail confirmation code
@@ -282,10 +280,24 @@ const addUserDetails = async (req, res) => {
     if (!user) {
       res.status(400).send({ message: "User not found.", status: 400 });
     }
+
+    if (userMail) {
+      const isMailRegistered = await User.find({ userMail });
+      if (
+        isMailRegistered.length > 0 &&
+        isMailRegistered.userId !== user.userId &&
+        isMailRegistered.isMailConfirmed === true
+      ) {
+        res.status(400).send({
+          message:
+            "This email is already in use. Try a different mail adress or try to get back your account.",
+        });
+      }
+    }
+
     if (userMail !== user.userMail) {
       user.isMailConfirmed = false;
     }
-
     user.userName = userName ? userName : user.userName;
     user.isMailsAllowed = isMailsAllowed ? true : user.isMailsAllowed;
     user.userMail = userMail ? userMail : user.userMail;
