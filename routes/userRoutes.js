@@ -176,7 +176,7 @@ const confirmMail = async (req, res) => {
       code,
       user.userName,
       userMail,
-      "http://localhost:3000/confirmation",
+      `${process.env.siteURL}/confirmation`,
       "mailconfirm"
     ),
     function (err, info) {
@@ -321,7 +321,7 @@ const addUserDetails = async (req, res) => {
         code,
         user.userName,
         userMail,
-        "http://localhost:3000/confirmation",
+        `${process.env.siteURL}/confirmation`,
         "mailconfirm"
       ),
       function (err, info) {
@@ -375,7 +375,7 @@ const getBackYourAccount = async (req, res) => {
       code,
       user.userName,
       user.userMail,
-      "http://localhost:3000/confirmation",
+      `${process.env.siteURL}/confirmation`,
       "getback"
     ),
     function (err, info) {
