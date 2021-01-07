@@ -188,7 +188,13 @@ const confirmMail = async (req, res) => {
     }
   );
 
-  res.status(200).send({ message: "Please check your mailbox.", status: 200 });
+  res
+    .status(200)
+    .send({
+      message:
+        "Please check your mailbox. (Spam and other secondary folders too.)",
+      status: 200,
+    });
 };
 
 // To send back the mail confirmation code
@@ -230,7 +236,14 @@ const confirmation = async (req, res) => {
       return;
     }
     if (userToConfirm.userMail === mail) {
-      (userToConfirm.isMailConfirmed = true), userToConfirm.save();
+      userToConfirm.isMailConfirmed = true;
+      const isConfirmSaved = await userToConfirm.save();
+      if (!isConfirmSaved) {
+        res.status(400).send({
+          message: "Confirmation failed.",
+          status: 400,
+        });
+      }
       res.status(200).send({
         message: "Your mail is confirmed. ",
         status: 200,
@@ -333,9 +346,11 @@ const addUserDetails = async (req, res) => {
       }
     );
 
-    res
-      .status(200)
-      .send({ message: "Please check your mailbox.", status: 200 });
+    res.status(200).send({
+      message:
+        "Please check your mailbox. (Spam and other secondary folders too.)",
+      status: 200,
+    });
   } catch (error) {
     res
       .status(400)
